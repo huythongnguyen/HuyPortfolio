@@ -1,0 +1,236 @@
+/**
+ * Bilingual Mode - Zen Design
+ * 
+ * Principles:
+ *   - Ma (間): Vietnamese text centered with breathing room
+ *   - Kanso (簡素): English text as subtle companion, not competitor
+ *   - Seijaku (静寂): Gradual reveal animations for peaceful reading
+ * 
+ * Structure:
+ *   - Vietnamese: Centered, prominent, the primary voice
+ *   - English: Subtle, below, revealed on interaction
+ */
+
+#content.bilingual-mode {
+    padding: 48px 24px 80px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+/* === PREAMBLE === */
+.bilingual-preamble {
+    margin-bottom: 64px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--sand);
+    text-align: center;
+}
+
+.bilingual-preamble h1 {
+    font-size: 2.4rem;
+    font-weight: 300;
+    margin-bottom: 0.5em;
+}
+
+.bilingual-preamble h2 {
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: var(--stone);
+    margin: 2em 0 1em;
+}
+
+.bilingual-preamble p {
+    text-align: left;
+    max-width: 100%;
+}
+
+/* === CHAPTER SECTIONS === */
+.bilingual-chapter,
+.bilingual-main-section {
+    margin-bottom: 80px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--sand);
+}
+
+.bilingual-chapter:last-child,
+.bilingual-main-section:last-child {
+    border-bottom: none;
+}
+
+/* === VIETNAMESE: Primary, centered focus === */
+.bilingual-vn {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.bilingual-vn h1 {
+    font-size: 2.2rem;
+    font-weight: 300;
+    margin-bottom: 1em;
+}
+
+.bilingual-vn h2 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 1.5em;
+    color: var(--ink);
+}
+
+.bilingual-vn p {
+    text-align: justify;
+    text-align-last: center;
+    max-width: 100%;
+    margin-bottom: 1.5em;
+    line-height: 2;
+    font-size: 1.05rem;
+}
+
+/* === ENGLISH: Subtle companion === */
+.bilingual-en {
+    position: relative;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.6s ease, opacity 0.4s ease, margin 0.4s ease;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.bilingual-en.revealed {
+    max-height: 2000px;
+    opacity: 1;
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--sand);
+}
+
+.bilingual-en h1,
+.bilingual-en h2 {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--mist);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    text-align: center;
+    margin-bottom: 1.5em;
+}
+
+.bilingual-en p {
+    font-size: 0.85rem;
+    color: var(--stone);
+    line-height: 1.9;
+    text-align: center;
+    font-style: italic;
+    max-width: 100%;
+}
+
+/* === TOGGLE BUTTON: Show/hide English === */
+.en-toggle {
+    display: block;
+    margin: 24px auto 0;
+    padding: 12px 24px;
+    background: transparent;
+    border: none;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mist);
+    cursor: pointer;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.en-toggle::before {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 1px;
+    background: var(--sand);
+    transition: background 0.3s ease, width 0.3s ease;
+}
+
+.en-toggle:hover {
+    color: var(--stone);
+}
+
+.en-toggle:hover::before {
+    background: var(--mist);
+    width: 32px;
+}
+
+.en-toggle.active {
+    color: var(--stone);
+}
+
+.en-toggle.active::before {
+    background: var(--mist);
+}
+
+/* === GRADUAL REVEAL ANIMATION === */
+.bilingual-chapter,
+.bilingual-main-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.bilingual-chapter.visible,
+.bilingual-main-section.visible,
+.bilingual-preamble.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 
+ * Word-by-word reveal handles paragraph visibility.
+ * Section container handles fade-in of the whole section.
+ */
+
+/* Preamble always visible */
+.bilingual-preamble {
+    opacity: 1;
+    transform: none;
+}
+
+/* === WORD-BY-WORD REVEAL === */
+.reveal-word {
+    opacity: 0;
+    display: inline;
+    transition: opacity 0.3s ease;
+}
+
+.reveal-word.revealed {
+    opacity: 1;
+}
+
+/* Speed control button */
+#speed-control {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1001;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 1px solid var(--sand);
+    font-size: 1.2rem;
+    color: var(--mist);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+#speed-control:hover {
+    color: var(--ink);
+    border-color: var(--mist);
+    transform: scale(1.05);
+}

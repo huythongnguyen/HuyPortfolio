@@ -1,0 +1,90 @@
+/**
+ * Sidebar & Table of Contents
+ * 
+ * Sticky sidebar with hierarchical TOC.
+ * Muted by default, reveals on hover (Ma principle).
+ */
+
+#sidebar {
+    grid-area: sidebar;
+    padding: 16px 24px 48px 32px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--paper);
+    transition: background var(--theme-transition);
+}
+
+#sidebar::-webkit-scrollbar { 
+    width: 0; 
+}
+
+#toc {
+    opacity: 0.6;
+    transition: opacity 0.4s ease;
+}
+
+#sidebar:hover #toc {
+    opacity: 1;
+}
+
+.toc-list {
+    list-style: none;
+}
+
+.toc-list ul {
+    list-style: none;
+    margin-left: 14px;
+}
+
+.toc-item {
+    margin-bottom: 2px;
+}
+
+.toc-link {
+    display: block;
+    padding: 5px 0 5px 12px;
+    color: var(--mist);
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: color 0.3s ease, border-color 0.3s ease, padding-left 0.3s ease;
+    border-left: 2px solid transparent;
+    margin-left: -12px;
+}
+
+.toc-link:hover {
+    color: var(--ink);
+}
+
+.toc-link.active {
+    color: var(--ink);
+    border-left-color: var(--ink);
+    padding-left: 14px;
+}
+
+.toc-h1 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 14px;
+}
+
+.toc-h1:first-child {
+    margin-top: 0;
+}
+
+.toc-h2 {
+    font-size: 0.78rem;
+}
+
+.toc-h3 {
+    font-size: 0.75rem;
+    color: var(--mist);
+}
+
+/* Children always visible - Kanso: no toggle complexity */
+.toc-children {
+    display: block;
+}
+

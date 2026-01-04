@@ -1,0 +1,107 @@
+/**
+ * Document Tabs
+ * 
+ * Minimal tab switcher with underline animation.
+ * Auto-hides and reveals on hover near top of screen.
+ * Follows Ma principle: appears only when needed.
+ */
+
+#top-tabs {
+    grid-area: tabs;
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    padding: 24px 24px 20px;
+    background: var(--paper);
+    transition: background var(--theme-transition), 
+                opacity 0.4s ease, 
+                transform 0.4s ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--sand);
+    
+    /* Hidden by default */
+    opacity: 0;
+    transform: translateY(-100%);
+    pointer-events: none;
+}
+
+/* Reveal when active (controlled by JS) */
+#top-tabs.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* Small indicator line at top when hidden */
+#top-tabs::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background: var(--sand);
+    border-radius: 0 0 3px 3px;
+    opacity: 0.6;
+    transition: opacity 0.3s ease, width 0.3s ease;
+    pointer-events: none;
+}
+
+#top-tabs.visible::after {
+    opacity: 0;
+    width: 0;
+}
+
+.doc-tab {
+    background: none;
+    border: none;
+    padding: 8px 0;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mist);
+    cursor: pointer;
+    transition: color 0.4s ease;
+    position: relative;
+}
+
+.doc-tab::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 1px;
+    background: var(--ink);
+    transition: all 0.4s ease;
+    transform: translateX(-50%);
+}
+
+.doc-tab:hover {
+    color: var(--stone);
+}
+
+.doc-tab.active {
+    color: var(--ink);
+}
+
+.doc-tab.active::after {
+    width: 100%;
+}
+
+.doc-tab:focus {
+    outline: none;
+}
+
+.doc-tab:focus-visible {
+    outline: 1px solid var(--mist);
+    outline-offset: 8px;
+}
+

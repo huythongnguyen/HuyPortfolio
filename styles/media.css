@@ -1,0 +1,228 @@
+/**
+ * Media Showcase
+ * 
+ * Zen-style video gallery with lazy loading.
+ * Videos appear like hanging scrolls (掛軸) - 
+ * revealed only when invited into view.
+ * 
+ * Philosophy: Ma (間) - the beauty of negative space
+ * Videos breathe within generous margins.
+ */
+
+/* === Media Gallery Container === */
+.media-gallery {
+    margin: 2.5em 0 3em;
+    padding: 2em 0;
+}
+
+.media-gallery-title {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--mist);
+    margin-bottom: 1.5em;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid var(--sand);
+    transition: color var(--theme-transition), border-color var(--theme-transition);
+}
+
+/* === Video Items - Vertical Stack === */
+.media-items {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+}
+
+/* === Single Media Item === */
+.media-item {
+    position: relative;
+    background: var(--sand);
+    border-radius: 2px;
+    overflow: hidden;
+    transition: background var(--theme-transition), 
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.6s ease;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.media-item.media-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* === Video Container === */
+.media-video-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--ink);
+    cursor: pointer;
+}
+
+/* === Video Element === */
+.media-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.media-video.loaded {
+    opacity: 1;
+}
+
+/* === Poster/Thumbnail Overlay === */
+.media-poster {
+    position: absolute;
+    inset: 0;
+    background: var(--sand);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.4s ease, background var(--theme-transition);
+}
+
+.media-poster.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* === Play Button - Minimal Circle === */
+.media-play-btn {
+    width: 64px;
+    height: 64px;
+    border: 1px solid var(--mist);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.media-play-btn::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 12px solid var(--mist);
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    margin-left: 4px;
+    transition: border-left-color 0.3s ease;
+}
+
+.media-video-container:hover .media-play-btn {
+    border-color: var(--ink);
+    transform: scale(1.05);
+}
+
+.media-video-container:hover .media-play-btn::after {
+    border-left-color: var(--ink);
+}
+
+/* === Loading Indicator === */
+.media-loading {
+    position: absolute;
+    inset: 0;
+    background: var(--sand);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, background var(--theme-transition);
+}
+
+.media-loading.active {
+    opacity: 1;
+}
+
+.media-loading::after {
+    content: '';
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--sand);
+    border-top-color: var(--mist);
+    border-radius: 50%;
+    animation: media-spin 0.8s linear infinite;
+}
+
+@keyframes media-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* === Media Caption === */
+.media-caption {
+    padding: 1em 0;
+    font-size: 0.9rem;
+    color: var(--stone);
+    line-height: 1.6;
+    transition: color var(--theme-transition);
+}
+
+.media-caption-title {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.25em;
+    transition: color var(--theme-transition);
+}
+
+.media-caption-desc {
+    color: var(--mist);
+    font-size: 0.85rem;
+    transition: color var(--theme-transition);
+}
+
+/* === Video Controls Styling === */
+.media-video::-webkit-media-controls-panel {
+    background: linear-gradient(transparent, rgba(0,0,0,0.3));
+}
+
+/* === Fullscreen Video Styles === */
+.media-video:fullscreen {
+    object-fit: contain;
+    background: #000;
+}
+
+/* === Progressive Enhancement: Reduce Motion === */
+@media (prefers-reduced-motion: reduce) {
+    .media-item {
+        opacity: 1;
+        transform: none;
+    }
+    
+    .media-loading::after {
+        animation: none;
+    }
+}
+
+/* === Responsive: Stack on Mobile === */
+@media (max-width: 768px) {
+    .media-gallery {
+        margin: 1.5em 0;
+        padding: 1em 0;
+    }
+    
+    .media-items {
+        gap: 1.5em;
+    }
+    
+    .media-play-btn {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .media-play-btn::after {
+        border-left-width: 10px;
+        border-top-width: 6px;
+        border-bottom-width: 6px;
+    }
+}
+

@@ -1,0 +1,47 @@
+/**
+ * Layout Grid
+ * 
+ * Three-column layout: sidebar | content | breathing space
+ * Centered with max-width for optimal reading.
+ */
+
+#app {
+    display: grid;
+    grid-template-areas:
+        "tabs tabs tabs"
+        "sidebar content space";
+    grid-template-columns: minmax(180px, 220px) minmax(500px, 800px) minmax(180px, 1fr);
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+#content-wrapper {
+    grid-area: content;
+    display: flex;
+    flex-direction: column;
+    background: var(--paper);
+    transition: background var(--theme-transition);
+}
+
+#content {
+    flex: 1;
+    padding: 16px 48px 80px 48px;
+}
+
+/* Content sections for text reveal animation */
+.content-section {
+    margin-bottom: 2em;
+}
+
+.content-section .reveal-word {
+    opacity: 0;
+    display: inline;
+    transition: opacity 0.3s ease;
+}
+
+.content-section .reveal-word.revealed {
+    opacity: 1;
+}
+

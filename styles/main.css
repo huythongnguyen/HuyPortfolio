@@ -1,0 +1,35 @@
+/**
+ * Zen Markdown Viewer - Main Stylesheet
+ * 
+ * Design Philosophy (Zen Principles):
+ * - Ma (間): Negative space as the primary design element
+ * - Kanso (簡素): Maximum simplicity, no decoration
+ * - Shizen (自然): Natural, effortless appearance
+ * - Seijaku (静寂): Stillness, tranquility in interaction
+ *
+ * Typography: Source Serif 4 + Source Sans 3
+ * - Excellent Vietnamese diacritic support
+ * - Clean, readable at all sizes
+ * - Harmonious serif/sans pairing
+ * 
+ * Architecture:
+ *   base.css       - Reset, variables, body
+ *   layout.css     - Grid structure
+ *   tabs.css       - Document switcher
+ *   sidebar.css    - Table of contents
+ *   typography.css - Headings, text, links
+ *   actions.css    - Download buttons
+ *   bilingual.css  - Side-by-side translation
+ *   responsive.css - Media queries
+ */
+
+@import 'base.css';
+@import 'layout.css';
+@import 'tabs.css';
+@import 'sidebar.css';
+@import 'typography.css';
+@import 'actions.css';
+@import 'bilingual.css';
+@import 'media.css';
+@import 'responsive.css';
+

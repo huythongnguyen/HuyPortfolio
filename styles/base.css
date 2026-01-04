@@ -1,0 +1,58 @@
+/**
+ * Base Styles
+ * 
+ * Reset, CSS variables, and body typography.
+ * Variables follow a natural palette: ink, stone, mist, paper, sand.
+ * 
+ * Light mode: Warm paper tones (default)
+ * Dark mode: Warm night tones - not harsh black, but deep warm grays
+ */
+
+/* === LIGHT THEME (default) === */
+:root {
+    --ink: #1a1a1a;
+    --stone: #555;
+    --mist: #888;
+    --paper: #fdfcfb;
+    --sand: #f5f3f0;
+    
+    /* Theme toggle icon */
+    --theme-icon: "☀";
+}
+
+/* === DARK THEME === */
+[data-theme="dark"] {
+    --ink: #c5c0b8;
+    --stone: #8a8580;
+    --mist: #5a5855;
+    --paper: #1c1b1a;
+    --sand: #2a2826;
+    
+    --theme-icon: "☾";
+}
+
+/* Smooth transition for theme changes */
+:root {
+    --theme-transition: 0.4s ease;
+}
+
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+}
+
+html { 
+    font-size: 17px; 
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-weight: 400;
+    line-height: 1.85;
+    color: var(--ink);
+    background: var(--paper);
+    transition: background var(--theme-transition), color var(--theme-transition);
+}
+
