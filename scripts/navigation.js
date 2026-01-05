@@ -8,6 +8,7 @@
 import { FILES, currentDocument, setCurrentDocument } from './config.js';
 import { splitBilingualContent, renderBilingualContent, buildBilingualTOC } from './bilingual.js';
 import { renderFullContent, buildTOC } from './renderer.js';
+import { setSpeed } from './textReveal.js';
 
 /**
  * Fetches a markdown file from the server.
@@ -29,12 +30,18 @@ export async function fetchMarkdown(filepath) {
 /**
  * Loads and renders a document.
  * Automatically detects bilingual content and uses appropriate renderer.
+ * Applies document-specific settings like reveal speed.
  * 
- * @param {Object} fileInfo - Document config { name, path, bilingual }
+ * @param {Object} fileInfo - Document config { name, path, bilingual, defaultSpeed }
  */
 export async function loadDocument(fileInfo) {
     const markdown = await fetchMarkdown(fileInfo.path);
     setCurrentDocument({ name: fileInfo.name, markdown });
+
+    // Apply document-specific reveal speed if configured
+    if (fileInfo.defaultSpeed) {
+        setSpeed(fileInfo.defaultSpeed);
+    }
 
     // Use bilingual renderer if enabled and content has English section
     if (fileInfo.bilingual && splitBilingualContent(markdown)) {
@@ -160,11 +167,11 @@ export function setupScrollSpy() {
     if (scrollSpyObserver) {
         scrollSpyObserver.disconnect();
     }
-    
+
     // Find all sections that have corresponding TOC links
     const sections = document.querySelectorAll('[id]');
     const tocLinks = document.querySelectorAll('#toc .toc-link');
-    
+
     // Create a map of section IDs to TOC links
     const sectionMap = new Map();
     tocLinks.forEach(link => {
@@ -174,28 +181,28 @@ export function setupScrollSpy() {
             sectionMap.set(id, link);
         }
     });
-    
+
     // Track which sections are visible
     const visibleSections = new Set();
-    
+
     scrollSpyObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             const id = entry.target.id;
-            
+
             if (entry.isIntersecting) {
                 visibleSections.add(id);
             } else {
                 visibleSections.delete(id);
             }
         });
-        
+
         // Find the topmost visible section
         updateActiveTOCLink(visibleSections, sectionMap);
     }, {
         rootMargin: '-10% 0px -70% 0px', // Trigger when section is in top 30% of viewport
         threshold: 0
     });
-    
+
     // Observe all sections that have TOC links
     sections.forEach(section => {
         if (sectionMap.has(section.id)) {
@@ -211,18 +218,18 @@ export function setupScrollSpy() {
 function updateActiveTOCLink(visibleSections, sectionMap) {
     // Remove all active states
     sectionMap.forEach(link => link.classList.remove('active'));
-    
+
     if (visibleSections.size === 0) return;
-    
+
     // Get all sections in document order
     const allSections = Array.from(document.querySelectorAll('[id]'));
-    
+
     // Find the first visible section (topmost)
     for (const section of allSections) {
         if (visibleSections.has(section.id) && sectionMap.has(section.id)) {
             const link = sectionMap.get(section.id);
             link.classList.add('active');
-            
+
             // Scroll the TOC to show the active link
             scrollTOCIntoView(link);
             break;
@@ -236,10 +243,10 @@ function updateActiveTOCLink(visibleSections, sectionMap) {
 function scrollTOCIntoView(activeLink) {
     const sidebar = document.getElementById('sidebar');
     if (!sidebar) return;
-    
+
     const linkRect = activeLink.getBoundingClientRect();
     const sidebarRect = sidebar.getBoundingClientRect();
-    
+
     // Check if the link is outside the visible area of the sidebar
     if (linkRect.top < sidebarRect.top + 50 || linkRect.bottom > sidebarRect.bottom - 50) {
         activeLink.scrollIntoView({ behavior: 'smooth', block: 'center' });

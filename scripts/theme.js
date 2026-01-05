@@ -22,11 +22,8 @@ function getPreferredTheme() {
         return stored;
     }
 
-    // Respect system preference
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-        return 'light';
-    }
-
+    // Default to dark mode (Zen aesthetic)
+    // Only use light mode if explicitly stored
     return 'dark';
 }
 
@@ -50,7 +47,7 @@ function applyTheme(theme) {
 function updateToggleButton(theme) {
     const btn = document.getElementById('theme-toggle');
     if (!btn) return;
-    
+
     if (theme === 'dark') {
         btn.textContent = '☀';
         btn.setAttribute('aria-label', 'Switch to light mode');
@@ -68,7 +65,7 @@ function updateToggleButton(theme) {
 function toggleTheme() {
     const current = document.documentElement.getAttribute('data-theme');
     const newTheme = current === 'dark' ? 'light' : 'dark';
-    
+
     applyTheme(newTheme);
     localStorage.setItem(STORAGE_KEY, newTheme);
 }
@@ -81,13 +78,13 @@ export function initTheme() {
     // Apply saved or system preference immediately
     const theme = getPreferredTheme();
     applyTheme(theme);
-    
+
     // Attach toggle handler
     const btn = document.getElementById('theme-toggle');
     if (btn) {
         btn.addEventListener('click', toggleTheme);
     }
-    
+
     // Listen for system preference changes
     if (window.matchMedia) {
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {

@@ -10,7 +10,7 @@
     grid-template-areas:
         "tabs tabs tabs"
         "sidebar content space";
-    grid-template-columns: minmax(180px, 220px) minmax(500px, 800px) minmax(180px, 1fr);
+    grid-template-columns: minmax(180px, 240px) minmax(600px, 900px) minmax(60px, 1fr);
     grid-template-rows: auto 1fr;
     min-height: 100vh;
     max-width: 1600px;
@@ -54,4 +54,3 @@ li.words-wrapped {
 li.words-wrapped.revealed-marker {
     list-style: inherit;
 }
-

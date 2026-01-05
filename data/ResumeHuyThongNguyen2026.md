@@ -11,8 +11,8 @@ Deep expertise in architecting large-scale AI systems at Google and Databricks. 
 ## Georgia Institute of Technology | 2016–2020
 **Doctor of Philosophy**
 - Researched on Machine Learning for Automating Electronic Design & RF/Mm-Wave Chip Design, bridging AI and hardware domains
-- Scored 4.0/4.0 GPA, maintaining academic excellence across rigorous coursework
-- Earned recognition on 2019 Analog Devices Outstanding Designer Award, 2018 IEEE RFIC Best Student Paper Award Co-Recipient (2nd Place)
+- Got 4.0/4.0 GPA, maintaining academic excellence across rigorous coursework
+- Awarded 2019 Analog Devices Outstanding Designer Award, 2018 IEEE RFIC Best Student Paper Award Co-Recipient (2nd Place)
 
 ---
 
@@ -52,18 +52,18 @@ Owner of foundational multimodal models and automated knowledge extraction syste
 
 Spearheaded strategy and development of foundational multimodal embeddings (Text, Image, Video), creating shared representation layer for Google Maps, Local Search, and YouTube—enabling billions of users to discover places through visual content
 
+![Rich Visual Offering](huythong-nguyen/media/google-multimodal-embedding/RichVisualOffering.gif "Enhanced photo/video coverage on Google Maps—my embeddings power topic-based discovery")
+![Place Answers & Magi Q&A](huythong-nguyen/media/google-multimodal-embedding/PlaceAnswers.gif "Photo retrieval for local place questions—3× coverage via the multimodal system")
+![Local Search on Search](huythong-nguyen/media/google-multimodal-embedding/LocalSearchOnSearch.gif "Photo/video retrieval for local queries—powered by the multimodal system")
+![Local Search on Maps](huythong-nguyen/media/google-multimodal-embedding/LocalSearchOnMaps.gif "Visual content discovery via the multimodal system")
+
+
 - Owned technical objectives for K&I and Geo-level OKRs to improve Rich Visual Offering metric, making Maps more visual by associating more photos/videos to topics about places
 - Drove cross-org adoption—became go-to embedding solution for 4+ major downstream launches:
   - *Google Maps*: Rich Visual Offering exceeding OKRs by 25%, precision +20%, photo coverage +30%, video coverage +50%, engagement +3%
   - *Google Search*: Photo/video/merchant post retrieval and ranking for local queries (+0.35 cSUNs)
   - *Place Answers & Magi Q&A*: Photo retrieval for local place questions (3× coverage improvement)
   - *YouTube Local Shorts*: Automated Shorts generation for local places
-
-#### Visual Demonstrations
-
-![Rich Visual Offering](huythong-nguyen/media/google-multimodal-embedding/RichVisualOffering.mp4 "Enhanced photo/video coverage and relevance on Google Maps")
-![Local Search on Maps](huythong-nguyen/media/google-multimodal-embedding/LocalSearchOnMaps.mp4 "Visual content discovery for local places via multimodal embeddings")
-![Local Search on Search](huythong-nguyen/media/google-multimodal-embedding/LocalSearchOnSearch.mp4 "Photo/video retrieval for local queries on Search")
 - Directed multi-year $3M+ human-annotation budget for text-image-video relevancy
 - Developed LLM-labeling pipelines to annotate 1B+ images/videos, saving +$10M in annotation costs and eliminating 6-month data bottleneck—accelerating model iteration cycles
 - Invented multi-teacher learning algorithms, resulting in 2 publications and 4 patents—advancing the state of knowledge distillation
@@ -85,7 +85,7 @@ Built multi-task systems extracting business attributes from Street View imagery
 - Advised intern on research published at ECCV 2022, fostering research excellence
 - Authored 6 patents, protecting Google's competitive advantage in multimodal AI
 
-### Earned Recognition
+### Awarded
 
 - *Geo Tech Award 2024-H1*: Rich Visual Offerings Data—Fused Topics and Beehive Image Matcher
 - *Geo Tech Award 2022-H2*: BizView Full Automation
@@ -98,10 +98,10 @@ Built multi-task systems extracting business attributes from Street View imagery
 - Developed ML techniques automating millimeter-wave electromagnetic designs, reducing design time from months to seconds—enabling rapid iteration in 5G system development
 - Established new paradigm in electronic design automation, unlocking rapid prototyping for next-generation wireless systems
 
-### Delivered Breakthrough Chip Designs
+### Architected Breakthrough Chip Designs
 
 - Demonstrated first 5G CMOS Power Amplifier with >1W power (ISSCC 2019), pushing the boundaries of silicon-based 5G
-- Pioneered novel antenna-electronics co-design approach, inspiring follow-on research in industry and academia
+- Proposed novel antenna-electronics co-design approach, inspiring follow-on research in industry and academia
 - Published 3 ISSCC and 2 JSSC papers as first author, contributing foundational work to mm-wave circuit design
 
 ## Marvell Semiconductor | Jul 2013 – Jun 2016

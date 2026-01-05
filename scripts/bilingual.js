@@ -13,7 +13,7 @@
 
 import { scrollToSection, setupScrollSpy } from './navigation.js';
 import { revealSection as revealSectionText, prepareSection } from './textReveal.js';
-import { transformVideos } from './media.js';
+import { transformVideos, revealMediaAfterText } from './media.js';
 
 // === MARKERS ===
 const VIETNAMESE_MAIN = /^#\s+Kinh Kim Cang\s*$/m;
@@ -135,6 +135,9 @@ export function renderBilingualContent(markdown) {
 
     // Transform videos in the final content
     transformVideos(contentPanel);
+
+    // Setup media reveal after text completes
+    revealMediaAfterText(contentPanel);
 
     // Setup intersection observer for reveal animations
     setupRevealObserver();

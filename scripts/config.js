@@ -6,15 +6,17 @@
  */
 
 export const FILES = [
-    { 
-        name: 'Resume', 
+    {
+        name: 'Resume',
         path: 'data/ResumeHuyThongNguyen2026.md',
-        bilingual: false
+        bilingual: false,
+        defaultSpeed: 'fast'  // Changed from 'instant' to 'fast'
     },
-    { 
-        name: 'Diamond Sutra', 
-        path: 'data/KinhKimCang.md', 
-        bilingual: true  // Enables Vietnamese/English side-by-side display
+    {
+        name: 'Diamond Sutra',
+        path: 'data/KinhKimCang.md',
+        bilingual: true,  // Enables Vietnamese/English side-by-side display
+        defaultSpeed: 'medium'  // Changed from 'instant' to 'fast'
     }
 ];
 

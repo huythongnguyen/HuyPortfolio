@@ -101,6 +101,88 @@ For documents with Vietnamese and English translations:
 - English revealed via toggle button (follows Kanso — show only when needed)
 - Word-by-word reveal for both languages
 
+### 🎋 Media Showcase (Collapsible Gallery)
+
+The **Visual Demonstrations** showcase follows Zen design principles with intentional UX:
+
+#### Design Principles
+
+| Principle | Implementation |
+|-----------|----------------|
+| **Ma (間)** — Space | Fixed 400px height creates visual rhythm |
+| **Kanso (簡素)** — Simplicity | Minimal text triggers, no decoration |
+| **Seijaku (静寂)** — Tranquility | Sequential reveal—text first, then media |
+| **Shizen (自然)** — Naturalness | GIFs auto-play like flowing water |
+
+#### User Experience Flow
+
+```
+┌─────────────────────────────────────────────────────┐
+│   Spearheaded strategy and development...           │  ← Text reveals word-by-word
+│                                                     │
+│                         ▼ View demos ──────────────│  ← Collapsed trigger (right-aligned)
+│                                                     │
+└─────────────────────────────────────────────────────┘
+          ↓  (user clicks)  ↓
+┌─────────────────────────────────────────────────────┐
+│   Spearheaded strategy and development...           │
+│                                                     │
+│                         ▲ Close demos ─────────────│  ← Expanded trigger
+│                                                     │
+│  ◄ ┌────────────┐  ┌────────────┐  ┌────────────┐ ► │  ← Arrow navigation
+│    │ Rich Visual│  │LocalSearch │  │LocalSearch │   │
+│    │  Offering  │  │  on Maps   │  │ on Search  │   │  ← Horizontal GIF gallery (90% visible)
+│    │   (GIF)    │  │   (GIF)    │  │   (GIF)    │   │
+│    └────────────┘  └────────────┘  └────────────┘   │
+│              ●         ○             ○          ○   │  ← Scroll indicator dots
+└─────────────────────────────────────────────────────┘
+```
+
+#### Features
+
+| Feature | Details |
+|---------|---------|
+| **Sequential Reveal** | Media appears only after preceding text finishes revealing |
+| **Toggle Text** | "▼ View demos" (collapsed) ↔ "▲ Close demos" (expanded) |
+| **Dashed Border** | Collapsed state shows dashed border for discoverability |
+| **Arrow Navigation** | Left/right arrows (◄/►) appear on hover for gallery navigation |
+| **GIF Cropping** | Shows 90% of content—hides phone clock/navigation UI |
+| **Scroll Dots** | Clickable indicators for direct item access |
+| **Lazy Loading** | GIFs load only when gallery is expanded |
+
+#### Implementation
+
+Media is embedded using standard Markdown image syntax:
+
+```markdown
+![Title](path/to/video.gif "Description text")
+![Local Search on Maps](media/LocalSearchOnMaps.gif "Visual content discovery")
+```
+
+Supported formats: `.gif`, `.webp`, `.mp4`, `.webm`, `.mov`
+
+The system automatically:
+1. Groups consecutive media into a single gallery
+2. Wraps in collapsible showcase with toggle
+3. Adds arrow navigation and scroll dots
+4. Sets up lazy loading and reveal timing
+
+#### English Translation (Diamond Sutra)
+
+English text is hidden beneath each Vietnamese section with a minimal text toggle:
+
+```
+┌─────────────────────────────────────────────────────┐
+│        Bấy giờ, trong đại chúng...                 │  ← Vietnamese (centered)
+│                  [ENGLISH]                          │  ← Text toggle button
+├ ─ ─ ─ ─ ─ ─ ─ ─ (hidden) ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┤
+│      At that time, in the great assembly...         │  ← English (italic, revealed)
+└─────────────────────────────────────────────────────┘
+```
+
+Both patterns use the same CSS collapsible structure with `max-height` transitions.
+
+
 ---
 
 ## Color Palette
@@ -164,6 +246,7 @@ Source Serif 4 and Source Sans 3 are specifically designed with extended Latin s
 │   ├── typography.css     # Headings, text, links
 │   ├── actions.css        # Download buttons, theme toggle
 │   ├── bilingual.css      # Zen bilingual layout, text reveal
+│   ├── media.css          # Collapsible gallery, arrows, GIF display
 │   └── responsive.css     # Media queries
 ├── scripts/
 │   ├── main.js            # Entry point, tab auto-hide
@@ -172,12 +255,14 @@ Source Serif 4 and Source Sans 3 are specifically designed with extended Latin s
 │   ├── renderer.js        # Standard markdown + text reveal
 │   ├── bilingual.js       # Vietnamese/English parser
 │   ├── textReveal.js      # Word-by-word animation system
+│   ├── media.js           # Collapsible gallery, arrows, reveal timing
 │   ├── theme.js           # Light/dark mode toggle
 │   └── download.js        # PDF and Markdown export
 └── data/
     ├── ResumeHuyThongNguyen2026.md
     └── KinhKimCang.md
 ```
+
 
 ### Browser Support
 Modern browsers with CSS Grid and IntersectionObserver support. Tested in Chrome, Firefox, Safari, Edge.

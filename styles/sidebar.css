@@ -7,18 +7,20 @@
 
 #sidebar {
     grid-area: sidebar;
-    padding: 90px 24px 48px 32px;
+    padding: 90px 16px 48px 48px;
+    /* More left padding to push content right */
     position: sticky;
     top: 0;
     height: 100vh;
     overflow-y: auto;
     background: var(--paper);
     transition: background var(--theme-transition);
-    z-index: 50; /* Below tabs (100) but above content */
+    z-index: 50;
+    /* Below tabs (100) but above content */
 }
 
-#sidebar::-webkit-scrollbar { 
-    width: 0; 
+#sidebar::-webkit-scrollbar {
+    width: 0;
 }
 
 #toc {
@@ -88,4 +90,3 @@
 .toc-children {
     display: block;
 }
-

@@ -8,7 +8,7 @@
 
 import { scrollToSection, setupScrollSpy } from './navigation.js';
 import { prepareSection, revealSection } from './textReveal.js';
-import { injectMediaAfterHeading, transformVideos } from './media.js';
+import { injectMediaAfterHeading, transformVideos, revealMediaAfterText } from './media.js';
 
 /**
  * Renders markdown content with auto-generated heading IDs.
@@ -64,6 +64,9 @@ export function renderFullContent(markdown) {
 
     // Transform videos in the final content
     transformVideos(contentPanel);
+
+    // Setup media reveal after text completes
+    revealMediaAfterText(contentPanel);
 }
 
 /**
