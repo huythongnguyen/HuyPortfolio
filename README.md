@@ -151,6 +151,10 @@ Source Serif 4 and Source Sans 3 are specifically designed with extended Latin s
 ### File Structure
 ```
 ├── index.html              # Minimal HTML structure
+├── server/                 # Development server
+│   ├── serve.py           # Python server (cross-platform)
+│   ├── serve.sh           # Bash wrapper (Mac/Linux)
+│   └── serve.ps1          # PowerShell wrapper (Windows)
 ├── styles/
 │   ├── main.css           # Entry point (imports all modules)
 │   ├── base.css           # Reset, variables, body, dark mode
@@ -208,6 +212,51 @@ Modern browsers with CSS Grid and IntersectionObserver support. Tested in Chrome
 
 ---
 
+## Development Server
+
+A custom development server with **cache-busting** is included to prevent browser caching during development.
+
+### Quick Start
+
+**Windows (PowerShell):**
+```powershell
+.\server\serve.ps1
+```
+
+**Mac/Linux (Bash):**
+```bash
+chmod +x server/serve.sh  # First time only
+./server/serve.sh
+```
+
+**Direct Python:**
+```bash
+python server/serve.py
+# or with custom port
+python server/serve.py 3000
+```
+
+### Features
+- ✓ Cache-busting headers (no browser caching)
+- ✓ Timestamped request logging
+- ✓ Graceful shutdown (Ctrl+C)
+- ✓ Port conflict detection
+- ✓ Custom port support
+- ✓ Cross-platform (Windows/Mac/Linux)
+
+Default server: `http://localhost:8000`
+
+### Alternative Servers
+
+You can also use any static file server:
+```bash
+npx serve -l 3000
+# or
+python -m http.server 3000
+```
+
+---
+
 ## Usage
 
 1. Place markdown files in `data/` directory
@@ -218,13 +267,12 @@ Modern browsers with CSS Grid and IntersectionObserver support. Tested in Chrome
        { name: 'Translated Doc', path: 'data/translated.md', bilingual: true }
    ];
    ```
-3. Serve with any static file server:
-   ```bash
-   npx serve -l 3000
-   # or
-   python -m http.server 3000
+3. **Embed Media:**
+   Simply use standard Markdown image syntax with `.mp4`, `.webm`, or `.mov` files to automatically render high-quality, lazy-loading video showcases:
+   ```markdown
+   ![Title](path/to/video.mp4 "Optional Description")
    ```
-4. Open `http://localhost:3000`
+4. Start the development server (see above)
 
 ---
 

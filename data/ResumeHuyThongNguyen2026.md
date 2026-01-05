@@ -12,7 +12,7 @@ Deep expertise in architecting large-scale AI systems at Google and Databricks. 
 **Doctor of Philosophy**
 - Researched on Machine Learning for Automating Electronic Design & RF/Mm-Wave Chip Design, bridging AI and hardware domains
 - Scored 4.0/4.0 GPA, maintaining academic excellence across rigorous coursework
-- Earned recognition: 2019 Analog Devices Outstanding Designer Award, 2018 IEEE RFIC Best Student Paper Award Co-Recipient (2nd Place)
+- Earned recognition on 2019 Analog Devices Outstanding Designer Award, 2018 IEEE RFIC Best Student Paper Award Co-Recipient (2nd Place)
 
 ---
 
@@ -58,6 +58,12 @@ Spearheaded strategy and development of foundational multimodal embeddings (Text
   - *Google Search*: Photo/video/merchant post retrieval and ranking for local queries (+0.35 cSUNs)
   - *Place Answers & Magi Q&A*: Photo retrieval for local place questions (3× coverage improvement)
   - *YouTube Local Shorts*: Automated Shorts generation for local places
+
+#### Visual Demonstrations
+
+![Rich Visual Offering](huythong-nguyen/media/google-multimodal-embedding/RichVisualOffering.mp4 "Enhanced photo/video coverage and relevance on Google Maps")
+![Local Search on Maps](huythong-nguyen/media/google-multimodal-embedding/LocalSearchOnMaps.mp4 "Visual content discovery for local places via multimodal embeddings")
+![Local Search on Search](huythong-nguyen/media/google-multimodal-embedding/LocalSearchOnSearch.mp4 "Photo/video retrieval for local queries on Search")
 - Directed multi-year $3M+ human-annotation budget for text-image-video relevancy
 - Developed LLM-labeling pipelines to annotate 1B+ images/videos, saving +$10M in annotation costs and eliminating 6-month data bottleneck—accelerating model iteration cycles
 - Invented multi-teacher learning algorithms, resulting in 2 publications and 4 patents—advancing the state of knowledge distillation

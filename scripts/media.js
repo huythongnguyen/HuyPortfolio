@@ -47,33 +47,33 @@ export const MEDIA_CONFIG = {
 export function createMediaGallery(sectionId) {
     const config = MEDIA_CONFIG[sectionId];
     if (!config) return null;
-    
+
     const gallery = document.createElement('div');
     gallery.className = 'media-gallery';
     gallery.setAttribute('data-section', sectionId);
-    
+
     // Gallery title
     const title = document.createElement('h4');
     title.className = 'media-gallery-title';
     title.textContent = config.title;
     gallery.appendChild(title);
-    
+
     // Media items container
     const itemsContainer = document.createElement('div');
     itemsContainer.className = 'media-items';
-    
+
     config.items.forEach((item, index) => {
         const mediaItem = createMediaItem(item, index);
         itemsContainer.appendChild(mediaItem);
     });
-    
+
     gallery.appendChild(itemsContainer);
-    
+
     // Setup lazy loading after adding to DOM
     requestAnimationFrame(() => {
         setupLazyLoading(gallery);
     });
-    
+
     return gallery;
 }
 
@@ -84,15 +84,15 @@ export function createMediaGallery(sectionId) {
  * @param {number} index - Item index for staggered animation
  * @returns {HTMLElement} - The media item element
  */
-function createMediaItem(item, index) {
+export function createMediaItem(item, index) {
     const mediaItem = document.createElement('div');
     mediaItem.className = 'media-item';
     mediaItem.style.transitionDelay = `${index * 100}ms`;
-    
+
     // Video container with poster overlay
     const videoContainer = document.createElement('div');
     videoContainer.className = 'media-video-container';
-    
+
     // Video element (lazy loaded)
     const video = document.createElement('video');
     video.className = 'media-video';
@@ -101,20 +101,20 @@ function createMediaItem(item, index) {
     video.setAttribute('controls', '');
     video.setAttribute('data-src', item.src);
     video.muted = true; // Muted for autoplay policies
-    
+
     // Poster overlay (shows before video loads)
     const poster = document.createElement('div');
     poster.className = 'media-poster';
-    
+
     const playBtn = document.createElement('button');
     playBtn.className = 'media-play-btn';
     playBtn.setAttribute('aria-label', `Play ${item.title}`);
     poster.appendChild(playBtn);
-    
+
     // Loading indicator
     const loading = document.createElement('div');
     loading.className = 'media-loading';
-    
+
     // Click handler for play
     const handlePlay = async () => {
         if (video.src) {
@@ -128,13 +128,13 @@ function createMediaItem(item, index) {
             }
             return;
         }
-        
+
         // Show loading state
         loading.classList.add('active');
-        
+
         // Load video source
         video.src = video.getAttribute('data-src');
-        
+
         video.addEventListener('loadeddata', async () => {
             loading.classList.remove('active');
             video.classList.add('loaded');
@@ -146,45 +146,71 @@ function createMediaItem(item, index) {
                 video.controls = true;
             }
         }, { once: true });
-        
+
         video.addEventListener('error', () => {
             loading.classList.remove('active');
             console.error(`Failed to load video: ${item.src}`);
         }, { once: true });
-        
+
         video.load();
     };
-    
+
     poster.addEventListener('click', handlePlay);
     videoContainer.addEventListener('click', (e) => {
         if (e.target === videoContainer && !video.src) {
             handlePlay();
         }
     });
-    
+
     videoContainer.appendChild(video);
     videoContainer.appendChild(poster);
     videoContainer.appendChild(loading);
-    
+
     // Caption
     const caption = document.createElement('div');
     caption.className = 'media-caption';
-    
+
     const captionTitle = document.createElement('div');
     captionTitle.className = 'media-caption-title';
     captionTitle.textContent = item.title;
-    
+
     const captionDesc = document.createElement('div');
     captionDesc.className = 'media-caption-desc';
     captionDesc.textContent = item.description;
-    
+
     caption.appendChild(captionTitle);
     caption.appendChild(captionDesc);
-    
+
     mediaItem.appendChild(videoContainer);
     mediaItem.appendChild(caption);
-    
+
+    // Setup lazy loading for this item
+    requestAnimationFrame(() => {
+        setupLazyLoadingForItem(mediaItem);
+    });
+
     return mediaItem;
+}
+
+/**
+ * Sets up IntersectionObserver for a single media item
+ * 
+ * @param {HTMLElement} item - The media item to observe
+ */
+function setupLazyLoadingForItem(item) {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('media-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -10% 0px'
+    });
+
+    observer.observe(item);
 }
 
 /**
@@ -194,21 +220,7 @@ function createMediaItem(item, index) {
  */
 function setupLazyLoading(gallery) {
     const items = gallery.querySelectorAll('.media-item');
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('media-visible');
-                // Stop observing once revealed
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -10% 0px'
-    });
-    
-    items.forEach(item => observer.observe(item));
+    items.forEach(item => setupLazyLoadingForItem(item));
 }
 
 /**
@@ -220,24 +232,24 @@ function setupLazyLoading(gallery) {
  */
 export function injectMediaAfterHeading(container, headingText, sectionId) {
     const headings = container.querySelectorAll('h2, h3');
-    
+
     for (const heading of headings) {
         if (heading.textContent.trim().toLowerCase().includes(headingText.toLowerCase())) {
             // Find the end of this section (next heading of same or higher level)
             let insertPoint = heading.nextElementSibling;
             const headingLevel = parseInt(heading.tagName[1]);
-            
+
             while (insertPoint) {
                 const next = insertPoint.nextElementSibling;
                 if (!next) break;
-                
+
                 const nextLevel = next.tagName.match(/^H([1-6])$/);
                 if (nextLevel && parseInt(nextLevel[1]) <= headingLevel) {
                     break;
                 }
                 insertPoint = next;
             }
-            
+
             const gallery = createMediaGallery(sectionId);
             if (gallery && insertPoint) {
                 insertPoint.parentNode.insertBefore(gallery, insertPoint.nextSibling);
@@ -249,3 +261,23 @@ export function injectMediaAfterHeading(container, headingText, sectionId) {
     return false;
 }
 
+/**
+ * Scans a container for <img> tags that point to video files 
+ * and transforms them into Zen video components.
+ * 
+ * @param {HTMLElement} container - The container to scan
+ */
+export function transformVideos(container) {
+    container.querySelectorAll('img').forEach(img => {
+        const src = img.getAttribute('src');
+        if (src && (src.endsWith('.mp4') || src.endsWith('.webm') || src.endsWith('.mov'))) {
+            const item = {
+                src: src,
+                title: img.getAttribute('alt') || 'Video Demonstration',
+                description: img.getAttribute('title') || ''
+            };
+            const mediaItem = createMediaItem(item, 0);
+            img.parentNode.replaceChild(mediaItem, img);
+        }
+    });
+}

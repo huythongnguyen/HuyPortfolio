@@ -8,7 +8,7 @@
 
 import { scrollToSection, setupScrollSpy } from './navigation.js';
 import { prepareSection, revealSection } from './textReveal.js';
-import { injectMediaAfterHeading } from './media.js';
+import { injectMediaAfterHeading, transformVideos } from './media.js';
 
 /**
  * Renders markdown content with auto-generated heading IDs.
@@ -28,7 +28,7 @@ export function renderFullContent(markdown) {
 
     // Generate hierarchical IDs for headings
     let h1Count = 0, h2Count = 0, h3Count = 0;
-    
+
     temp.querySelectorAll('h1, h2, h3').forEach(heading => {
         const level = heading.tagName.toLowerCase();
         let id;
@@ -53,13 +53,17 @@ export function renderFullContent(markdown) {
     const contentPanel = document.getElementById('content');
     contentPanel.innerHTML = '';
     contentPanel.classList.remove('bilingual-mode');
+
     contentPanel.appendChild(temp);
-    
-    // Inject media galleries for specific sections
-    injectMediaGalleries(contentPanel);
-    
+
     // Setup gradual text reveal
     setupTextReveal(contentPanel);
+
+    // Inject media galleries for specific sections
+    injectMediaGalleries(contentPanel);
+
+    // Transform videos in the final content
+    transformVideos(contentPanel);
 }
 
 /**
@@ -70,12 +74,8 @@ export function renderFullContent(markdown) {
  * @param {HTMLElement} container - The content container
  */
 function injectMediaGalleries(container) {
-    // Inject Google Multimodal Embedding showcase after that section
-    injectMediaAfterHeading(
-        container, 
-        'Architected Unified Multimodal Embeddings', 
-        'google-multimodal-embedding'
-    );
+    // Media can now be injected via standard Markdown syntax:
+    // ![alt](path/to/video.mp4 "description")
 }
 
 /**
@@ -86,7 +86,7 @@ function setupTextReveal(container) {
     // Group content by sections (h1, h2 based)
     const sections = [];
     let currentSection = null;
-    
+
     Array.from(container.children).forEach(child => {
         if (child.tagName === 'H1' || child.tagName === 'H2') {
             if (currentSection) {
@@ -96,7 +96,7 @@ function setupTextReveal(container) {
             currentSection.className = 'content-section';
             currentSection.id = child.id ? `section-${child.id}` : null;
         }
-        
+
         if (currentSection) {
             currentSection.appendChild(child.cloneNode(true));
         } else {
@@ -108,18 +108,18 @@ function setupTextReveal(container) {
             currentSection.appendChild(child.cloneNode(true));
         }
     });
-    
+
     if (currentSection) {
         sections.push(currentSection);
     }
-    
+
     // Replace content with sectioned version
     container.innerHTML = '';
     sections.forEach(section => {
         container.appendChild(section);
         prepareSection(section);
     });
-    
+
     // Setup intersection observer
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -131,9 +131,9 @@ function setupTextReveal(container) {
         threshold: 0.1,
         rootMargin: '0px 0px -20% 0px'
     });
-    
+
     sections.forEach(section => observer.observe(section));
-    
+
     // Reveal first section immediately
     if (sections.length > 0) {
         revealSection(sections[0]);
@@ -195,7 +195,7 @@ export function buildTOC(markdown) {
     });
 
     tocContainer.appendChild(ul);
-    
+
     // Setup scroll spy after TOC is built
     setupScrollSpy();
 }
@@ -224,7 +224,7 @@ function createTOCItemWithChildren(text, href, className) {
 
     li.appendChild(a);
     li.appendChild(childUl);
-    
+
     return li;
 }
 

@@ -13,7 +13,7 @@ const STORAGE_KEY = 'zen-theme-preference';
 
 /**
  * Detects the user's preferred theme.
- * Priority: localStorage > system preference > light (default)
+ * Priority: localStorage > system preference > dark (default)
  * @returns {'light' | 'dark'}
  */
 function getPreferredTheme() {
@@ -21,13 +21,13 @@ function getPreferredTheme() {
     if (stored === 'light' || stored === 'dark') {
         return stored;
     }
-    
+
     // Respect system preference
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        return 'dark';
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        return 'light';
     }
-    
-    return 'light';
+
+    return 'dark';
 }
 
 /**

@@ -196,17 +196,6 @@
     transform: none;
 }
 
-/* === WORD-BY-WORD REVEAL === */
-.reveal-word {
-    opacity: 0;
-    display: inline;
-    transition: opacity 0.3s ease;
-}
-
-.reveal-word.revealed {
-    opacity: 1;
-}
-
 /* Speed control button */
 #speed-control {
     position: fixed;

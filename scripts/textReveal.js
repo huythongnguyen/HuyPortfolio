@@ -118,29 +118,37 @@ function wrapWords(element) {
 export function revealElement(element) {
     return new Promise(resolve => {
         const speed = getSpeedMs();
-        
+
         // If instant, just show everything
         if (speed === 0) {
             element.querySelectorAll('.reveal-word').forEach(word => {
                 word.classList.add('revealed');
             });
+            // Show marker for list items
+            if (element.tagName === 'LI') {
+                element.classList.add('revealed-marker');
+            }
             resolve();
             return;
         }
-        
+
         const words = element.querySelectorAll('.reveal-word:not(.revealed)');
         let index = 0;
-        
+
         function revealNext() {
             if (index < words.length) {
                 words[index].classList.add('revealed');
                 index++;
                 setTimeout(revealNext, speed);
             } else {
+                // Show marker for list items when done
+                if (element.tagName === 'LI') {
+                    element.classList.add('revealed-marker');
+                }
                 resolve();
             }
         }
-        
+
         revealNext();
     });
 }
@@ -150,8 +158,8 @@ export function revealElement(element) {
  * @param {HTMLElement} section
  */
 export function prepareSection(section) {
-    // Only prepare paragraphs and headings, not the whole thing
-    const elements = section.querySelectorAll('p, h1, h2, h3, h4, h5, h6');
+    // Prepare all text-containing elements for reveal (globally applicable)
+    const elements = section.querySelectorAll('p, h1, h2, h3, h4, h5, h6, li, blockquote, td, th, figcaption, dd, dt');
     elements.forEach(el => {
         if (!el.classList.contains('words-wrapped')) {
             wrapWords(el);
@@ -166,20 +174,21 @@ export function prepareSection(section) {
  */
 export async function revealSection(section) {
     if (section.classList.contains('text-revealed')) return;
-    
+
     prepareSection(section);
     section.classList.add('text-revealing');
-    
-    const elements = section.querySelectorAll('p, h1, h2, h3, h4, h5, h6');
-    
+
+    // Reveal all text-containing elements (globally applicable)
+    const elements = section.querySelectorAll('p, h1, h2, h3, h4, h5, h6, li, blockquote, td, th, figcaption, dd, dt');
+
     for (const el of elements) {
         await revealElement(el);
-        // Small pause between paragraphs
+        // Small pause between elements
         if (getSpeedMs() > 0) {
             await new Promise(r => setTimeout(r, getSpeedMs() * 2));
         }
     }
-    
+
     section.classList.remove('text-revealing');
     section.classList.add('text-revealed');
 }

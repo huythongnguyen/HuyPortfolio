@@ -28,22 +28,55 @@
     transition: color var(--theme-transition), border-color var(--theme-transition);
 }
 
-/* === Video Items - Vertical Stack === */
+/* === Video Items - Horizontal Scroll === */
 .media-items {
     display: flex;
-    flex-direction: column;
-    gap: 2em;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 1.5em;
+    padding: 0.5em 0 1.5em;
+    /* Add top padding for scale effects */
+    margin: 0 -24px;
+    /* Slightly overflow the content column for 'edge-to-edge' feel */
+    padding-left: 24px;
+    padding-right: 24px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--sand) transparent;
+}
+
+.media-items::-webkit-scrollbar {
+    height: 4px;
+}
+
+.media-items::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.media-items::-webkit-scrollbar-thumb {
+    background: var(--sand);
+    border-radius: 4px;
+}
+
+.media-items:hover::-webkit-scrollbar-thumb {
+    background: var(--mist);
 }
 
 /* === Single Media Item === */
 .media-item {
     position: relative;
+    flex: 0 0 calc(65% - 1em);
+    /* Show one large and part of another */
+    min-width: 320px;
+    max-width: 500px;
     background: var(--sand);
     border-radius: 2px;
     overflow: hidden;
-    transition: background var(--theme-transition), 
-                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.6s ease;
+    scroll-snap-align: start;
+    transition: background var(--theme-transition),
+        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.6s ease;
     opacity: 0;
     transform: translateY(20px);
 }
@@ -154,7 +187,9 @@
 }
 
 @keyframes media-spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* === Media Caption === */
@@ -182,7 +217,7 @@
 
 /* === Video Controls Styling === */
 .media-video::-webkit-media-controls-panel {
-    background: linear-gradient(transparent, rgba(0,0,0,0.3));
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.3));
 }
 
 /* === Fullscreen Video Styles === */
@@ -197,7 +232,7 @@
         opacity: 1;
         transform: none;
     }
-    
+
     .media-loading::after {
         animation: none;
     }
@@ -209,20 +244,19 @@
         margin: 1.5em 0;
         padding: 1em 0;
     }
-    
+
     .media-items {
         gap: 1.5em;
     }
-    
+
     .media-play-btn {
         width: 48px;
         height: 48px;
     }
-    
+
     .media-play-btn::after {
         border-left-width: 10px;
         border-top-width: 6px;
         border-bottom-width: 6px;
     }
 }
-

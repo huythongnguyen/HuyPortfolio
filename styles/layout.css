@@ -27,7 +27,7 @@
 
 #content {
     flex: 1;
-    padding: 16px 48px 80px 48px;
+    padding: 48px 64px 80px 64px;
 }
 
 /* Content sections for text reveal animation */
@@ -35,13 +35,23 @@
     margin-bottom: 2em;
 }
 
-.content-section .reveal-word {
+/* Word-by-word reveal animation - applies to all content */
+.reveal-word {
     opacity: 0;
     display: inline;
     transition: opacity 0.3s ease;
 }
 
-.content-section .reveal-word.revealed {
+.reveal-word.revealed {
     opacity: 1;
+}
+
+/* Hide list markers until text is revealed */
+li.words-wrapped {
+    list-style: none;
+}
+
+li.words-wrapped.revealed-marker {
+    list-style: inherit;
 }
 

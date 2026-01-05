@@ -7,13 +7,14 @@
 
 #sidebar {
     grid-area: sidebar;
-    padding: 16px 24px 48px 32px;
+    padding: 90px 24px 48px 32px;
     position: sticky;
     top: 0;
     height: 100vh;
     overflow-y: auto;
     background: var(--paper);
     transition: background var(--theme-transition);
+    z-index: 50; /* Below tabs (100) but above content */
 }
 
 #sidebar::-webkit-scrollbar { 
@@ -35,7 +36,7 @@
 
 .toc-list ul {
     list-style: none;
-    margin-left: 14px;
+    margin-left: 4px;
 }
 
 .toc-item {
