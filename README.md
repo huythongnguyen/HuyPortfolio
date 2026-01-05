@@ -68,6 +68,61 @@ Stillness in interaction. Words appear gradually at a contemplative pace. The TO
   - `○` **Instant** (0ms) — no animation
 - Speed preference persists in localStorage
 
+### 🎯 TOC Navigation & Parallel Reveal
+
+When clicking a TOC item, the system intelligently handles text reveal:
+
+```
+TOC Click Behavior:
+┌─────────────────────────────────────────────────────────────────┐
+│  Section 1  │  Already revealed?  → Keep as is                 │
+│  Section 2  │  Currently revealing? → Continue animation       │
+│  Section 3  │  Not revealed?       → Start animation (parallel)│
+│  Section 4  │  ← TARGET            → Start animation           │
+└─────────────────────────────────────────────────────────────────┘
+                        ↓
+              Page scrolls to Section 4
+```
+
+**Principles:**
+- **Previous sections (revealed)**: Unchanged — respects completed animations
+- **Previous sections (unrevealed)**: Start revealing in parallel — no waiting
+- **Target section**: Begins word-by-word animation immediately
+- **Scroll timing**: Smooth scroll begins after reveal triggers start
+
+**Why parallel reveal?**
+- Clicking a deep TOC item (e.g., Chapter 25) shouldn't require waiting for 24 sections
+- All unrevealed sections animate simultaneously for instant navigation
+- Already-revealing sections continue naturally (not restarted)
+
+### 🏗️ Pre-Parsed Document Architecture
+
+Both standard and bilingual documents are **pre-parsed into sections** before rendering:
+
+```
+Markdown → Parser → Sections[] → Renderer → DOM
+              ↓
+          ┌────────────────────────────────────┐
+          │  ParsedDocument {                  │
+          │    type: 'standard' | 'bilingual', │
+          │    sections: Section[],            │
+          │    tocItems: TOCItem[]             │
+          │  }                                 │
+          └────────────────────────────────────┘
+```
+
+**Benefits:**
+- **Consistent structure**: Both document types use identical section format
+- **Predictable TOC**: Section IDs are known before DOM rendering
+- **Unified reveal logic**: Same code path for Resume and Diamond Sutra
+- **Fast navigation**: Sections array enables O(1) index lookup for TOC clicks
+
+**Section Types:**
+| Document Type | Section Classes |
+|---------------|-----------------|
+| Standard | `.content-section` (grouped by H1/H2) |
+| Bilingual | `.bilingual-preamble`, `.bilingual-main-section`, `.bilingual-chapter` |
+
 ### 📍 Scroll Spy TOC
 - Current section highlighted with left border
 - TOC auto-scrolls to keep active item visible
@@ -250,14 +305,21 @@ Source Serif 4 and Source Sans 3 are specifically designed with extended Latin s
 │   └── responsive.css     # Media queries
 ├── scripts/
 │   ├── main.js            # Entry point, tab auto-hide
-│   ├── config.js          # Document configuration
-│   ├── navigation.js      # Tabs, scroll spy, TOC
-│   ├── renderer.js        # Standard markdown + text reveal
-│   ├── bilingual.js       # Vietnamese/English parser
-│   ├── textReveal.js      # Word-by-word animation system
-│   ├── media.js           # Collapsible gallery, arrows, reveal timing
-│   ├── theme.js           # Light/dark mode toggle
-│   └── download.js        # PDF and Markdown export
+│   ├── core/
+│   │   ├── config.js      # Document configuration
+│   │   ├── documentParser.js  # Unified pre-parser for all documents
+│   │   └── textReveal.js  # Word-by-word animation system
+│   ├── navigation/
+│   │   ├── documentTabs.js    # Tab switching and document loading
+│   │   ├── tocHandler.js      # Unified TOC click with parallel reveal
+│   │   └── scrollSpy.js       # Section tracking and TOC highlighting
+│   ├── renderers/
+│   │   ├── unified.js     # Pre-parsed section renderer (both types)
+│   │   └── bilingual.js   # Vietnamese/English layout (legacy)
+│   └── utils/
+│       ├── media.js       # Collapsible gallery, arrows, reveal timing
+│       ├── theme.js       # Light/dark mode toggle
+│       └── download.js    # PDF and Markdown export
 └── data/
     ├── ResumeHuyThongNguyen2026.md
     └── KinhKimCang.md
@@ -299,46 +361,11 @@ Modern browsers with CSS Grid and IntersectionObserver support. Tested in Chrome
 
 ## Development Server
 
-A custom development server with **cache-busting** is included to prevent browser caching during development.
-
-### Quick Start
-
-**Windows (PowerShell):**
-```powershell
-.\server\serve.ps1
-```
-
-**Mac/Linux (Bash):**
-```bash
-chmod +x server/serve.sh  # First time only
-./server/serve.sh
-```
-
-**Direct Python:**
 ```bash
 python server/serve.py
-# or with custom port
-python server/serve.py 3000
 ```
 
-### Features
-- ✓ Cache-busting headers (no browser caching)
-- ✓ Timestamped request logging
-- ✓ Graceful shutdown (Ctrl+C)
-- ✓ Port conflict detection
-- ✓ Custom port support
-- ✓ Cross-platform (Windows/Mac/Linux)
-
-Default server: `http://localhost:8000`
-
-### Alternative Servers
-
-You can also use any static file server:
-```bash
-npx serve -l 3000
-# or
-python -m http.server 3000
-```
+Opens at `http://localhost:8000` with cache-busting enabled.
 
 ---
 
