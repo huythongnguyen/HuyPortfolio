@@ -12,7 +12,7 @@
  */
 
 #content.bilingual-mode {
-    padding: 48px 24px 80px;
+    padding: 120px 24px 80px;
     max-width: 720px;
     margin: 0 auto;
 }
@@ -194,32 +194,4 @@
 .bilingual-preamble {
     opacity: 1;
     transform: none;
-}
-
-/* Speed control button */
-#speed-control {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    z-index: 1001;
-    width: 44px;
-    height: 44px;
-    padding: 0;
-    border-radius: 50%;
-    background: var(--paper);
-    border: 1px solid var(--sand);
-    font-size: 1.2rem;
-    color: var(--mist);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-#speed-control:hover {
-    color: var(--ink);
-    border-color: var(--mist);
-    transform: scale(1.05);
 }

@@ -9,8 +9,12 @@
 
 import { setupScrollSpy } from '../navigation/scrollSpy.js';
 import { createTOCClickHandler } from '../navigation/tocHandler.js';
-import { prepareSection, revealSection, queueSectionReveal } from '../core/textReveal.js';
 import { transformVideos, revealMediaAfterText } from '../utils/media.js';
+import {
+    prepareContentForReveal,
+    startLinearReveal,
+    stopCurrentReveal
+} from '../core/textReveal.js';
 
 // Store parsed sections for TOC access
 let currentSections = [];
@@ -30,43 +34,55 @@ export function getSectionElements() {
 }
 
 // =============================================================================
-// STANDARD RENDERING
+// UNIFIED RENDERING
 // =============================================================================
 
 /**
- * Renders a standard document from parsed sections.
+ * Renders any document from parsed sections.
  */
-export function renderStandardDocument(parsedDoc) {
+export function renderDocument(parsedDoc) {
     const contentPanel = document.getElementById('content');
-    contentPanel.innerHTML = '';
-    contentPanel.classList.remove('bilingual-mode');
 
-    // Store sections for TOC access
+    // 1. Initial Reset
+    stopCurrentReveal();
+    contentPanel.innerHTML = '';
     currentSections = parsedDoc.sections;
 
-    // Render each section
+    // 2. Set mode classes
+    if (parsedDoc.type === 'bilingual') {
+        contentPanel.classList.add('bilingual-mode');
+    } else {
+        contentPanel.classList.remove('bilingual-mode');
+    }
+
+    // 3. Render Sections
     parsedDoc.sections.forEach(section => {
-        const sectionDiv = document.createElement('div');
-        sectionDiv.className = 'content-section';
-        sectionDiv.id = section.id;
-        sectionDiv.innerHTML = section.html;
+        let sectionDiv;
+        if (parsedDoc.type === 'bilingual') {
+            sectionDiv = section.isBilingual
+                ? createBilingualSection(section)
+                : createPreambleSection(section);
+        } else {
+            sectionDiv = createStandardSection(section);
+        }
         contentPanel.appendChild(sectionDiv);
     });
 
-    // Transform videos
+    // 4. Global Transforms
     transformVideos(contentPanel);
 
-    // Setup media reveal
-    revealMediaAfterText(contentPanel);
+    // 5. Setup Text Reveal
+    const revealElements = collectRevealElements(contentPanel, parsedDoc.type);
+    startLinearReveal(revealElements, revealTabs);
 
-    // Setup reveal observer
-    setupStandardRevealObserver();
+    // 6. Setup Secondary Reveal (Media)
+    revealMediaAfterText(contentPanel);
 }
 
 /**
- * Builds TOC for standard document.
+ * Standardizes TOC building for all document types.
  */
-export function buildStandardTOC(parsedDoc) {
+export function buildTOC(parsedDoc) {
     const tocContainer = document.getElementById('toc');
     tocContainer.innerHTML = '';
 
@@ -74,121 +90,37 @@ export function buildStandardTOC(parsedDoc) {
     ul.className = 'toc-list';
 
     parsedDoc.tocItems.forEach(item => {
-        const li = createTOCItemWithChildren(item);
-        ul.appendChild(li);
+        ul.appendChild(createTOCItemWithChildren(item));
     });
 
     tocContainer.appendChild(ul);
     setupScrollSpy();
 }
 
-/**
- * Creates TOC item with nested children.
- */
-function createTOCItemWithChildren(item) {
-    const li = document.createElement('li');
-    li.className = 'toc-item';
-
-    const a = document.createElement('a');
-    a.href = `#${item.id}`;
-    a.className = `toc-link toc-h${item.level}`;
-    a.textContent = item.title;
-    a.addEventListener('click', createTOCClickHandler(item.id));
-    li.appendChild(a);
-
-    if (item.children && item.children.length > 0) {
-        const childUl = document.createElement('ul');
-        childUl.className = 'toc-children';
-
-        item.children.forEach(child => {
-            childUl.appendChild(createTOCItemWithChildren(child));
-        });
-
-        li.appendChild(childUl);
-    }
-
-    return li;
-}
-
-/**
- * Sets up intersection observer for standard content.
- * Uses queueSectionReveal for sequential reveal (Zen: one section at a time).
- */
-function setupStandardRevealObserver() {
-    const sectionElements = getSectionElements();
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !entry.target.classList.contains('text-revealed')) {
-                // Queue for sequential reveal (Seijaku - tranquility)
-                queueSectionReveal(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -20% 0px'
-    });
-
-    sectionElements.forEach(section => {
-        prepareSection(section);
-        observer.observe(section);
-    });
-
-    // Queue first section immediately (will start revealing right away)
-    if (sectionElements.length > 0) {
-        queueSectionReveal(sectionElements[0]);
-    }
-}
-
 // =============================================================================
-// BILINGUAL RENDERING
+// SECTION HELPERS
 // =============================================================================
 
-/**
- * Renders a bilingual document from parsed sections.
- */
-export function renderBilingualDocument(parsedDoc) {
-    const contentPanel = document.getElementById('content');
-    contentPanel.innerHTML = '';
-    contentPanel.classList.add('bilingual-mode');
-
-    // Store sections for TOC access
-    currentSections = parsedDoc.sections;
-
-    // Render each section
-    parsedDoc.sections.forEach(section => {
-        let sectionDiv;
-
-        if (section.isBilingual) {
-            sectionDiv = createBilingualSection(section);
-        } else {
-            // Preamble or non-bilingual section
-            sectionDiv = document.createElement('div');
-            sectionDiv.className = 'bilingual-preamble visible';
-            sectionDiv.id = section.id;
-            sectionDiv.innerHTML = section.html;
-        }
-
-        contentPanel.appendChild(sectionDiv);
-    });
-
-    // Transform videos
-    transformVideos(contentPanel);
-
-    // Setup media reveal
-    revealMediaAfterText(contentPanel);
-
-    // Setup reveal observer
-    setupBilingualRevealObserver();
+function createStandardSection(section) {
+    const div = document.createElement('div');
+    div.className = 'content-section visible';
+    div.id = section.id;
+    div.innerHTML = section.html;
+    return div;
 }
 
-/**
- * Creates a bilingual section with Vietnamese primary and English collapsible.
- */
+function createPreambleSection(section) {
+    const div = document.createElement('div');
+    div.className = 'bilingual-preamble visible';
+    div.id = section.id;
+    div.innerHTML = section.html;
+    return div;
+}
+
 function createBilingualSection(section) {
     const div = document.createElement('div');
     div.id = section.id;
-    div.className = section.type === 'chapter' ? 'bilingual-chapter' : 'bilingual-main-section';
+    div.className = (section.type === 'chapter' ? 'bilingual-chapter' : 'bilingual-main-section') + ' visible';
 
     // Vietnamese - primary
     const vnDiv = document.createElement('div');
@@ -196,7 +128,7 @@ function createBilingualSection(section) {
     vnDiv.innerHTML = section.vnHtml;
     div.appendChild(vnDiv);
 
-    // English toggle
+    // English collapsible
     if (section.enHtml) {
         const toggleBtn = document.createElement('button');
         toggleBtn.className = 'en-toggle';
@@ -221,53 +153,60 @@ function createBilingualSection(section) {
     return div;
 }
 
+// =============================================================================
+// REVEAL HELPERS
+// =============================================================================
+
 /**
- * Builds TOC for bilingual document.
+ * Collects elements that should participate in the word-by-word reveal.
  */
-export function buildBilingualTOC(parsedDoc) {
-    const tocContainer = document.getElementById('toc');
-    tocContainer.innerHTML = '';
+function collectRevealElements(container, type) {
+    if (type !== 'bilingual') {
+        return prepareContentForReveal(container);
+    }
 
-    const ul = document.createElement('ul');
-    ul.className = 'toc-list';
-
-    parsedDoc.tocItems.forEach(item => {
-        const li = createTOCItemWithChildren(item);
-        ul.appendChild(li);
+    // Bilingual logic: skip hidden English, only reveal Vietnamese/Preamble
+    const targets = container.querySelectorAll('.bilingual-preamble, .bilingual-vn');
+    let elements = [];
+    targets.forEach(target => {
+        elements = elements.concat(prepareContentForReveal(target));
     });
-
-    tocContainer.appendChild(ul);
-    setupScrollSpy();
+    return elements;
 }
 
 /**
- * Sets up intersection observer for bilingual content.
+ * Helper to reveal tabs after text animation.
  */
-function setupBilingualRevealObserver() {
-    const sections = document.querySelectorAll('.bilingual-chapter, .bilingual-main-section');
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !entry.target.classList.contains('visible')) {
-                entry.target.classList.add('visible');
-                // Queue for sequential reveal (Zen: one section at a time)
-                queueSectionReveal(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.15,
-        rootMargin: '0px 0px -50px 0px'
-    });
-
-    sections.forEach(section => {
-        prepareSection(section);
-        observer.observe(section);
-    });
-
-    // Reveal preamble immediately
-    const preamble = document.querySelector('.bilingual-preamble');
-    if (preamble) {
-        prepareSection(preamble);
-        revealSection(preamble);
+function revealTabs() {
+    const tabs = document.getElementById('top-tabs');
+    if (tabs) {
+        tabs.classList.add('visible');
+        tabs.classList.add('perma-visible');
     }
+}
+
+/**
+ * Recursive TOC item creation.
+ */
+function createTOCItemWithChildren(item) {
+    const li = document.createElement('li');
+    li.className = 'toc-item';
+
+    const a = document.createElement('a');
+    a.href = `#${item.id}`;
+    a.className = `toc-link toc-h${item.level}`;
+    a.textContent = item.title;
+    a.addEventListener('click', createTOCClickHandler(item.id));
+    li.appendChild(a);
+
+    if (item.children && item.children.length > 0) {
+        const childUl = document.createElement('ul');
+        childUl.className = 'toc-children';
+        item.children.forEach(child => {
+            childUl.appendChild(createTOCItemWithChildren(child));
+        });
+        li.appendChild(childUl);
+    }
+
+    return li;
 }

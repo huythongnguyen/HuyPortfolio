@@ -5,15 +5,12 @@
  * Uses the unified parser and renderer for consistent behavior.
  */
 
-import { FILES, setCurrentDocument, setCurrentFileConfig } from '../core/config.js';
-import { setSpeed, clearRevealQueue } from '../core/textReveal.js';
-import { parseDocument, isBilingualMarkdown } from '../core/documentParser.js';
-import {
-    renderStandardDocument,
-    buildStandardTOC,
-    renderBilingualDocument,
-    buildBilingualTOC
-} from '../renderers/unified.js';
+import { setCurrentDocument, setCurrentFileConfig } from '../core/config.js';
+import { parseDocument } from '../core/documentParser.js';
+import { renderDocument, buildTOC } from '../renderers/unified.js';
+import { stopCurrentReveal, setRevealSpeed } from '../core/textReveal.js';
+
+let appFiles = [];
 
 /**
  * Fetches a markdown file from the server.
@@ -33,48 +30,57 @@ export async function fetchMarkdown(filepath) {
  * Loads and renders a document using the unified system.
  */
 export async function loadDocument(fileInfo) {
+    stopCurrentReveal();
+
+    const tabs = document.getElementById('top-tabs');
+    if (tabs) {
+        tabs.classList.remove('perma-visible');
+        tabs.classList.remove('visible');
+    }
+
+    // Return to top instantly
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) sidebar.scrollTo({ top: 0, behavior: 'instant' });
+
+    if (fileInfo.defaultSpeed) {
+        setRevealSpeed(fileInfo.defaultSpeed);
+    }
+
     const markdown = await fetchMarkdown(fileInfo.path);
     setCurrentDocument({ name: fileInfo.name, markdown });
     setCurrentFileConfig(fileInfo);  // Store config for tocRevealMode access
 
-    if (fileInfo.defaultSpeed) {
-        setSpeed(fileInfo.defaultSpeed);
-    }
-
     // Parse the document into sections
     const parsedDoc = parseDocument(markdown);
 
-    // Render and build TOC based on document type
-    if (parsedDoc.type === 'bilingual') {
-        renderBilingualDocument(parsedDoc);
-        buildBilingualTOC(parsedDoc);
-    } else {
-        renderStandardDocument(parsedDoc);
-        buildStandardTOC(parsedDoc);
-    }
+    // Render and build TOC
+    renderDocument(parsedDoc);
+    buildTOC(parsedDoc);
 }
 
 /**
  * Switches to a different document by tab index.
  */
 export async function switchDocument(index) {
-    clearRevealQueue();
     document.querySelectorAll('.doc-tab').forEach((tab, i) => {
         tab.classList.toggle('active', i === index);
         tab.setAttribute('aria-selected', i === index ? 'true' : 'false');
     });
 
-    await loadDocument(FILES[index]);
+    await loadDocument(appFiles[index]);
+
 }
 
 /**
  * Renders the document tab buttons.
  */
-export function renderDocumentTabs() {
+export function renderDocumentTabs(files) {
+    if (files) appFiles = files;
     const tabsContainer = document.getElementById('top-tabs');
     tabsContainer.innerHTML = '';
 
-    FILES.forEach((file, index) => {
+    appFiles.forEach((file, index) => {
         const button = document.createElement('button');
         button.className = 'doc-tab';
         button.textContent = file.name;
@@ -112,4 +118,28 @@ function handleTabKeydown(event) {
             tabs[targetIndex].focus();
             break;
     }
+}
+
+/**
+ * Initializes the auto-hide/reveal behavior for top tabs.
+ */
+export function initTabAutoHide() {
+    const tabs = document.getElementById('top-tabs');
+    if (!tabs) return;
+
+    const TRIGGER_ZONE = 60;
+
+    document.addEventListener('mousemove', (e) => {
+        // If tabs are permanently visible (render complete), do nothing
+        if (tabs.classList.contains('perma-visible')) {
+            if (!tabs.classList.contains('visible')) tabs.classList.add('visible');
+            return;
+        }
+
+        if (e.clientY <= TRIGGER_ZONE) {
+            tabs.classList.add('visible');
+        } else {
+            tabs.classList.remove('visible');
+        }
+    });
 }

@@ -277,11 +277,13 @@
     border-radius: 4px;
 }
 
-/* Dark mode: soft dark background for media */
-/* Zen principle: Yohaku (余白) - gentle contrast, not harsh black */
+/* Dark mode: slightly lighter warm gray for better visibility/contrast */
+/* Zen principle: Meian (明暗) - subtle play of light and dark */
 [data-theme="dark"] .media-video-container {
-    background: #0a0a0a;
+    background: #3e3b38;
 }
+
+
 
 /* === GIF Element - Mild crop (90%) to hide phone UI === */
 .media-gif {

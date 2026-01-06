@@ -109,14 +109,22 @@ export function createMediaGallery(sectionId) {
     const config = MEDIA_CONFIG[sectionId];
     if (!config) return null;
 
+    const gallery = assembleGalleryDOM(config.items, sectionId, config.title);
+    return createMediaShowcase(gallery);
+}
+
+/**
+ * Assembles the gallery DOM structure with items, arrows, and indicators.
+ */
+function assembleGalleryDOM(items, sectionId = '', titleText = '') {
     const gallery = document.createElement('div');
     gallery.className = 'media-gallery';
-    gallery.setAttribute('data-section', sectionId);
+    if (sectionId) gallery.setAttribute('data-section', sectionId);
 
-    if (config.title) {
+    if (titleText) {
         const title = document.createElement('h4');
         title.className = 'media-gallery-title';
-        title.textContent = config.title;
+        title.textContent = titleText;
         gallery.appendChild(title);
     }
 
@@ -126,14 +134,14 @@ export function createMediaGallery(sectionId) {
     const itemsContainer = document.createElement('div');
     itemsContainer.className = 'media-items';
 
-    config.items.forEach((item, index) => {
-        const mediaItem = createMediaItem(item, index, config.items.length);
+    items.forEach((item, index) => {
+        const mediaItem = createMediaItem(item, index, items.length);
         itemsContainer.appendChild(mediaItem);
     });
 
     wrapper.appendChild(itemsContainer);
 
-    if (config.items.length > 1) {
+    if (items.length > 1) {
         const { prevBtn, nextBtn } = createArrowButtons(itemsContainer);
         wrapper.appendChild(prevBtn);
         wrapper.appendChild(nextBtn);
@@ -141,14 +149,12 @@ export function createMediaGallery(sectionId) {
 
     gallery.appendChild(wrapper);
 
-    if (config.items.length > 1) {
-        const indicators = createScrollIndicators(config.items.length, itemsContainer);
+    if (items.length > 1) {
+        const indicators = createScrollIndicators(items.length, itemsContainer);
         gallery.appendChild(indicators);
     }
 
-    const showcase = createMediaShowcase(gallery);
-
-    return showcase;
+    return gallery;
 }
 
 /**
@@ -508,35 +514,7 @@ export function transformVideos(container) {
             description: img.getAttribute('title') || ''
         }));
 
-        const gallery = document.createElement('div');
-        gallery.className = 'media-gallery';
-
-        const wrapper = document.createElement('div');
-        wrapper.className = 'media-gallery-wrapper';
-
-        const itemsContainer = document.createElement('div');
-        itemsContainer.className = 'media-items';
-
-        items.forEach((item, index) => {
-            const mediaItem = createMediaItem(item, index, items.length);
-            itemsContainer.appendChild(mediaItem);
-        });
-
-        wrapper.appendChild(itemsContainer);
-
-        if (items.length > 1) {
-            const { prevBtn, nextBtn } = createArrowButtons(itemsContainer);
-            wrapper.appendChild(prevBtn);
-            wrapper.appendChild(nextBtn);
-        }
-
-        gallery.appendChild(wrapper);
-
-        if (items.length > 1) {
-            const indicators = createScrollIndicators(items.length, itemsContainer);
-            gallery.appendChild(indicators);
-        }
-
+        const gallery = assembleGalleryDOM(items);
         const showcase = createMediaShowcase(gallery);
         const firstImg = group[0];
 
@@ -559,6 +537,9 @@ export function transformVideos(container) {
 /**
  * Auto-reveals media showcases after text reveal completes.
  */
+/**
+ * Auto-reveals media showcases immediately when they enter the viewport.
+ */
 export function revealMediaAfterText(container) {
     const showcases = container.querySelectorAll('.media-showcase');
 
@@ -570,72 +551,15 @@ export function revealMediaAfterText(container) {
             const trigger = showcase.querySelector('.media-trigger');
             const collapsible = showcase.querySelector('.media-collapsible');
 
-            if (!trigger || !collapsible || collapsible.classList.contains('revealed')) {
-                showcaseObserver.unobserve(showcase);
-                return;
+            if (trigger && collapsible && !collapsible.classList.contains('revealed')) {
+                trigger.click();
             }
 
-            const parentSection = showcase.closest('.content-section');
-
-            const tryRevealMedia = () => {
-                if (parentSection && parentSection.classList.contains('text-revealed')) {
-                    if (!collapsible.classList.contains('revealed')) {
-                        trigger.click();
-                    }
-                    showcaseObserver.unobserve(showcase);
-                    return true;
-                }
-
-                let textEl = showcase.previousElementSibling;
-                while (textEl && !textEl.matches('p, ul, ol, h1, h2, h3, h4, h5, h6')) {
-                    textEl = textEl.previousElementSibling;
-                }
-
-                if (textEl) {
-                    const words = textEl.querySelectorAll('.reveal-word');
-                    const revealedWords = textEl.querySelectorAll('.reveal-word.revealed');
-
-                    if (words.length > 0 && words.length === revealedWords.length) {
-                        setTimeout(() => {
-                            if (!collapsible.classList.contains('revealed')) {
-                                trigger.click();
-                            }
-                        }, 300);
-                        showcaseObserver.unobserve(showcase);
-                        return true;
-                    }
-                }
-
-                return false;
-            };
-
-            if (tryRevealMedia()) return;
-
-            const textObserver = new MutationObserver(() => {
-                if (tryRevealMedia()) {
-                    textObserver.disconnect();
-                }
-            });
-
-            if (parentSection) {
-                textObserver.observe(parentSection, {
-                    subtree: true,
-                    attributes: true,
-                    attributeFilter: ['class']
-                });
-            }
-
-            setTimeout(() => {
-                textObserver.disconnect();
-                showcaseObserver.unobserve(showcase);
-                if (!collapsible.classList.contains('revealed')) {
-                    trigger.click();
-                }
-            }, 10000);
+            showcaseObserver.unobserve(showcase);
         });
     }, {
         threshold: 0.1,
-        rootMargin: '0px 0px -10% 0px'
+        rootMargin: '0px 0px 50px 0px'
     });
 
     showcases.forEach(showcase => {

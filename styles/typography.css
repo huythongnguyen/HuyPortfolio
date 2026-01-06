@@ -5,7 +5,12 @@
  * Optimized for Vietnamese diacritics with Source Serif 4.
  */
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: 'Source Serif 4', Georgia, serif;
     font-weight: 400;
     color: var(--ink);
@@ -38,7 +43,8 @@ h4 {
     margin: 1.5em 0 0.5em;
 }
 
-h5, h6 {
+h5,
+h6 {
     font-size: 1rem;
     font-weight: 500;
     margin: 1.25em 0 0.5em;
@@ -53,10 +59,14 @@ a {
     color: var(--ink);
     text-decoration: none;
     background-image: linear-gradient(var(--mist), var(--mist));
-    background-size: 100% 1px;
+    background-size: 0 1px;
     background-position: 0 100%;
     background-repeat: no-repeat;
-    transition: background-size 0.3s ease;
+    transition: background-size 0.5s ease;
+}
+
+a.link-revealed {
+    background-size: 100% 1px;
 }
 
 a:hover {
@@ -64,24 +74,30 @@ a:hover {
     background-image: linear-gradient(var(--ink), var(--ink));
 }
 
-strong { 
-    font-weight: 600; 
+strong {
+    font-weight: 600;
 }
 
-em { 
-    font-style: italic; 
+em {
+    font-style: italic;
 }
 
-ul, ol {
+ul,
+ol {
     margin-bottom: 1.25em;
     padding-left: 1.5em;
 }
 
-li { 
-    margin-bottom: 0.5em; 
+li {
+    margin-bottom: 0.5em;
 }
 
 li::marker {
+    color: transparent;
+    transition: color 0.5s ease;
+}
+
+li.revealed-marker::marker {
     color: var(--mist);
 }
 
@@ -123,9 +139,9 @@ pre {
     transition: background var(--theme-transition);
 }
 
-pre code { 
-    background: none; 
-    padding: 0; 
+pre code {
+    background: none;
+    padding: 0;
 }
 
 hr {
@@ -134,4 +150,3 @@ hr {
     background: var(--sand);
     margin: 3em 0;
 }
-

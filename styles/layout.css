@@ -27,7 +27,7 @@
 
 #content {
     flex: 1;
-    padding: 48px 64px 80px 64px;
+    padding: 120px 64px 80px 64px;
 }
 
 /* Content sections for text reveal animation */
@@ -46,11 +46,4 @@
     opacity: 1;
 }
 
-/* Hide list markers until text is revealed */
-li.words-wrapped {
-    list-style: none;
-}
-
-li.words-wrapped.revealed-marker {
-    list-style: inherit;
-}
+/* Word-by-word reveal handles paragraph visibility. */

@@ -35,6 +35,10 @@
 
 /**
  * Parses a standard markdown document into sections.
+ * Strategies:
+ * - Headings (H1-H3) become standalone sections.
+ * - Content between headings becomes 'content' sections.
+ * This ensures headings can be revealed instantly while content is queued.
  */
 export function parseStandardDocument(markdown) {
     const html = DOMPurify.sanitize(marked.parse(markdown));
@@ -48,54 +52,42 @@ export function parseStandardDocument(markdown) {
     let h1Count = 0, h2Count = 0, h3Count = 0;
     let currentH1Toc = null, currentH2Toc = null;
 
-    // Current section accumulator
-    let currentSection = null;
-    let currentSectionElements = [];
-
-    // Process all elements
     Array.from(temp.children).forEach(child => {
         const tagName = child.tagName;
 
-        if (tagName === 'H1' || tagName === 'H2' || tagName === 'H3') {
-            // Save previous section if exists
-            if (currentSection && currentSectionElements.length > 0) {
-                currentSection.html = currentSectionElements.map(el => el.outerHTML).join('');
-                sections.push(currentSection);
-            }
+        if (['H1', 'H2', 'H3'].includes(tagName)) {
+            // --- HEADING SECTION ---
 
-            // Create new section
+            // 1. Determine ID and Level
             let id, level;
             if (tagName === 'H1') {
-                h1Count++;
-                h2Count = 0;
-                h3Count = 0;
+                h1Count++; h2Count = 0; h3Count = 0;
                 id = `section-h1-${h1Count}`;
                 level = 1;
             } else if (tagName === 'H2') {
-                h2Count++;
-                h3Count = 0;
+                h2Count++; h3Count = 0;
                 id = `section-h2-${h1Count}-${h2Count}`;
                 level = 2;
-            } else { // H3
+            } else {
                 h3Count++;
                 id = `section-h3-${h1Count}-${h2Count}-${h3Count}`;
                 level = 3;
             }
 
-            // Set heading ID
             const headingId = id.replace('section-', '');
             child.id = headingId;
 
-            currentSection = {
+            // 2. Create Heading Section
+            sections.push({
                 id: id,
                 headingId: headingId,
                 type: tagName.toLowerCase(),
                 title: child.textContent.trim(),
-                level: level
-            };
-            currentSectionElements = [child.cloneNode(true)];
+                level: level,
+                html: child.outerHTML // Section contains ONLY the header
+            });
 
-            // Build TOC
+            // 3. Build TOC
             const tocItem = {
                 id: headingId,
                 title: child.textContent.trim(),
@@ -103,44 +95,44 @@ export function parseStandardDocument(markdown) {
                 children: []
             };
 
-            if (tagName === 'H1') {
+            if (level === 1) {
                 tocItems.push(tocItem);
                 currentH1Toc = tocItem;
                 currentH2Toc = null;
-            } else if (tagName === 'H2' && currentH1Toc) {
+            } else if (level === 2 && currentH1Toc) {
                 currentH1Toc.children.push(tocItem);
                 currentH2Toc = tocItem;
-            } else if (tagName === 'H3') {
-                // H3 is now a section, add to TOC hierarchy
-                if (currentH2Toc) {
-                    currentH2Toc.children.push(tocItem);
-                } else if (currentH1Toc) {
-                    currentH1Toc.children.push(tocItem);
-                }
+            } else if (level === 3) {
+                if (currentH2Toc) currentH2Toc.children.push(tocItem);
+                else if (currentH1Toc) currentH1Toc.children.push(tocItem);
             }
 
         } else {
-            // Non-heading element - add to current section
-            if (!currentSection) {
-                // Content before first heading - create intro section
-                currentSection = {
-                    id: 'section-intro',
-                    headingId: null,
-                    type: 'intro',
-                    title: 'Introduction',
-                    level: 0
+            // --- CONTENT SECTION ---
+
+            // Check if we need to start a new content section
+            let lastSection = sections[sections.length - 1];
+
+            // If strictly following a heading, or if previous section wasn't content/intro
+            if (!lastSection || (lastSection.type !== 'content' && lastSection.type !== 'intro')) {
+                const isIntro = sections.length === 0;
+                const type = isIntro ? 'intro' : 'content';
+                const sectionId = isIntro ? 'section-intro' : `${lastSection.id}-content`;
+
+                lastSection = {
+                    id: sectionId,
+                    type: type,
+                    title: isIntro ? 'Introduction' : '',
+                    level: 0,
+                    html: ''
                 };
-                currentSectionElements = [];
+                sections.push(lastSection);
             }
-            currentSectionElements.push(child.cloneNode(true));
+
+            // Append content
+            lastSection.html += child.outerHTML;
         }
     });
-
-    // Save last section
-    if (currentSection && currentSectionElements.length > 0) {
-        currentSection.html = currentSectionElements.map(el => el.outerHTML).join('');
-        sections.push(currentSection);
-    }
 
     return {
         type: 'standard',

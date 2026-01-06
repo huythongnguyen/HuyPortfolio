@@ -5,37 +5,7 @@
  * Theme toggle always visible in corner.
  */
 
-#actions {
-    padding: 32px 48px 48px;
-    display: flex;
-    gap: 24px;
-    opacity: 0.3;
-    transition: opacity 0.4s ease;
-}
 
-#content-wrapper:hover #actions {
-    opacity: 1;
-}
-
-#actions button {
-    padding: 10px 20px;
-    background: transparent;
-    border: 1px solid var(--sand);
-    border-radius: 2px;
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 400;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--mist);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-#actions button:hover {
-    color: var(--ink);
-    border-color: var(--ink);
-}
 
 /* Theme toggle - fixed position, always visible */
 #theme-toggle {
@@ -56,7 +26,7 @@
     align-items: center;
     justify-content: center;
     transition: all 0.4s ease, transform 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 #theme-toggle:hover {
@@ -77,4 +47,3 @@ body::before {
     z-index: 1000;
     opacity: 0.15;
 }
-

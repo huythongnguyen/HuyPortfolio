@@ -13,16 +13,16 @@
     gap: 48px;
     padding: 24px 24px 20px;
     background: var(--paper);
-    transition: background var(--theme-transition), 
-                opacity 0.4s ease, 
-                transform 0.4s ease;
+    transition: background var(--theme-transition),
+        opacity 0.4s ease,
+        transform 0.4s ease;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 100;
     border-bottom: 1px solid var(--sand);
-    
+
     /* Hidden by default */
     opacity: 0;
     transform: translateY(-100%);
@@ -52,10 +52,7 @@
     pointer-events: none;
 }
 
-#top-tabs.visible::after {
-    opacity: 0;
-    width: 0;
-}
+/* No changes to CSS needed if existing CSS is correct. */
 
 .doc-tab {
     background: none;
@@ -104,4 +101,3 @@
     outline: 1px solid var(--mist);
     outline-offset: 8px;
 }
-

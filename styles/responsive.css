@@ -7,30 +7,49 @@
 
 /* === PRINT === */
 @media print {
-    #top-tabs, #sidebar, #actions, #theme-toggle, .en-toggle { 
-        display: none; 
+
+    #top-tabs,
+    #sidebar,
+    #actions,
+    #theme-toggle,
+    .en-toggle {
+        display: none;
     }
+
     #app {
         grid-template-areas: "content";
         grid-template-columns: 1fr;
     }
+
     #content {
         padding: 0;
         max-width: 100%;
     }
+
     body {
         background: white;
         font-size: 11pt;
     }
-    h1 { page-break-before: always; }
-    h1:first-child { page-break-before: avoid; }
-    h1, h2, h3 { page-break-after: avoid; }
-    
+
+    h1 {
+        page-break-before: always;
+    }
+
+    h1:first-child {
+        page-break-before: avoid;
+    }
+
+    h1,
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+
     /* Print: hide English, show Vietnamese only */
     .bilingual-en {
         display: none !important;
     }
-    
+
     /* Remove animations for print */
     .bilingual-chapter,
     .bilingual-main-section,
@@ -43,16 +62,18 @@
 
 /* === TABLET === */
 @media (max-width: 1200px) {
-    #app { 
+    #app {
         grid-template-columns: minmax(160px, 200px) 1fr minmax(80px, 160px);
     }
-    #content { 
+
+    #content {
         padding: 16px 32px 60px;
     }
+
     #sidebar {
         padding: 16px 16px 48px 24px;
     }
-    
+
     #theme-toggle {
         top: 16px;
         right: 16px;
@@ -66,11 +87,11 @@
     #app:has(.bilingual-mode) {
         grid-template-columns: minmax(140px, 180px) 1fr 0;
     }
-    
+
     #content.bilingual-mode {
         padding: 32px 20px 60px;
     }
-    
+
     .bilingual-vn p {
         font-size: 1rem;
     }
@@ -85,64 +106,64 @@
         grid-template-columns: 1fr;
     }
 
-    #sidebar { 
-        display: none; 
+    #sidebar {
+        display: none;
     }
-    
+
     #top-tabs {
         padding: 32px 16px 24px;
         gap: 32px;
     }
-    
+
     .doc-tab {
         font-size: 0.85rem;
     }
-    
-    #content { 
+
+    #content {
         padding: 24px 24px 40px;
         max-width: 720px;
         margin: 0 auto;
     }
-    
+
     #actions {
         padding: 24px;
         justify-content: center;
     }
-    
-    h1 { 
-        font-size: 1.8rem; 
+
+    h1 {
+        font-size: 1.8rem;
     }
-    
-    h2 { 
-        font-size: 1.3rem; 
+
+    h2 {
+        font-size: 1.3rem;
     }
-    
+
     /* Bilingual mobile adjustments */
     #content.bilingual-mode {
         padding: 24px 20px 40px;
     }
-    
+
     .bilingual-vn h1 {
         font-size: 1.8rem;
     }
-    
+
     .bilingual-vn h2 {
         font-size: 1.3rem;
     }
-    
+
     .bilingual-vn p {
         font-size: 1rem;
         line-height: 1.9;
     }
-    
+
     .bilingual-preamble h1 {
         font-size: 1.8rem;
     }
-    
+
     .bilingual-preamble h2 {
         font-size: 1.3rem;
     }
-    
+
     #theme-toggle {
         top: 12px;
         right: 12px;
@@ -157,12 +178,12 @@
     #content.bilingual-mode {
         padding: 20px 16px 32px;
     }
-    
+
     .bilingual-vn p {
         text-align: left;
         text-align-last: left;
     }
-    
+
     .bilingual-en p {
         text-align: left;
     }

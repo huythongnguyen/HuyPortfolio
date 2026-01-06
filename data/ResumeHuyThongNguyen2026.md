@@ -2,7 +2,7 @@
 
 [huythong267@gmail.com](mailto:huythong267@gmail.com) | [Google Scholar](https://scholar.google.com/citations?user=f5blVCEAAAAJ&hl=en) | [LinkedIn](https://www.linkedin.com/in/huy-thong-nguyen/) | +1 (678) 599 1401
 
-Deep expertise in architecting large-scale AI systems, currently defining the future of enterprise intelligence at Databricks, and previously at Google, spearheaded foundational multimodal embeddings powering Maps & Search for billions of users. A strategic force multiplier who transforms ambiguous zero-to-one concepts into global-scale production systems while elevating engineering culture and mentoring talent.
+Deep expertise in architecting large-scale AI systems, currently transforming enterprise intelligence at Databricks, and previously at Google, spearheaded foundational multimodal embeddings powering Maps & Search for billions of users. A strategic force multiplier who transforms ambiguous zero-to-one concepts into global-scale production systems while elevating engineering culture and mentoring talent.
 
 ---
 
