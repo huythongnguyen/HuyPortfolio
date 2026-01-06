@@ -10,7 +10,7 @@ export const FILES = [
         name: 'Profile',
         path: 'data/Profile.md',
         bilingual: false,
-        defaultSpeed: 'slow',
+        defaultSpeed: 'slower',
         tocRevealMode: 'parallel'
     },
     {
@@ -24,21 +24,21 @@ export const FILES = [
         name: 'Databricks',
         path: 'data/ExpDatabricks.md',
         bilingual: false,
-        defaultSpeed: 'medium',
+        defaultSpeed: 'fast',
         tocRevealMode: 'parallel'
     },
     {
         name: 'Google',
         path: 'data/ExpGoogle.md',
         bilingual: false,
-        defaultSpeed: 'medium',
+        defaultSpeed: 'fast',
         tocRevealMode: 'parallel'
     },
     {
         name: 'Research',
         path: 'data/ExpResearch.md',
         bilingual: false,
-        defaultSpeed: 'medium',
+        defaultSpeed: 'fast',
         tocRevealMode: 'parallel'
     },
     {
