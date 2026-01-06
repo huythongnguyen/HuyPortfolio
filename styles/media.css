@@ -277,9 +277,10 @@
     border-radius: 4px;
 }
 
-/* Dark mode: deep dark background for media */
+/* Dark mode: soft dark background for media */
+/* Zen principle: Yohaku (余白) - gentle contrast, not harsh black */
 [data-theme="dark"] .media-video-container {
-    background: #000000;
+    background: #0a0a0a;
 }
 
 /* === GIF Element - Mild crop (90%) to hide phone UI === */

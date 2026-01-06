@@ -60,6 +60,7 @@ Stillness in interaction. Words appear gradually at a contemplative pace. The TO
 
 ### ✨ Word-by-Word Text Reveal
 - Text appears gradually as sections scroll into view
+
 - Creates meditative, contemplative reading experience
 - Speed control with 4 levels:
   - `·` **Slow** (150ms) — contemplative
@@ -67,33 +68,90 @@ Stillness in interaction. Words appear gradually at a contemplative pace. The TO
   - `···` **Fast** (40ms) — quick read
   - `○` **Instant** (0ms) — no animation
 - Speed preference persists in localStorage
+- **Punctuation-aware timing**: Pause longer after `.` `!` `?` for natural rhythm (Seijaku)
 
-### 🎯 TOC Navigation & Parallel Reveal
+#### Sequential vs Interactive Reveal
 
-When clicking a TOC item, the system intelligently handles text reveal:
+**Initial Page Load** (Sequential Queue):
+- Sections reveal **one at a time**, in order
+- Seijaku (静寂) — Only one section speaks at a time
+- Each section completes before the next begins
+- **Auto-scroll**: After an **H1 section** finishes, gently scrolls to show next H1 section
+- H2/H3 subsections stay in place (focused reading, no distraction)
+- Creates peaceful, guided journey through the document
+
+**After Interaction** (Interactive Mode):
+- User scrolls or clicks TOC → enables interactive mode
+- Sections reveal **immediately** when they enter viewport
+- Shizen (自然) — Natural exploration, content ready when you need it
+- No waiting for queue processing
+- No auto-scroll (user is in control)
+
+### 🎯 TOC Navigation & Zen Reveal Modes
+
+When clicking a TOC item, the system uses **document-type aware** reveal behavior:
+
+#### Mode: `instant-skip` (Resume)
+
+Best for professional documents where navigation is purposeful.
+Shizen (自然) — Feels like opening a book to a chapter.
 
 ```
-TOC Click Behavior:
+TOC Click on Resume:
 ┌─────────────────────────────────────────────────────────────────┐
 │  Section 1  │  Already revealed?  → Keep as is                 │
-│  Section 2  │  Currently revealing? → Continue animation       │
-│  Section 3  │  Not revealed?       → Start animation (parallel)│
-│  Section 4  │  ← TARGET            → Start animation           │
+│  Section 2  │  Not revealed?      → Reveal INSTANTLY ──────────│── Skipped
+│  Section 3  │  Not revealed?      → Reveal INSTANTLY ──────────│── Skipped
+│  Section 4  │  ← TARGET           → Reveal WORD-BY-WORD ───────│── Focus
 └─────────────────────────────────────────────────────────────────┘
                         ↓
               Page scrolls to Section 4
 ```
 
-**Principles:**
-- **Previous sections (revealed)**: Unchanged — respects completed animations
-- **Previous sections (unrevealed)**: Start revealing in parallel — no waiting
-- **Target section**: Begins word-by-word animation immediately
-- **Scroll timing**: Smooth scroll begins after reveal triggers start
+**Why instant-skip?**
+- User explicitly chose a destination; respect their intent
+- Skipped sections become visible *space* — acknowledged but not forced
+- Target section receives the full contemplative experience
 
-**Why parallel reveal?**
-- Clicking a deep TOC item (e.g., Chapter 25) shouldn't require waiting for 24 sections
-- All unrevealed sections animate simultaneously for instant navigation
+#### Mode: `parallel` (Diamond Sutra)
+
+Best for sacred texts where every word matters.
+Seijaku (静寂) — Peaceful, contemplative unfolding.
+
+```
+TOC Click on Diamond Sutra:
+┌─────────────────────────────────────────────────────────────────┐
+│  Section 1  │  Already revealed?   → Keep as is                │
+│  Section 2  │  Not revealed?       → Start animation ──────────│
+│  Section 3  │  Not revealed?       → Start animation ──────────│── All animate
+│  Section 4  │  ← TARGET            → Start animation ──────────│── in parallel
+└─────────────────────────────────────────────────────────────────┘
+                        ↓
+              Page scrolls to Section 4
+```
+
+**Why parallel?**
+- Every word in sacred texts carries meaning
+- Parallel animation prevents long waits while honoring content
 - Already-revealing sections continue naturally (not restarted)
+
+#### Configuration
+
+```javascript
+// scripts/core/config.js
+export const FILES = [
+    {
+        name: 'Resume',
+        path: 'data/Resume.md',
+        tocRevealMode: 'instant-skip'  // Professional navigation
+    },
+    {
+        name: 'Diamond Sutra',
+        path: 'data/KinhKimCang.md',
+        tocRevealMode: 'parallel'      // Sacred text reverence
+    }
+];
+```
 
 ### 🏗️ Pre-Parsed Document Architecture
 
@@ -116,11 +174,19 @@ Markdown → Parser → Sections[] → Renderer → DOM
 - **Predictable TOC**: Section IDs are known before DOM rendering
 - **Unified reveal logic**: Same code path for Resume and Diamond Sutra
 - **Fast navigation**: Sections array enables O(1) index lookup for TOC clicks
+- **Granular sections**: H1, H2, and **H3** all create independent sections
+
+**Section Boundaries:**
+| Heading Level | Creates Section? | Use Case |
+|---------------|------------------|----------|
+| H1 | ✓ | Major topics (Professional Experience, Education) |
+| H2 | ✓ | Subtopics (Individual companies, degrees) |
+| H3 | ✓ | Fine-grained sections (Specific projects, skills) |
 
 **Section Types:**
 | Document Type | Section Classes |
 |---------------|-----------------|
-| Standard | `.content-section` (grouped by H1/H2) |
+| Standard | `.content-section` (created by H1, H2, or H3) |
 | Bilingual | `.bilingual-preamble`, `.bilingual-main-section`, `.bilingual-chapter` |
 
 ### 📍 Scroll Spy TOC
