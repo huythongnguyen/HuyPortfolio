@@ -2,3 +2,6 @@
 .claude/*
 tools/*
 CLAUDE.md
+
+# Allow .github folder for GitHub Actions
+# (do not add .github to gitignore)
