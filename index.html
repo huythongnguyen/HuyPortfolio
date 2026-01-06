@@ -4,33 +4,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Huy Portfolio</title>
+    <title>Huy Thong Nguyen | Portals</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles/main.css">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
-    <script type="module" src="scripts/main.js"></script>
+    <link rel="stylesheet" href="styles/portal.css">
+    <script type="module">
+        import { initTheme } from './scripts/utils/theme.js';
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            const btn = document.getElementById('theme-toggle');
+            if (btn) btn.textContent = 'THEME';
+        });
+    </script>
 </head>
 
 <body>
-    <div id="app">
-        <button id="theme-toggle" title="Toggle light/dark mode" aria-label="Toggle theme"></button>
+    <button id="theme-toggle" title="Toggle light/dark mode" aria-label="Toggle theme">THEME</button>
 
-        <nav id="top-tabs" role="tablist" aria-label="Document selection"></nav>
-        <aside id="sidebar">
-            <nav id="toc" aria-label="Section navigation"></nav>
-        </aside>
-        <main id="content-wrapper">
-            <div id="content" role="main"></div>
-            <div id="actions">
-                <button id="download-pdf" title="Download as PDF">PDF</button>
-                <button id="download-md" title="Download as Markdown">MD</button>
+    <div class="portal-container">
+        <a href="./huythong-nguyen/" class="portal-side" id="portfolio">
+            <div class="overlay"></div>
+            <div class="content">
+                <p>Professional</p>
+                <h1>Huy Thong Nguyen</h1>
             </div>
-        </main>
+        </a>
+
+        <div class="divider"></div>
+
+        <a href="./inner-compassion/" class="portal-side" id="compassion">
+            <div class="overlay"></div>
+            <div class="content">
+                <p>Philosophy</p>
+                <h1>Inner Compassion</h1>
+            </div>
+        </a>
     </div>
 </body>
 
