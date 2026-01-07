@@ -23,14 +23,15 @@ export const FILES = [
         path: 'data/ResumeHuyThongNguyen2026.md',
         bilingual: false,
         defaultSpeed: 'medium',
-        tocRevealMode: 'instant-skip'  // Professional: instant skip, target reveals
+        tocRevealMode: 'instant-skip',
+        initialMode: 'overview'
     },
     {
         name: 'Diamond Sutra',
         path: 'data/KinhKimCang.md',
         bilingual: true,
-        defaultSpeed: 'medium',
-        tocRevealMode: 'parallel'      // Sacred: all animate together
+        defaultSpeed: 'slower',
+        tocRevealMode: 'parallel'
     }
 ];
 

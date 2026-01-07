@@ -11,10 +11,13 @@ import { setupScrollSpy } from '../navigation/scrollSpy.js';
 import { createTOCClickHandler } from '../navigation/tocHandler.js';
 import { transformVideos, revealMediaAfterText } from '../utils/media.js';
 import {
-    prepareContentForReveal,
+    prepareSmartReveal,
     startLinearReveal,
-    stopCurrentReveal
+    stopCurrentReveal,
+    scrollToTop,
+    setRevealSpeed
 } from '../core/textReveal.js';
+import { currentFileConfig } from '../core/config.js';
 
 // Store parsed sections for TOC access
 let currentSections = [];
@@ -73,7 +76,22 @@ export function renderDocument(parsedDoc) {
 
     // 5. Setup Text Reveal
     const revealElements = collectRevealElements(contentPanel, parsedDoc.type);
-    startLinearReveal(revealElements, revealTabs);
+    const isOverview = currentFileConfig?.initialMode === 'overview';
+
+    // Save original speed if in overview mode
+    const originalSpeed = currentFileConfig?.defaultSpeed || 'medium';
+
+    if (isOverview) {
+        setRevealSpeed('fast');
+    }
+
+    startLinearReveal(revealElements, () => {
+        scrollToTop('smooth');
+        if (isOverview) {
+            setRevealSpeed(originalSpeed);
+        }
+        revealTabs();
+    });
 
     // 6. Setup Secondary Reveal (Media)
     revealMediaAfterText(contentPanel);
@@ -161,15 +179,19 @@ function createBilingualSection(section) {
  * Collects elements that should participate in the word-by-word reveal.
  */
 function collectRevealElements(container, type) {
+    const totalWordCount = container.innerText.split(/\s+/).length;
+    const forceBlocks = totalWordCount > 300;
+    const isMeditative = currentFileConfig?.defaultSpeed === 'slower' || currentFileConfig?.defaultSpeed === 'meditative';
+
     if (type !== 'bilingual') {
-        return prepareContentForReveal(container);
+        return prepareSmartReveal(container, forceBlocks, isMeditative);
     }
 
     // Bilingual logic: skip hidden English, only reveal Vietnamese/Preamble
     const targets = container.querySelectorAll('.bilingual-preamble, .bilingual-vn');
     let elements = [];
     targets.forEach(target => {
-        elements = elements.concat(prepareContentForReveal(target));
+        elements = elements.concat(prepareSmartReveal(target, forceBlocks, isMeditative));
     });
     return elements;
 }

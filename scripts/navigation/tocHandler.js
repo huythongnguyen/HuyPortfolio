@@ -8,6 +8,7 @@
 
 import { getSectionElements } from '../renderers/unified.js';
 import { stopCurrentReveal, revealAllImmediately } from '../core/textReveal.js';
+import { closeMobileMenu } from './mobileMenu.js';
 
 /**
  * Finds the section element containing a target element.
@@ -56,6 +57,9 @@ export function createTOCClickHandler(targetId) {
         // Update TOC active state
         document.querySelectorAll('#toc .toc-link').forEach(a => a.classList.remove('active'));
         event.target.classList.add('active');
+
+        // Close mobile menu if open
+        closeMobileMenu();
     };
 }
 

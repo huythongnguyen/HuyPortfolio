@@ -17,7 +17,8 @@ export const FILES = [
         name: 'Coming Soon',
         path: 'data/ComingSoon.md',
         bilingual: true,
-        defaultSpeed: 'medium',
-        tocRevealMode: 'parallel'
+        defaultSpeed: 'slower',
+        tocRevealMode: 'parallel',
+        initialMode: 'overview'
     }
 ];

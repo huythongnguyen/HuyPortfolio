@@ -35,6 +35,106 @@
     transform: rotate(15deg);
 }
 
+/* Skip Animation (Unfold) Button - Zen Mandala */
+#skip-reveal {
+    position: fixed;
+    right: 32px;
+    top: 50%;
+    transform: translateY(-50%) scale(0.8);
+    z-index: 1001;
+    width: 120px;
+    height: 120px;
+    padding: 0;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    color: var(--mist);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+    opacity: 0;
+    pointer-events: none;
+}
+
+#skip-reveal.visible {
+    opacity: 0.3;
+    pointer-events: auto;
+    transform: translateY(-50%) scale(1);
+    animation: mandala-float 6s infinite ease-in-out;
+}
+
+#skip-reveal:hover {
+    opacity: 1;
+    color: var(--ink);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.mandala-ring {
+    transform-origin: center;
+    animation: rotate-slow 20s infinite linear;
+}
+
+.mandala-core {
+    transform-origin: center;
+    transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+#skip-reveal:hover .mandala-core {
+    transform: rotate(90deg) scale(1.2);
+}
+
+.mandala-petal {
+    opacity: 0.6;
+    transition: stroke-width 0.8s ease, opacity 0.8s ease;
+}
+
+#skip-reveal:hover .mandala-petal {
+    opacity: 1;
+    stroke-width: 1;
+}
+
+.mandala-center {
+    animation: celestial-drift 8s infinite ease-in-out;
+}
+
+@keyframes rotate-slow {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes mandala-float {
+
+    0%,
+    100% {
+        transform: translateY(-50%) translateX(0);
+    }
+
+    50% {
+        transform: translateY(-52%) translateX(5px);
+    }
+}
+
+@keyframes celestial-drift {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: scale(1.5);
+        opacity: 1;
+    }
+}
+
 /* Scroll progress indicator - subtle 1px line at top */
 body::before {
     content: '';

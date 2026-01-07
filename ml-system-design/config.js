@@ -39,6 +39,7 @@ export const FILES = [
         path: 'data/Question5-WordLen.md',
         bilingual: false,
         defaultSpeed: 'fast',
-        tocRevealMode: 'parallel'
+        tocRevealMode: 'parallel',
+        initialMode: 'overview'
     }
 ];

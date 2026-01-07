@@ -74,6 +74,7 @@ export const FILES = [
         path: 'data/10-heap-priority-queue.md',
         bilingual: false,
         defaultSpeed: 'fast',
-        tocRevealMode: 'parallel'
+        tocRevealMode: 'parallel',
+        initialMode: 'overview'
     }
 ];

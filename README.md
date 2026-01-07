@@ -35,8 +35,18 @@ Interaction should feel like a natural phenomenon.
 
 ### 4. Seijaku (静寂) — Deep Stillness
 The engine is designed to lower the reader's heart rate.
-*   **Contextual TOC**: A quietTable of Contents tracks your progress without distraction.
+*   **Contextual TOC**: A quiet Table of Contents tracks your progress without distraction.
 *   **Bilingual Harmony**: Translated texts are handled with *Kanso*—secondary languages are available but tucked away unless summoned.
+*   **Smart Reading Modes**: The engine adapts to your intent:
+    *   **Meditative Mode**: Extra-slow reveal for sacred texts (Kinh Kim Cang), fostering deep contemplation.
+    *   **Overview Mode**: Rapid content "roll-out" for professional docs, auto-populating the TOC before returning you to the top of the page.
+
+### 5. Mobile-First Zen
+Design that flows across any screen without losing its soul.
+*   **The Mandala Anchor**: A grand, sacred geometry trigger (The Mandala of Universal Reveal) resides at the right midpoint. It serves as a symbolic shortcut to fully unfold the document, with intricate rotation and "blossom" animations that respond to the user's focus.
+*   **The Index Drawer**: On mobile, the TOC transforms into a minimalist navigation drawer, easily summoned and dismissed via a floating "Index" button.
+*   **Touch-Optimized Tabs**: Document switchers are horizontally scrollable and touch-ready, ensuring the "Too Wide" problem of desktop layouts is naturally resolved.
+*   **Responsive Scaling**: Typography and bilingual layouts automatically adjust their breathing room (*Ma*) to feel as native on an iPhone as they do on an iMac.
 
 ---
 

@@ -9,10 +9,11 @@ let stopReveal = false;
 let revealSpeed = 30; // ms per word (Default: Medium)
 
 const SPEEDS = {
-    fast: 40,
-    medium: 60, // Was the previous requested speed
+    fast: 15,    // For rapid overview
+    medium: 40,
     slow: 80,
-    slower: 100,
+    slower: 100, // Balanced contemplative speed
+    meditative: 250,
     instant: 0
 };
 
@@ -32,6 +33,29 @@ export function setRevealSpeed(speed) {
 }
 
 /**
+ * Smart Reveal: Prepares content based on length.
+ * For short content (like cover page), it uses word-by-word.
+ * For long content, it uses block-by-block (paragraphs).
+ */
+export function prepareSmartReveal(container, forceBlocks = false, forceWordByWord = false) {
+    const wordCount = container.innerText.split(/\s+/).length;
+
+    // Zen Logic: 
+    // forceWordByWord takes precedence (for sacred texts)
+    // Otherwise, if it's a lot of text, reveal by blocks
+    // If it's sparse, reveal word-by-word
+    if (forceWordByWord) {
+        return prepareContentForReveal(container);
+    }
+
+    if (wordCount > 150 || forceBlocks) {
+        return prepareBlocksForReveal(container);
+    } else {
+        return prepareContentForReveal(container);
+    }
+}
+
+/**
  * Prepares the content for reveal by wrapping words in spans.
  * Returns the array of word elements to reveal.
  */
@@ -44,6 +68,20 @@ export function prepareContentForReveal(container) {
     words.forEach(w => w.style.opacity = '0');
 
     return Array.from(words);
+}
+
+/**
+ * Prepares blocks (p, li, h1-6) for fade-in reveal.
+ */
+export function prepareBlocksForReveal(container) {
+    const blocks = container.querySelectorAll('h1, h2, h3, p, li, blockquote, pre, img, table');
+    blocks.forEach(b => {
+        b.style.opacity = '0';
+        b.style.transition = `opacity 1s ease, transform 1s ease`;
+        b.style.transform = 'translateY(10px)';
+        b.classList.add('reveal-block');
+    });
+    return Array.from(blocks);
 }
 
 function processNode(node) {
@@ -74,26 +112,57 @@ function processNode(node) {
  */
 export async function startLinearReveal(elements, onComplete) {
     if (isRevealing) return;
+
+    // Check for instant mode preference
+    if (isInstantMode()) {
+        elements.forEach(el => {
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+            el.classList.add('revealed');
+            handleParentReveal(el);
+        });
+        if (onComplete) onComplete();
+        return;
+    }
+
     isRevealing = true;
     stopReveal = false;
+
+    // Provide a way to skip mid-animation
+    showSkipButton(() => {
+        elements.forEach(el => {
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+            el.classList.add('revealed');
+            handleParentReveal(el);
+        });
+        stopReveal = true;
+        if (onComplete) onComplete();
+    });
 
     for (const el of elements) {
         if (stopReveal) break;
 
+        const isBlock = el.classList.contains('reveal-block');
+
         el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
         el.classList.add('revealed');
 
         // Handle special parent elements (LI, A)
         handleParentReveal(el);
 
-        // Wait for simple delay
-        await new Promise(r => setTimeout(r, revealSpeed));
+        // Zen Timing: 
+        // Blocks (paragraphs) deserve more "digestion" time than words
+        const delay = isBlock ? 400 : revealSpeed;
+        await new Promise(r => setTimeout(r, delay));
 
         // Auto-scroll if near bottom
         ensureVisible(el);
     }
 
     isRevealing = false;
+    hideSkipButton();
     if (onComplete && !stopReveal) onComplete();
 }
 
@@ -114,6 +183,62 @@ function handleParentReveal(el) {
 export function stopCurrentReveal() {
     stopReveal = true;
     isRevealing = false; // Force allow new reveal to start immediately
+    hideSkipButton();
+}
+
+const REVEAL_PREF_KEY = 'zen-reveal-instant';
+
+export function isInstantMode() {
+    return localStorage.getItem(REVEAL_PREF_KEY) === 'true';
+}
+
+export function toggleInstantMode() {
+    const newVal = !isInstantMode();
+    localStorage.setItem(REVEAL_PREF_KEY, newVal);
+    return newVal;
+}
+
+function showSkipButton(onSkip) {
+    let btn = document.getElementById('skip-reveal');
+    if (!btn) {
+        btn = document.createElement('button');
+        btn.id = 'skip-reveal';
+        btn.ariaLabel = 'Infinite Unfold';
+        // Zen Mandala (Multi-layered sacred geometry)
+        btn.innerHTML = `
+            <svg viewBox="0 0 100 100" width="100" height="100" fill="none" stroke="currentColor" stroke-width="0.6">
+                <!-- Outer "Void" Ring -->
+                <circle class="mandala-ring ring-outer" cx="50" cy="50" r="48" stroke-dasharray="1 10" />
+                <!-- Inner Rotating Geometry -->
+                <g class="mandala-core">
+                    <circle cx="50" cy="50" r="15" stroke-width="0.3" stroke-dasharray="2 2" />
+                    <path class="mandala-petal" d="M50 10 Q 55 30 50 50 Q 45 30 50 10" />
+                    <path class="mandala-petal" d="M50 90 Q 55 70 50 50 Q 45 70 50 90" />
+                    <path class="mandala-petal" d="M10 50 Q 30 55 50 50 Q 30 45 10 50" />
+                    <path class="mandala-petal" d="M90 50 Q 70 55 50 50 Q 70 45 90 50" />
+                    <!-- Diagonal Petals -->
+                    <g transform="rotate(45 50 50)">
+                        <path class="mandala-petal" d="M50 15 Q 55 35 50 50 Q 45 35 50 15" />
+                        <path class="mandala-petal" d="M50 85 Q 55 65 50 50 Q 45 65 50 85" />
+                        <path class="mandala-petal" d="M15 50 Q 35 55 50 50 Q 35 45 15 50" />
+                        <path class="mandala-petal" d="M85 50 Q 65 55 50 50 Q 65 45 85 50" />
+                    </g>
+                </g>
+                <circle cx="50" cy="50" r="2" fill="currentColor" class="mandala-center"/>
+            </svg>
+        `;
+        document.body.appendChild(btn);
+    }
+    btn.onclick = () => {
+        onSkip();
+        hideSkipButton();
+    };
+    btn.classList.add('visible');
+}
+
+function hideSkipButton() {
+    const btn = document.getElementById('skip-reveal');
+    if (btn) btn.classList.remove('visible');
 }
 
 /**
@@ -121,12 +246,20 @@ export function stopCurrentReveal() {
  */
 export function revealAllImmediately(container) {
     stopReveal = true;
-    const words = container.querySelectorAll('.reveal-word');
+    const words = container.querySelectorAll('.reveal-word, .reveal-block');
     words.forEach(w => {
         w.style.opacity = '1';
+        w.style.transform = 'translateY(0)';
         w.classList.add('revealed');
         handleParentReveal(w);
     });
+}
+
+/**
+ * Scrolls to the top of the page smoothly.
+ */
+export function scrollToTop(behavior = 'smooth') {
+    window.scrollTo({ top: 0, behavior });
 }
 
 let lastScrollTime = 0;

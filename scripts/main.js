@@ -35,6 +35,7 @@
 import { FILES } from './core/config.js';
 import { renderDocumentTabs, loadDocument, initTabAutoHide } from './navigation/documentTabs.js';
 import { updateScrollProgress } from './navigation/scrollSpy.js';
+import { initMobileMenu } from './navigation/mobileMenu.js';
 
 import { initTheme } from './utils/theme.js';
 import { initTextReveal } from './core/textReveal.js';
@@ -50,6 +51,7 @@ export async function initApp(files = FILES) {
     // 2. UI/Navigation
     renderDocumentTabs(files);
     initTabAutoHide();
+    initMobileMenu();
 
     // 3. Initial Load
     await loadDocument(files[0]);
