@@ -10,7 +10,7 @@
     grid-template-areas:
         "tabs tabs tabs"
         "sidebar content space";
-    grid-template-columns: minmax(180px, 280px) minmax(600px, 900px) minmax(30px, 1fr);
+    grid-template-columns: minmax(180px, 260px) minmax(700px, 1100px) minmax(20px, 1fr);
     grid-template-rows: auto 1fr;
     min-height: 100vh;
     max-width: 1600px;
@@ -27,16 +27,17 @@
 
 #content {
     flex: 1;
-    padding: 48px 64px 80px 64px;
+    padding: calc(var(--header-height) + 32px) 64px 80px 64px;
+    /* Synchronized with header */
     /* Default: Minimal top space for full-screen feel */
     transition: padding-top 0.6s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-/* Zen Logic: Content shifts down ONLY when navigation is PERMANENTLY RENDERED */
-#top-tabs.perma-visible~#content-wrapper #content,
+/* Zen Logic: Content area is now stable and always accounts for top-tabs to prevent jumping */
+/* #top-tabs.perma-visible~#content-wrapper #content,
 #top-tabs.perma-visible~#content {
     padding-top: 120px;
-}
+} */
 
 /* Content sections for text reveal animation */
 .content-section {
@@ -67,14 +68,46 @@
 }
 
 /* Peripheral Focus: Fade non-active sections to center the mind */
-.content-section {
-    transition: opacity 0.8s ease;
+.content-section,
+.bilingual-chapter,
+.bilingual-main-section,
+.bilingual-preamble {
+    transition: opacity 0.8s ease, border-left 0.4s ease, padding-left 0.4s ease;
+    border-left: 2px solid transparent;
 }
 
-#content:hover .content-section:not(:hover):not(.active) {
+#content:hover .content-section:not(:hover):not(.active),
+#content:hover .bilingual-chapter:not(:hover):not(.active),
+#content:hover .bilingual-main-section:not(:hover):not(.active),
+#content:hover .bilingual-preamble:not(:hover):not(.active) {
     opacity: 0.65;
 }
 
-.content-section.active {
+.content-section.active,
+.bilingual-chapter.active,
+.bilingual-main-section.active,
+.bilingual-preamble.active {
     opacity: 1 !important;
+    border-left-color: var(--accent);
+    padding-left: 10px;
+}
+
+/* Jump Pulse: Satisfying extra effort visual for navigating */
+@keyframes sectionPulse {
+    0% {
+        background: transparent;
+    }
+
+    30% {
+        background: rgba(var(--accent-rgb, 100, 100, 100), 0.08);
+    }
+
+    100% {
+        background: transparent;
+    }
+}
+
+.jump-pulse {
+    animation: sectionPulse 1.5s ease-out;
+    border-radius: 8px;
 }

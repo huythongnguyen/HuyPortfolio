@@ -119,8 +119,18 @@ export function parseStandardDocument(markdown) {
                 const type = isIntro ? 'intro' : 'content';
                 const sectionId = isIntro ? 'section-intro' : `${lastSection.id}-content`;
 
+                if (isIntro) {
+                    tocItems.push({
+                        id: 'intro',
+                        title: 'Introduction',
+                        level: 1,
+                        children: []
+                    });
+                }
+
                 lastSection = {
                     id: sectionId,
+                    headingId: isIntro ? 'intro' : '',
                     type: type,
                     title: isIntro ? 'Introduction' : '',
                     level: 0,

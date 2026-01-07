@@ -38,10 +38,10 @@ Dynamic Programming problems ask for optimal values (min/max) or count total way
 
 | Level | Name | Key Concept | When to Use | Core Problem |
 |-------|------|-------------|-------------|--------------|
-| **1** | 1D Linear DP | dp[i] depends on dp[i-1], dp[i-2] | Counting ways, simple sequences | Climbing Stairs |
-| **2** | Decision DP | Take or skip at each step | Can't take adjacent, max sum | House Robber |
-| **3** | Unbounded Knapsack | Items can be reused | Coin change, unlimited supply | Coin Change |
-| **4** | 2D Grid DP | dp[i][j] for two dimensions | Paths in grid, string matching | Edit Distance |
+| **1** | 1D Linear DP | dp[i] depends on dp[i-1], dp[i-2] | **Counting paths/ways:** "How many ways to reach step n?" Fibonacci-like pattern. Each state depends on previous 1-2 states. Base cases dp[0], dp[1] | Climbing Stairs |
+| **2** | Decision DP | Take or skip at each step | **Binary choice with constraints:** "Can't take adjacent" (House Robber) or capacity limits (0/1 Knapsack). `dp[i] = max(take, skip)`. Constraint prevents greedy | House Robber |
+| **3** | Unbounded Knapsack | Items can be reused | **Unlimited supply:** Coin Change (unlimited coins), Rod Cutting. Items have no quantity limit. Try each item multiple times: `dp[i] = min(dp[i], dp[i-item] + 1)` | Coin Change |
+| **4** | 2D Grid DP | dp[i][j] for two dimensions | **Two sequences/grids:** Comparing two strings (Edit Distance, LCS), grid paths, problems with two varying parameters. State needs TWO indices to describe | Edit Distance |
 
 ## Deep Dive: Pattern Recognition
 

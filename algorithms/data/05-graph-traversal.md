@@ -130,16 +130,10 @@ Each level builds on previous concepts. **Click any level to jump directly to th
 
 | Level | Name | Key Concept | When to Use | Core Problem |
 |-------|------|-------------|-------------|--------------|
-| **1** | BFS Level-Order | Queue-based layer traversal | Level order, shortest unweighted path | Binary Tree Level Order |
-| **2** | Grid BFS/DFS | 4-directional neighbors | Islands, flood fill, maze | Number of Islands |
-| **3** | Topological Sort | Dependency ordering | Course prerequisites, build order | Course Schedule |
-| **4** | Shortest Path BFS | Multi-source, state BFS | Minimum steps, rotting oranges | Word Ladder |
-
-### Quick Decision Guide
-- **"Level by level traversal"** → Level 1 (BFS with Queue)
-- **"Connected regions in grid"** → Level 2 (DFS/BFS on Grid)
-- **"Order with dependencies"** → Level 3 (Topological Sort)
-- **"Minimum steps/transformations"** → Level 4 (BFS Shortest Path)
+| **1** | BFS Level-Order | Queue-based layer traversal | **Level-by-level/shortest unweighted path:** Tree level order, minimum steps in unweighted graph. Queue ensures layer-by-layer exploration. Shortest path guaranteed in unweighted | Binary Tree Level Order |
+| **2** | Grid BFS/DFS | 4-directional neighbors | **Implicit graph (2D grid):** Islands, flood fill, connected regions. Cells=nodes, 4-directions=edges. DFS for connectivity, BFS for shortest path on grid | Number of Islands |
+| **3** | Topological Sort | Dependency ordering | **DAG with dependencies:** Course prerequisites, build order, task scheduling. Order nodes so all edges point forward. DFS post-order or BFS in-degree-based (Kahn's) | Course Schedule |
+| **4** | Shortest Path BFS | Multi-source, state BFS | **Minimum steps/transformations:** Word Ladder, rotting oranges. BFS finds shortest in unweighted. Multi-source: add all sources initially. State-space search | Word Ladder |
 
 ---
 

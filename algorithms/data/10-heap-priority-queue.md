@@ -121,16 +121,10 @@ Each level builds on previous concepts. **Click any level to jump directly to th
 
 | Level | Name | Key Concept | When to Use | Core Problem |
 |-------|------|-------------|-------------|--------------|
-| **1** | Top K Elements | Fixed-size heap of K | Kth largest, top K frequent | Kth Largest Element |
-| **2** | K-Way Merge | Heap of K source heads | Merge k sorted lists/arrays | Merge k Sorted Lists |
-| **3** | Two Heaps (Median) | Max-heap + Min-heap | Running median, balanced split | Find Median from Stream |
-| **4** | Heap + Greedy | Priority-based scheduling | Task scheduling, resource allocation | Task Scheduler |
-
-### Quick Decision Guide
-- **"Find kth largest/smallest"** → Level 1 (Size-K Heap)
-- **"Merge multiple sorted sources"** → Level 2 (Heap of Heads)
-- **"Running median or balanced"** → Level 3 (Two Heaps)
-- **"Schedule by priority"** → Level 4 (Greedy + Heap)
+| **1** | Top K Elements | Fixed-size heap of K | **Kth largest/smallest, top K frequent:** Min-heap of size k for k largest (counterintuitive!). O(n log k) vs O(n log n) full sort. Space O(k) not O(n) | Kth Largest Element |
+| **2** | K-Way Merge | Heap of K source heads | **Merge k sorted lists/arrays:** Heap holds k values (one from each source). Always pop min, push next from same source. O(N log k) vs O(N log N) | Merge k Sorted Lists |
+| **3** | Two Heaps (Median) | Max-heap + Min-heap | **Running median, balanced split:** Max-heap (lower half) + min-heap (upper half). Median at boundary = O(1) query, O(log n) insert. Balance sizes within 1 | Find Median from Stream |
+| **4** | Heap + Greedy | Priority-based scheduling | **Schedule by priority:** Task scheduling with cooldowns, deadlines. Heap gives next most-frequent/urgent task. Greedy + heap combo for optimal scheduling | Task Scheduler |
 
 ---
 

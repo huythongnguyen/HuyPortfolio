@@ -118,16 +118,10 @@ Each level builds on previous concepts. **Click any level to jump directly to th
 
 | Level | Name | Key Concept | When to Use | Core Problem |
 |-------|------|-------------|-------------|--------------|
-| **1** | Greedy Reachability | Track maximum reach | Can reach end? Minimum jumps | Jump Game |
-| **2** | Interval Scheduling | Sort by end time | Non-overlapping intervals | Non-overlapping Intervals |
-| **3** | Sort + Greedy | Sorting enables greedy | Activity selection, scheduling | Meeting Rooms II |
-| **4** | Two-Pass Greedy | Left-to-right, then right-to-left | Candy distribution, ratings | Candy |
-
-### Quick Decision Guide
-- **"Can reach destination?"** → Level 1 (Track max reach)
-- **"Maximum non-overlapping"** → Level 2 (Sort by end, greedy select)
-- **"Assign resources optimally"** → Level 3 (Sort + Greedy)
-- **"Satisfy neighbors' constraints"** → Level 4 (Two-Pass)
+| **1** | Greedy Reachability | Track maximum reach | **Can reach destination? Minimum jumps:** Track farthest reachable position. Jump Game pattern. Greedy maximizes reach at each step. O(n) vs O(2^n) trying all paths | Jump Game |
+| **2** | Interval Scheduling | Sort by end time | **Maximum non-overlapping intervals:** Activity selection. Sort by end time, greedily select earliest-ending. Leaves most room for future. Minimum removals = total - max kept | Non-overlapping Intervals |
+| **3** | Sort + Greedy | Sorting enables greedy | **Order-dependent optimal choice:** Partition Labels (last occurrence tracking), task assignments. Preprocessing (sort, build map) makes greedy choice obvious | Meeting Rooms II |
+| **4** | Two-Pass Greedy | Left-to-right, then right-to-left | **Neighbor constraints:** Candy distribution (satisfy left AND right neighbors), trapping water. First pass satisfies one direction, second pass satisfies other | Candy |
 
 ---
 

@@ -11,28 +11,16 @@ Search and lookup algorithms form the foundation of efficient data retrieval. Th
 - Adapt binary search for rotated or 2D structures
 - Apply binary search to optimization problems (search the answer space)
 
-## When to Recall These Techniques
-
-Search problems appear when you need to find elements, positions, or optimal values. The key is recognizing which search pattern fits your constraint: Do you have sorted data? Need repeated lookups? Working with a solution range? Each pattern exploits different problem structures.
-
-**Quick Pattern Recognition:**
-- **Checking existence repeatedly** → Hash tables
-- **Sorted data** → Binary search variants
-- **Duplicates need boundaries** → Boundary search
-- **Rotated sorted array** → Modified binary search
-- **2D sorted structure** → Matrix search
-- **Optimizing a value** → Binary search on answer
-
 ## The Learning Ladder
 
 | Level | Name | Key Concept | When to Use This Pattern | Core Problem |
 |-------|------|-------------|--------------------------|--------------|
-| **1** | Hash Table Complement | O(1) lookup with hash map | Finding pairs/complements (e.g., two numbers sum to target), checking existence across loop iterations, avoiding nested loops for pair checks | Two Sum |
-| **2** | Binary Search Basics | O(log n) on sorted data | Input explicitly sorted, need to find element position or insert location, can sort data without breaking problem semantics | Search Insert Position |
-| **3** | Boundary Binary Search | Find first/last occurrence | Array has duplicates, need leftmost/rightmost position of target value, range queries requiring boundary indices | Find First and Last Position |
-| **4** | Search in Rotated Array | One half always sorted | Sorted array was rotated at unknown pivot point, need to maintain O(log n) despite rotation, can identify which half is sorted | Search in Rotated Sorted Array |
-| **5** | Binary Search on 2D Matrix | Treat as 1D or staircase | Matrix with row/column ordering, 2D search space reducible to 1D, need better than O(m×n) linear scan | Search a 2D Matrix |
-| **6** | Binary Search on Answer | Search solution space | Problem asks "minimum X satisfying condition," answer has monotonic property (if X works, X+1 works), need to find optimal value in range | Koko Eating Bananas |
+| **1** | Hash Table Complement | O(1) lookup with hash map | **Pair-finding:** Iterate once checking "does complement exist?" Trade O(n) space for O(1) lookup vs O(n) rescanning. Classic: two numbers sum to target | Two Sum |
+| **2** | Binary Search Basics | O(log n) on sorted data | **Sorted input (or sortable):** Data pre-sorted OR can afford O(n log n) preprocessing. Finding position/insert location in O(log n) vs O(n) scan | Search Insert Position |
+| **3** | Boundary Binary Search | Find first/last occurrence | **Duplicates + boundary needs:** Need leftmost/rightmost occurrence in sorted array. Range queries. Standard search finds *any*, this finds *specific* position | Find First and Last Position |
+| **4** | Search in Rotated Array | One half always sorted | **Sorted then rotated:** Single rotation point creates discontinuity but one half stays sorted. Maintain O(log n) despite rotation | Search in Rotated Sorted Array |
+| **5** | Binary Search on 2D Matrix | Treat as 1D or staircase | **2D with row/column ordering:** Matrix rows/columns sorted. Flatten to 1D (strict order) or staircase search. Beat O(m×n) brute force | Search a 2D Matrix |
+| **6** | Binary Search on Answer | Search solution space | **Optimize monotonic function:** "Minimum X such that..." problems. Answer range has monotonic property (if X works, X+1 works). Search solution space, not input | Koko Eating Bananas |
 
 ## Deep Dive: Pattern Recognition
 
@@ -65,28 +53,6 @@ Sorted matrix problem (rows/columns have ordering). Treat as flattened 1D array 
 Problem asks "minimum X such that condition holds" or "maximum X satisfying constraint." You're not searching an array—you're searching the *solution space*. Example: "minimum speed to eat all bananas in H hours." If speed K works, all speeds > K work (monotonic).
 
 **When to use:** Problems phrased as "minimum X such that..." or "maximum X where...". The answer lies in a range, and you can verify if a candidate works. Monotonicity is key: if X works, does X+1 work (or vice versa)?
-
----
-
-<div id="learning-ladder"></div>
-
-## The Learning Ladder
-
-| Level | Name | Key Concept | When to Use This Pattern | Core Problem |
-|-------|------|-------------|--------------------------|--------------|
-| **1** | Hash Table Complement | O(1) lookup with hash map | Finding pairs/complements (e.g., two numbers sum to target), checking existence across loop iterations, avoiding nested loops for pair checks | Two Sum |
-| **2** | Binary Search Basics | O(log n) on sorted data | Input explicitly sorted, need to find element position or insert location, can sort data without breaking problem semantics | Search Insert Position |
-| **3** | Boundary Binary Search | Find first/last occurrence | Array has duplicates, need leftmost/rightmost position of target value, range queries requiring boundary indices | Find First and Last Position |
-| **4** | Search in Rotated Array | One half always sorted | Sorted array was rotated at unknown pivot point, need to maintain O(log n) despite rotation, can identify which half is sorted | Search in Rotated Sorted Array |
-| **5** | Binary Search on 2D Matrix | Treat as 1D or staircase | Matrix with row/column ordering, 2D search space reducible to 1D, need better than O(m×n) linear scan | Search a 2D Matrix |
-| **6** | Binary Search on Answer | Search solution space | Problem asks "minimum X satisfying condition," answer has monotonic property (if X works, X+1 works), need to find optimal value in range | Koko Eating Bananas |
-
-### Quick Decision Guide
-- **"Find if element exists"** → Level 1 (Hash) or Level 2 (Binary Search)
-- **"Find first/last position"** → Level 3 (Boundary Search)
-- **"Rotated or partially sorted"** → Level 4 (Modified Binary Search)
-- **"2D matrix search"** → Level 5 (Matrix Binary Search)
-- **"Minimize/maximize some value"** → Level 6 (Binary Search on Answer)
 
 ---
 

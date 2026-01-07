@@ -72,13 +72,20 @@ export async function switchDocument(index) {
 
 }
 
-/**
- * Renders the document tab buttons.
- */
 export function renderDocumentTabs(files) {
     if (files) appFiles = files;
     const tabsContainer = document.getElementById('top-tabs');
-    tabsContainer.innerHTML = '';
+
+    // Use an internal track for scrolling so theme-toggle can stay pinned
+    let track = tabsContainer.querySelector('.tabs-track');
+    if (!track) {
+        track = document.createElement('div');
+        track.className = 'tabs-track';
+        // Insert at the beginning so toggle (if added) is always at the end in DOM
+        // but styling will handle visual pinning
+        tabsContainer.insertBefore(track, tabsContainer.firstChild);
+    }
+    track.innerHTML = '';
 
     appFiles.forEach((file, index) => {
         const button = document.createElement('button');
@@ -92,7 +99,7 @@ export function renderDocumentTabs(files) {
 
         button.addEventListener('click', () => switchDocument(index));
         button.addEventListener('keydown', handleTabKeydown);
-        tabsContainer.appendChild(button);
+        track.appendChild(button);
     });
 }
 

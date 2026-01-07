@@ -9,9 +9,10 @@
 #top-tabs {
     grid-area: tabs;
     display: flex;
-    justify-content: center;
-    gap: 48px;
-    padding: 24px 24px 20px;
+    /* Safe for horizontal scrolling */
+    align-items: center;
+    padding: 0;
+    /* Padding moved to children for better centering */
     background: var(--paper);
     transition: background var(--theme-transition),
         opacity 0.4s ease,
@@ -20,13 +21,50 @@
     top: 0;
     left: 0;
     right: 0;
+    height: var(--header-height);
+    /* Increased from 48px (150%) */
     z-index: 100;
     border-bottom: 1px solid var(--sand);
+
+    /* Container should not scroll */
+    overflow: hidden;
 
     /* Hidden by default */
     opacity: 0;
     transform: translateY(-100%);
     pointer-events: none;
+}
+
+.tabs-track {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 24px 120px 24px 64px;
+    /* Proportional increase */
+    /* Space on right for pinned theme-toggle */
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.tabs-track::-webkit-scrollbar {
+    display: none;
+}
+
+#top-tabs::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari */
+}
+
+/* Desktop Alignment: Center content via track justification */
+@media (min-width: 901px) {
+    .tabs-track {
+        justify-content: safe center;
+    }
 }
 
 /* Reveal when active (controlled by JS) */
@@ -57,16 +95,19 @@
 .doc-tab {
     background: none;
     border: none;
-    padding: 8px 0;
+    padding: 6px 20px;
+    /* Expanded width as requested */
     font-family: 'Source Sans 3', sans-serif;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 400;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--mist);
     cursor: pointer;
-    transition: color 0.4s ease;
+    transition: all 0.4s ease;
     position: relative;
+    flex-shrink: 0;
+    /* Never squash text */
 }
 
 .doc-tab::after {

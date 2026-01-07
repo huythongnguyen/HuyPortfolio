@@ -15,7 +15,12 @@
     --mist: #888;
     --paper: #fdfcfb;
     --sand: #f5f3f0;
-    
+    --accent: #5e7b64;
+    --accent-rgb: 94, 123, 100;
+
+    /* Layout tokens */
+    --header-height: 72px;
+
     /* Theme toggle icon */
     --theme-icon: "☀";
 }
@@ -27,7 +32,9 @@
     --mist: #5a5855;
     --paper: #1c1b1a;
     --sand: #2a2826;
-    
+    --accent: #a3c4ab;
+    --accent-rgb: 163, 196, 171;
+
     --theme-icon: "☾";
 }
 
@@ -36,14 +43,14 @@
     --theme-transition: 0.4s ease;
 }
 
-* { 
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-html { 
-    font-size: 17px; 
+html {
+    font-size: 17px;
     scroll-behavior: smooth;
 }
 
@@ -55,4 +62,3 @@ body {
     background: var(--paper);
     transition: background var(--theme-transition), color var(--theme-transition);
 }
-

@@ -113,16 +113,10 @@ Each level builds on previous concepts. **Click any level to jump directly to th
 
 | Level | Name | Key Concept | When to Use | Core Problem |
 |-------|------|-------------|-------------|--------------|
-| **1** | Merge Sort Pattern | Split → Recurse → Merge | Sort array, count inversions | Sort an Array |
-| **2** | K-Way Merge | Merge multiple sorted sources | Merge k sorted lists | Merge k Sorted Lists |
-| **3** | Crossing Boundary | Handle cases spanning split | Max subarray, closest pair | Maximum Subarray |
-| **4** | Quick Select | Partition around pivot | Kth largest in O(n) average | Kth Largest Element |
-
-### Quick Decision Guide
-- **"Sort or count inversions"** → Level 1 (Merge Sort)
-- **"Merge k sorted things"** → Level 2 (K-Way with Heap)
-- **"Answer may cross midpoint"** → Level 3 (Handle crossing case)
-- **"Find kth element quickly"** → Level 4 (Quick Select)
+| **1** | Merge Sort Pattern | Split → Recurse → Merge | **Sort or count inversions:** Split in half, sort recursively, merge in O(n). O(n log n) total. Classic divide & conquer foundation | Sort an Array |
+| **2** | K-Way Merge | Merge multiple sorted sources | **Merge k sorted lists/arrays:** Heap tracks min of k heads. O(N log k) vs O(N k) pairwise or O(N log N) full sort. Optimal for multiple sources | Merge k Sorted Lists |
+| **3** | Crossing Boundary | Handle cases spanning split | **Answer may cross midpoint:** Max subarray, closest pair. Check 3 cases: left half, right half, AND crossing. Don't miss solutions bridging subproblems | Maximum Subarray |
+| **4** | Quick Select | Partition around pivot | **Kth largest/smallest in O(n) average:** Partition, recurse on ONE side containing answer (not both). O(n) average vs O(n log n) full sort. Prune half each time | Kth Largest Element |
 
 ---
 

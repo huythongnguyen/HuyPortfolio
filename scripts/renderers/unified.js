@@ -91,6 +91,9 @@ export function renderDocument(parsedDoc) {
             setRevealSpeed(originalSpeed);
         }
         revealTabs();
+        // Reset scroll spy to ensure TOC starts tracking from the beginning
+        // after text is fully revealed and scrolled to top
+        setTimeout(() => setupScrollSpy(), 100);
     });
 
     // 6. Setup Secondary Reveal (Media)

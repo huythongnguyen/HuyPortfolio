@@ -9,6 +9,7 @@
 import { getSectionElements } from '../renderers/unified.js';
 import { stopCurrentReveal, revealAllImmediately } from '../core/textReveal.js';
 import { closeMobileMenu } from './mobileMenu.js';
+import { setupScrollSpy } from './scrollSpy.js';
 
 /**
  * Finds the section element containing a target element.
@@ -45,13 +46,21 @@ export function createTOCClickHandler(targetId) {
 
         const targetSection = findContainingSection(targetId);
 
-        // Scroll to target element (may be heading inside section)
         const targetElement = document.getElementById(targetId);
-        if (targetElement || targetSection) {
-            (targetElement || targetSection).scrollIntoView({
+        const scrollTarget = targetElement || targetSection;
+
+        if (scrollTarget) {
+            scrollTarget.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
             });
+
+            // "Extra effort": Add a temporary pulse to show where we've landed
+            const section = findContainingSection(targetId);
+            if (section) {
+                section.classList.add('jump-pulse');
+                setTimeout(() => section.classList.remove('jump-pulse'), 2000);
+            }
         }
 
         // Update TOC active state
@@ -60,6 +69,9 @@ export function createTOCClickHandler(targetId) {
 
         // Close mobile menu if open
         closeMobileMenu();
+
+        // Reset scroll spy to ensure proper TOC tracking after navigation
+        setTimeout(() => setupScrollSpy(), 300);
     };
 }
 

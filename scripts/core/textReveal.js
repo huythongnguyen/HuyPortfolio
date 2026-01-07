@@ -22,9 +22,9 @@ export function initTextReveal() {
     stopReveal = false;
     isRevealing = false;
 
-    // Zen Logic: Mobile readers often appreciate a slightly slower pace to avoid dizziness
+    // Zen Logic: Mobile readers often appreciate a much slower pace to avoid dizziness and foster stillness
     const isMobile = window.innerWidth <= 900;
-    revealSpeed = isMobile ? SPEEDS.medium * 1.2 : SPEEDS.medium;
+    revealSpeed = isMobile ? SPEEDS.medium * 1.8 : SPEEDS.medium;
 }
 
 export function setRevealSpeed(speed) {
@@ -124,6 +124,7 @@ export async function startLinearReveal(elements, onComplete) {
             el.classList.add('revealed');
             handleParentReveal(el);
         });
+        updateMandalaRotation(1);
         if (onComplete) onComplete();
         return;
     }
@@ -134,23 +135,61 @@ export async function startLinearReveal(elements, onComplete) {
     // Provide a way to skip mid-animation
     showSkipButton(() => {
         elements.forEach(el => {
-            el.style.opacity = '1';
-            el.style.transform = 'translateY(0)';
-            el.classList.add('revealed');
-            handleParentReveal(el);
+            if (!el.classList.contains('revealed')) {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+                el.classList.add('revealed');
+                handleParentReveal(el);
+            }
         });
+        updateMandalaRotation(1);
         stopReveal = true;
         if (onComplete) onComplete();
     });
 
+    const total = elements.length;
+    let revealedCount = 0;
+
+    // --- REACH/CATCH-UP LOGIC ---
+    // If the user scrolls ahead, we should reveal everything they bring into view
+    const catchUpListener = () => {
+        const viewportBottom = window.scrollY + window.innerHeight;
+        elements.forEach((el, index) => {
+            if (!el.classList.contains('revealed')) {
+                const rect = el.getBoundingClientRect();
+                const absoluteTop = rect.top + window.scrollY;
+
+                // If it's already on screen or behind us, reveal it instantly
+                if (absoluteTop < viewportBottom + 100) {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                    el.classList.add('revealed');
+                    handleParentReveal(el);
+                }
+            }
+        });
+    };
+
+    window.addEventListener('scroll', catchUpListener);
+
     for (const el of elements) {
         if (stopReveal) break;
+
+        // Skip if already revealed by catch-up or skip
+        if (el.classList.contains('revealed')) {
+            revealedCount++;
+            continue;
+        }
 
         const isBlock = el.classList.contains('reveal-block');
 
         el.style.opacity = '1';
         el.style.transform = 'translateY(0)';
         el.classList.add('revealed');
+        revealedCount++;
+
+        // Update Mandala rotation as percentage of progress
+        updateMandalaRotation(revealedCount / total);
 
         // Handle special parent elements (LI, A)
         handleParentReveal(el);
@@ -160,13 +199,33 @@ export async function startLinearReveal(elements, onComplete) {
         const delay = isBlock ? 400 : revealSpeed;
         await new Promise(r => setTimeout(r, delay));
 
-        // Auto-scroll if near bottom
-        ensureVisible(el);
+        // Auto-scroll if near bottom AND user hasn't scrolled manually recently
+        const timeSinceLastScroll = Date.now() - userLastScrollTime;
+        if (timeSinceLastScroll > 2000) {
+            ensureVisible(el);
+        }
     }
 
+    window.removeEventListener('scroll', catchUpListener);
     isRevealing = false;
     hideSkipButton();
     if (onComplete && !stopReveal) onComplete();
+}
+
+let userLastScrollTime = 0;
+let lastAutoScrollTime = 0;
+
+window.addEventListener('scroll', () => {
+    // We only track manual scrolls if NOT currently auto-scrolling
+    if (Date.now() - lastAutoScrollTime > 1000) {
+        userLastScrollTime = Date.now();
+    }
+}, { passive: true });
+
+function updateMandalaRotation(progress) {
+    // Rotate up to 360 degrees based on completion
+    const rotation = progress * 360;
+    document.documentElement.style.setProperty('--reveal-rotate', `${rotation}deg`);
 }
 
 function handleParentReveal(el) {
@@ -211,10 +270,13 @@ function showSkipButton(onSkip) {
         btn.innerHTML = `
             <svg viewBox="0 0 100 100" width="100" height="100" fill="none" stroke="currentColor" stroke-width="0.6">
                 <!-- Outer "Void" Ring -->
-                <circle class="mandala-ring ring-outer" cx="50" cy="50" r="48" stroke-dasharray="1 10" />
+                <circle class="mandala-ring ring-outer" cx="50" cy="50" r="48" />
                 <!-- Inner Rotating Geometry -->
                 <g class="mandala-core">
                     <circle cx="50" cy="50" r="15" stroke-width="0.3" stroke-dasharray="2 2" />
+                    <!-- Satellite Dot (Orbital) -->
+                    <circle cx="50" cy="15" r="2.5" fill="currentColor" class="mandala-satellite" />
+                    
                     <path class="mandala-petal" d="M50 10 Q 55 30 50 50 Q 45 30 50 10" />
                     <path class="mandala-petal" d="M50 90 Q 55 70 50 50 Q 45 70 50 90" />
                     <path class="mandala-petal" d="M10 50 Q 30 55 50 50 Q 30 45 10 50" />
@@ -227,7 +289,6 @@ function showSkipButton(onSkip) {
                         <path class="mandala-petal" d="M85 50 Q 65 55 50 50 Q 65 45 85 50" />
                     </g>
                 </g>
-                <circle cx="50" cy="50" r="2" fill="currentColor" class="mandala-center"/>
             </svg>
         `;
         document.body.appendChild(btn);
@@ -270,7 +331,7 @@ let lastScrollTime = 0;
 function ensureVisible(element) {
     const now = Date.now();
     // Throttle scrolling to ensure previous smooth scroll completes (avoid zigzag)
-    if (now - lastScrollTime < 800) return;
+    if (now - lastAutoScrollTime < 800) return;
 
     const rect = element.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
@@ -289,7 +350,7 @@ function ensureVisible(element) {
                 top: scrollAmount,
                 behavior: 'smooth'
             });
-            lastScrollTime = now;
+            lastAutoScrollTime = now;
         }
     }
 }

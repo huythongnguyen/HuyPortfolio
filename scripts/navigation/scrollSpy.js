@@ -64,21 +64,62 @@ export function setupScrollSpy() {
  * Updates which TOC link is highlighted based on visible sections.
  */
 function updateActiveTOCLink(visibleSections, sectionMap) {
-    sectionMap.forEach(link => link.classList.remove('active'));
-
-    // Also remove active from sections
-    const allSections = Array.from(document.querySelectorAll('.content-section, .bilingual-chapter, .bilingual-main-section, .bilingual-preamble'));
-    allSections.forEach(s => s.classList.remove('active'));
-
     if (visibleSections.size === 0) return;
 
+    const allSections = Array.from(document.querySelectorAll('.content-section, .bilingual-chapter, .bilingual-main-section, .bilingual-preamble'));
+
+    // Zen Focus Line: We track based on what's at the top of the viewport (roughly 15% down)
+    const focalPoint = window.innerHeight * 0.15;
+    let bestSectionId = null;
+
+    // First, find the section that is currently crossing the focus line
     for (const section of allSections) {
-        if (visibleSections.has(section.id) && sectionMap.has(section.id)) {
-            const link = sectionMap.get(section.id);
-            link.classList.add('active');
-            section.classList.add('active'); // Synchronize content
-            scrollTOCIntoView(link);
+        if (!visibleSections.has(section.id)) continue;
+
+        const rect = section.getBoundingClientRect();
+
+        // If this section crosses the focus line, it's our primary candidate
+        if (rect.top <= focalPoint && rect.bottom >= focalPoint) {
+            bestSectionId = section.id;
             break;
+        }
+    }
+
+    // If no section crosses the focus line (e.g. gaps or at end), 
+    // fallback to the first visible section
+    if (!bestSectionId) {
+        for (const section of allSections) {
+            if (visibleSections.has(section.id)) {
+                bestSectionId = section.id;
+                break;
+            }
+        }
+    }
+
+    if (!bestSectionId) return;
+
+    // Track back to heading ID if it's a content section
+    let trackingId = bestSectionId;
+    if (trackingId.endsWith('-content')) {
+        trackingId = trackingId.replace('-content', '');
+    }
+    // Handle specific intro case
+    if (trackingId === 'section-intro') trackingId = 'intro';
+
+    if (sectionMap.has(trackingId)) {
+        // Only update if changed to avoid unnecessary re-scrolling of TOC
+        const link = sectionMap.get(trackingId);
+        if (!link.classList.contains('active')) {
+            sectionMap.forEach(l => l.classList.remove('active'));
+            allSections.forEach(s => s.classList.remove('active'));
+
+            link.classList.add('active');
+
+            // Highlight the section element too if it matches the current section exactly
+            const activeSection = document.getElementById(bestSectionId);
+            if (activeSection) activeSection.classList.add('active');
+
+            scrollTOCIntoView(link);
         }
     }
 }

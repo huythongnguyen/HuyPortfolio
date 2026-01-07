@@ -10,8 +10,9 @@ export const FILES = [
         name: 'Profile',
         path: 'data/Profile.md',
         bilingual: false,
-        defaultSpeed: 'slower',
-        tocRevealMode: 'parallel'
+        defaultSpeed: 'medium',
+        tocRevealMode: 'parallel',
+        initialMode: 'overview'
     },
     {
         name: 'Education',

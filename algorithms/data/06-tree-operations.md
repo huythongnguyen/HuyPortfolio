@@ -123,16 +123,10 @@ Each level builds on previous concepts. **Click any level to jump directly to th
 
 | Level | Name | Key Concept | When to Use | Core Problem |
 |-------|------|-------------|-------------|--------------|
-| **1** | Tree Traversal (DFS) | Recursive pre/in/post order | Visit all nodes, basic tree ops | Maximum Depth |
-| **2** | Tree Properties | Return boolean/value up | Validate structure, symmetry | Balanced Binary Tree |
-| **3** | Path Problems | Track path with backtracking | Root-to-leaf paths, path sum | Path Sum II |
-| **4** | BST Operations | Leverage sorted property | Search, validate, find kth | Validate BST |
-
-### Quick Decision Guide
-- **"Visit all nodes"** → Level 1 (Basic DFS)
-- **"Check tree property"** → Level 2 (Bottom-up validation)
-- **"Find all paths"** → Level 3 (Backtracking with path)
-- **"BST-specific operation"** → Level 4 (Use sorted property)
+| **1** | Tree Traversal (DFS) | Recursive pre/in/post order | **Visit all nodes/basic tree ops:** Depth, count nodes, traverse. Recursion naturally maps to tree structure. O(n) visit each once | Maximum Depth |
+| **2** | Tree Properties | Return boolean/value up | **Validate structure/properties:** Check if balanced, symmetric, valid BST. Pass constraints down (BST ranges), collect results up (heights, validity) | Balanced Binary Tree |
+| **3** | Path Problems | Track path with backtracking | **Root-to-leaf paths:** Find all paths, path sum. Build path going down (add node), backtrack coming up (remove node). Collect valid paths | Path Sum II |
+| **4** | BST Operations | Leverage sorted property | **Binary Search Tree specific:** Inorder gives sorted sequence. Search, validate, find kth in O(h). Pass and update valid ranges for validation | Validate BST |
 
 ---
 

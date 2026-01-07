@@ -121,16 +121,10 @@ Each level builds on previous concepts. **Click any level to jump directly to th
 
 | Level | Name | Key Concept | When to Use | Core Problem |
 |-------|------|-------------|-------------|--------------|
-| **1** | Subsets Generation | Include/exclude each element | Generate all subsets, power set | Subsets |
-| **2** | Permutations | Track used elements | All orderings, arrangements | Permutations |
-| **3** | Combinations with Sum | Early termination on target | Find combinations summing to K | Combination Sum |
-| **4** | Constraint Satisfaction | Validate before placing | N-Queens, Sudoku, valid configs | N-Queens |
-
-### Quick Decision Guide
-- **"Generate all subsets"** → Level 1 (Include/Exclude)
-- **"All arrangements/orderings"** → Level 2 (Used array)
-- **"Combinations summing to target"** → Level 3 (Pruning on sum)
-- **"Place items with constraints"** → Level 4 (Validate + Backtrack)
+| **1** | Subsets Generation | Include/exclude each element | **Generate all subsets/power set:** Each element has 2 choices (include/exclude). Explore all 2^n combinations. Template: choose→explore→unchoose | Subsets |
+| **2** | Permutations | Track used elements | **All arrangements/orderings:** Order matters! Track which elements used (set/array). Each position tries all unused elements. Generates all n! orderings | Permutations |
+| **3** | Combinations with Sum | Early termination on target | **Find combinations summing to K:** Target-based selection. Prune early when sum exceeds target or impossibility detected. Sort helps skip duplicates and enable early exit | Combination Sum |
+| **4** | Constraint Satisfaction | Validate before placing | **Placement with rules:** N-Queens (can't attack), Sudoku (row/col/box rules). Check constraints BEFORE recursing to prune invalid branches early. Massive search space reduction | N-Queens |
 
 ---
 

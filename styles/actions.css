@@ -7,19 +7,21 @@
 
 
 
-/* Theme toggle - fixed position, always visible */
+/* Theme toggle - positioned inside top-tabs, vertically centered */
 #theme-toggle {
     position: fixed;
-    top: 24px;
-    right: 24px;
-    z-index: 1001;
-    width: 44px;
-    height: 44px;
+    top: calc(var(--header-height) / 2);
+    /* Centered relative to the tab bar */
+    right: 32px;
+    transform: translateY(-50%);
+    z-index: 2000;
+    width: 36px;
+    height: 36px;
     padding: 0;
     border-radius: 50%;
     background: var(--paper);
     border: 1px solid var(--sand);
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: var(--mist);
     cursor: pointer;
     display: flex;
@@ -29,18 +31,23 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
+#theme-toggle svg {
+    stroke: currentColor;
+    transition: transform 0.4s ease;
+}
+
 #theme-toggle:hover {
     color: var(--ink);
     border-color: var(--mist);
-    transform: rotate(15deg);
+    transform: translateY(-50%) rotate(15deg);
 }
 
 /* Skip Animation (Unfold) Button - Zen Mandala */
 #skip-reveal {
     position: fixed;
-    right: 32px;
+    right: 40px;
     top: 50%;
-    transform: translateY(-50%) scale(0.8);
+    transform: translateY(-50%) scale(0.9);
     z-index: 1001;
     width: 120px;
     height: 120px;
@@ -59,7 +66,8 @@
 }
 
 #skip-reveal.visible {
-    opacity: 0.3;
+    opacity: 0.6;
+    /* Increased visibility */
     pointer-events: auto;
     transform: translateY(-50%) scale(1);
     animation: mandala-float 6s infinite ease-in-out;
@@ -68,21 +76,30 @@
 #skip-reveal:hover {
     opacity: 1;
     color: var(--ink);
-    transform: translateY(-50%) scale(1.1);
+    transform: scale(1.1);
 }
 
-.mandala-ring {
+.mandala-ring.ring-outer {
+    opacity: 0.15;
+    /* Dimmer as requested */
     transform-origin: center;
-    animation: rotate-slow 20s infinite linear;
+    animation: rotate-slow 30s infinite linear;
 }
+
+.mandala-satellite {
+    opacity: 0.6;
+}
+
+/* Removed satellite-pulse animation */
 
 .mandala-core {
     transform-origin: center;
-    transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+    transform: rotate(var(--reveal-rotate, 0deg));
+    transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 #skip-reveal:hover .mandala-core {
-    transform: rotate(90deg) scale(1.2);
+    transform: rotate(calc(var(--reveal-rotate, 0deg) + 45deg)) scale(1.1);
 }
 
 .mandala-petal {

@@ -78,12 +78,7 @@
         padding: 16px 16px 48px 24px;
     }
 
-    #theme-toggle {
-        top: 16px;
-        right: 16px;
-        width: 40px;
-        height: 40px;
-    }
+
 }
 
 /* === BILINGUAL TABLET === */
@@ -142,58 +137,34 @@
     }
 
     #top-tabs {
-        display: flex;
         justify-content: flex-start;
-        align-items: center;
-        gap: 24px;
-        padding: 0 60px 0 20px;
-        height: 60px;
-        overflow-x: auto;
-        overflow-y: hidden;
-        white-space: nowrap;
-        background: var(--paper);
-        /* Respect JS state on mobile too - only show on reveal complete or hover */
-        pointer-events: none;
-        opacity: 0;
-        transform: translateY(-100%);
-        transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-        scrollbar-width: none;
-        /* Firefox */
-        -ms-overflow-style: none;
-        /* IE and Edge */
-        border-bottom: 2px solid var(--sand);
+        padding: 0;
+        height: var(--header-height);
+        border-bottom: 1px solid var(--sand);
     }
 
-    #top-tabs.visible {
-        opacity: 1 !important;
-        transform: translateY(0) !important;
-        pointer-events: auto !important;
-    }
-
-    #top-tabs::-webkit-scrollbar {
-        display: none;
-        /* Chrome, Safari and Opera */
+    .tabs-track {
+        padding: 0 80px 0 20px;
+        height: 100%;
     }
 
     .doc-tab {
         font-size: 0.75rem;
-        flex-shrink: 0;
-        padding: 12px 4px;
-        letter-spacing: 0.15em;
+        padding: 8px 0;
     }
 
     #content {
-        padding: 24px 20px 60px;
-        /* Default: Full screen breathing room */
+        padding: calc(var(--header-height) + 20px) 20px 60px;
+        /* Synchronized with header */
         max-width: 100%;
         margin: 0;
         transition: padding-top 0.5s cubic-bezier(0.19, 1, 0.22, 1);
     }
 
-    /* When tabs are visible, shift content down to start BELOW them */
+    /* Fixed alignment for tabs */
     #top-tabs.perma-visible~#content-wrapper #content,
     #top-tabs.perma-visible~#content {
-        padding-top: 80px;
+        padding-top: calc(var(--header-height) + 20px);
     }
 
     #actions {
@@ -229,21 +200,13 @@
         font-size: 1.3rem;
     }
 
-    /* Bilingual mobile adjustments - Zen 9% Total Margin with Dynamic Padding */
+    /* Bilingual mobile adjustments */
     #content.bilingual-mode {
-        padding: 24px 4.5% 60px !important;
-        /* Start full screen */
+        padding: calc(var(--header-height) + 20px) 4.5% 60px !important;
         width: 100vw !important;
         max-width: 100vw !important;
         margin: 0 !important;
         box-sizing: border-box;
-        transition: padding-top 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-    }
-
-    /* Shift below tabs when permanently rendered */
-    #top-tabs.perma-visible~#content-wrapper #content.bilingual-mode,
-    #top-tabs.perma-visible~#content.bilingual-mode {
-        padding-top: 80px !important;
     }
 
     .bilingual-chapter,
@@ -280,14 +243,7 @@
         font-size: 1.3rem;
     }
 
-    #theme-toggle {
-        top: 12px;
-        right: 12px;
-        width: 38px;
-        height: 38px;
-        font-size: 1rem;
-        z-index: 200;
-    }
+
 
     /* Mobile Menu Toggle */
     #mobile-menu-toggle {

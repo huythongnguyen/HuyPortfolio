@@ -11,24 +11,14 @@ The two-pointer technique represents one of the most elegant optimizations in al
 - Maintain sliding window state for O(n) contiguous subarray solutions
 - Choose between opposite-end convergence vs same-direction sliding
 
-## When to Recall These Techniques
-
-Two-pointer problems involve optimizing array/string operations by tracking multiple positions simultaneously. The pattern you choose depends on whether you're modifying in-place, working with sorted data, or maintaining a validity constraint over a range.
-
-**Quick Pattern Recognition:**
-- **Must modify without extra space** → In-place modification
-- **Sorted array + finding pairs** → Opposite-end pointers
-- **Finding triplets/k-tuples** → 3Sum pattern (fix + two pointers)
-- **Contiguous subarray constraint** → Sliding window
-
 ## The Learning Ladder
 
 | Level | Name | Key Concept | When to Use This Pattern | Core Problem |
 |-------|------|-------------|--------------------------|--------------|
-| **1** | In-Place Modification | Read/write pointers | Removing/moving elements without O(n) extra space, array modification where `pop()` causes O(n²), need to compact array while preserving order | Remove Duplicates |
-| **2** | Opposite-End Pointers | Converge from both ends | Sorted array + finding pairs with target sum, container/area problems where both boundaries affect result, palindrome checks (compare ends moving inward) | Container With Most Water |
-| **3** | Three Pointers (3Sum) | Fix one, sweep with two | Finding triplets/quadruplets summing to target, reducing O(n³) to O(n²) by fixing one dimension, sorted array enabling pointer logic | 3Sum |
-| **4** | Sliding Window | Expand right, shrink left | Longest/shortest contiguous subarray/substring satisfying constraint, window validity tracked with hash map/counters, dynamic window size based on condition | Longest Substring Without Repeating |
+| **1** | In-Place Modification | Read/write pointers | **Remove/compact without extra space:** `pop()` causes O(n²) shifting. Use read pointer (scan all) + write pointer (track valid position). Space must be O(1) | Remove Duplicates |
+| **2** | Opposite-End Pointers | Converge from both ends | **Sorted + pairs/triplets:** Find pair summing to target. Converge from ends using sorted property. Too large? Move right left. Too small? Move left right. O(n) vs O(n²) nested loops | Container With Most Water |
+| **3** | Three Pointers (3Sum) | Fix one, sweep with two | **K-tuples (k≥3):** Fix one element, apply two-pointer on rest. Reduces O(n³) to O(n²). Classic: "find three numbers summing to target." Requires sorting | 3Sum |
+| **4** | Sliding Window | Expand right, shrink left | **Contiguous subarray/substring with constraints:** Longest/shortest satisfying condition. Expand right (explore), shrink left (maintain validity). O(n) vs O(n²) enumeration | Longest Substring Without Repeating |
 
 ## Deep Dive: Pattern Recognition
 
@@ -51,25 +41,6 @@ Finding triplets/k-tuples with specific sum or relationship. Fix one element, ap
 Contiguous subarray/substring problems with constraints (longest/shortest satisfying condition, character frequency limits, sum bounds). Window expands right to explore, shrinks left to maintain validity. Maintains running state (sum, counts) instead of recalculating. Achieves O(n) instead of O(n²) substring enumeration.
 
 **When to use:** Problem asks for contiguous subarray/substring with constraint: "longest substring with at most k distinct characters," "minimum window containing all characters." Window expands to explore, contracts to maintain validity. State (character counts, sum) updates incrementally.
-
----
-
-<div id="learning-ladder"></div>
-
-## The Learning Ladder
-
-| Level | Name | Key Concept | When to Use This Pattern | Core Problem |
-|-------|------|-------------|--------------------------|--------------|
-| **1** | In-Place Modification | Read/write pointers | Removing/moving elements without O(n) extra space, array modification where `pop()` causes O(n²), need to compact array while preserving order | Remove Duplicates |
-| **2** | Opposite-End Pointers | Converge from both ends | Sorted array + finding pairs with target sum, container/area problems where both boundaries affect result, palindrome checks (compare ends moving inward) | Container With Most Water |
-| **3** | Three Pointers (3Sum) | Fix one, sweep with two | Finding triplets/quadruplets summing to target, reducing O(n³) to O(n²) by fixing one dimension, sorted array enabling pointer logic | 3Sum |
-| **4** | Sliding Window | Expand right, shrink left | Longest/shortest contiguous subarray/substring satisfying constraint, window validity tracked with hash map/counters, dynamic window size based on condition | Longest Substring Without Repeating |
-
-### Quick Decision Guide
-- **"Remove/modify in-place"** → Level 1 (Read/Write Pointers)
-- **"Find pair in sorted array"** → Level 2 (Opposite-End)
-- **"Find triplet/quadruplet"** → Level 3 (Fix + Two Pointers)
-- **"Longest/shortest subarray with condition"** → Level 4 (Sliding Window)
 
 ---
 

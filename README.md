@@ -46,9 +46,10 @@ Design that flows across any screen without losing its soul.
 *   **Touch-Optimized Tabs**: Document switchers are horizontally scrollable and touch-ready, ensuring the "Too Wide" problem of desktop layouts is naturally resolved.
 *   **Responsive Scaling**: Typography and bilingual layouts automatically adjust their breathing room (*Ma*) to feel as native on an iPhone as they do on an iMac.
 
-### 6. Principle of Dynamic Presence (Ma & Seijaku)
-Our navigation is designed to be an echo, not a noise.
-*   **Non-Overlapping Flow**: The Top-Bar and main content share a respectful boundary. To preserve stillness, the content only shifts its position once the navigation is **Permanently Rendered** (reveal complete). Temporary hovers do not shift the text canvas, ensuring zero visual "jumps" during exploration.
+### 6. Principle of Constant Presence & Stillness
+Our navigation and content share a harmonious, stable relationship.
+*   **Stable Geometry**: The display area for main text is now positioned with a constant offset below the top-navigation. This ensures that the text canvas remains perfectly still whether the tabs are visible, hidden, or transitioning—eliminating all visual jumps and providing a consistent reading frame.
+*   **Refined Scale**: The top navigation bar has been scaled down (reduced by 1/3) to prioritize the reading experience while maintaining intuitive access.
 *   **Scroll-Driven Recessional**: As you descend into the document, the Top-Bar recedes (slides up) to grant the mind full-screen stillness.
 *   **Strict Emergence**: The navigation reveals **only** when the reader hovers (touch) at the absolute top of the screen or once the document's text reveal is fully complete. It remains hidden during the sacred unfolding process.
 *   **Unified Gestures**: Whether through a mouse-flick on desktop or a swipe on mobile, the UI responds with a consistent "Zen Slide" that feels natural and effortless.

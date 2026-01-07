@@ -18,25 +18,14 @@ The key insight: sorting isn't the goal—it's a tool. Master when to sort (enab
 - **Sorted intervals** → O(n) greedy merge instead of O(n²) pairwise checks
 - **Custom ordering** → Transform comparison to unlock sorting power
 
-## When to Recall These Techniques
-
-Sorting problems appear when element order enables optimization or when the problem explicitly requires ordering. The key is recognizing whether sorting unlocks a simpler algorithm (binary search, two pointers, greedy merging) or if the problem requires custom comparison logic.
-
-**Quick Pattern Recognition:**
-- **Merging sorted arrays in-place** → In-place merging (fill from end)
-- **Three distinct values to sort** → Three-way partitioning (Dutch Flag)
-- **Overlapping intervals** → Sort + greedy merge
-- **Custom ordering rules** → Custom comparator
-- **Finding k-th element** → Quick Select or heap
-
 ## The Learning Ladder
 
 | Level | Name | Key Concept | When to Use | Core Problem |
 |-------|------|-------------|-------------|--------------|
-| **1** | In-Place Merging | Merge without extra space | Two sorted arrays, limited memory | Merge Sorted Array |
-| **2** | Three-Way Partitioning | Dutch National Flag | 3 categories, single pass | Sort Colors |
-| **3** | Interval Problems | Sort by start/end time | Overlapping ranges, scheduling | Merge Intervals |
-| **4** | Custom Comparator | Define ordering logic | Non-standard sort criteria | Largest Number |
+| **1** | In-Place Merging | Merge without extra space | **Two sorted+ limited memory:** Merge backwards from end to avoid overwrites. Use three pointers (two read, one write). O(1) space vs  O(n) temp array | Merge Sorted Array |
+| **2** | Three-Way Partitioning | Dutch National Flag | **3 categories, single pass:** Only 3 distinct values (like 0,1,2). Dutch Flag maintains 3 regions in one pass. O(n) vs O(n log n) general sort | Sort Colors |
+| **3** | Interval Problems | Sort by start/end time | **Overlapping ranges/scheduling:** Unsorted intervals need O(n²) pairwise checks. Sort makes overlaps adjacent → O(n) greedy merge. Classic: merge intervals | Merge Intervals |
+| **4** | Custom Comparator | Define ordering logic | **Non-standard sort criteria:** Default numeric/lexicographic sort doesn't match needs. Define custom comparison (e.g., concatenation-based for "Largest Number") | Largest Number |
 
 ## Deep Dive: Pattern Recognition
 
