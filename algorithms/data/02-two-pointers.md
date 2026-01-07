@@ -1,105 +1,69 @@
----
-id: 02-two-pointers
-title: Two Pointers / Sliding Window
-order: 2
-icon: Move
-difficulty: Beginner
-estimatedTime: 4-5 hours
-description: Find subarray/substring satisfying constraints
-summary: Transform O(n²) brute force solutions into elegant O(n) algorithms using two pointers. Master 7 levels from basic in-place modification to advanced multi-pointer techniques and variable-size sliding windows with complex state tracking.
-keySignals:
-  - Contiguous elements
-  - Sorted array
-  - Window/subarray
-  - Palindrome
-  - Partitioning
-algorithms:
-  - Two Pointers
-  - Sliding Window
-  - Fast & Slow Pointers
-levels:
-  - name: In-Place Array Modification
-    subtitle: Foundation - Remove/Move Elements
-  - name: Opposite-End Two Pointers
-    subtitle: Sorted Array Optimization
-  - name: Three Pointers (3Sum Pattern)
-    subtitle: Fix One, Sweep Two
-  - name: Sliding Window
-    subtitle: Variable-Size Window
-gradingDimensions:
-  - name: Pointer Strategy
-    weight: "30%"
-    keyPoints:
-      - point: Choose correct pointer pattern
-        explanation: Opposite ends for sorted arrays (e.g., two sum on sorted), same direction for sliding window. The pattern choice depends on whether elements need to converge or expand.
-      - point: Understand when to move each pointer
-        explanation: Move left pointer when current sum is too small, right when too large. For sliding window, expand right to include more, shrink left to satisfy constraints.
-      - point: Maintain invariants correctly
-        explanation: Define what property holds between pointers (e.g., "all elements between left and right are valid"). Verify invariant after each pointer move.
-  - name: Optimization Insight
-    weight: "25%"
-    keyPoints:
-      - point: Reduce O(n²) to O(n) with pointers
-        explanation: Instead of checking all pairs (nested loops), two pointers eliminate impossible candidates in one pass. Key insight is sorted order or sliding constraints prevent backtracking.
-      - point: Avoid unnecessary re-computation
-        explanation: Sliding window maintains running state (sum, count, frequency map) and updates incrementally when window shifts, rather than recalculating from scratch.
-      - point: Use sliding window for contiguous subarrays
-        explanation: When problem asks for subarray/substring satisfying conditions, sliding window is usually optimal. Expand until condition breaks, then shrink until valid again.
-  - name: State Management
-    weight: "25%"
-    keyPoints:
-      - point: Track window state efficiently
-        explanation: Use hash maps for character counts, running sums for numeric windows. Choose data structure based on what condition you need to check (existence vs count vs order).
-      - point: Handle duplicates/edge cases
-        explanation: Skip duplicates in sorted arrays with while loops. Handle empty input, single element, all same elements. Consider when window can be empty.
-      - point: Correct loop termination
-        explanation: "For opposite-end pointers: while left < right. For sliding window: while right < n. Ensure all elements are processed and no infinite loops occur."
-  - name: Problem Decomposition
-    weight: "20%"
-    keyPoints:
-      - point: Break problem into manageable steps
-        explanation: First sort if needed, then initialize pointers, define loop condition, specify move logic. Explain each step before coding.
-      - point: Explain pointer movement logic
-        explanation: "\"I move left pointer because current sum is too small and I need larger values.\" Make movement decisions explicit and justified."
-      - point: Articulate why O(n) is achievable
-        explanation: "\"Each pointer moves at most n times total, never backwards, so total operations are O(n).\" Prove linear time by showing no repeated work."
-questionTitles:
-  - 3Sum
-  - Longest Substring Without Repeating Characters
-  - Remove Nth Node From End of List
-  - Trapping Rain Water
-  - Merge Sorted Array
-  - Container With Most Water
-  - Valid Palindrome
-  - Two Sum II - Input Array Is Sorted
-  - Remove Duplicates from Sorted Array
-  - Move Zeroes
-  - Minimum Window Substring
-  - Sliding Window Maximum
-  - Linked List Cycle
-  - Linked List Cycle II
-  - Find the Duplicate Number
-  - Middle of the Linked List
-  - 4Sum
-  - Subarray Sum Equals K
-  - Longest Repeating Character Replacement
-  - Permutation in String
----
+# Two Pointers / Sliding Window
 
-# Two Pointers / Sliding Window: Progressive Mastery Path
+## Chapter Overview
+
+The two-pointer technique represents one of the most elegant optimizations in algorithm design—transforming brute force O(n²) solutions into elegant O(n) algorithms through intelligent pointer movement. This chapter reveals the power of maintaining multiple positions in a data structure, whether converging from opposite ends, moving in tandem, or expanding and contracting a window.
+
+**What You'll Master:**
+- Recognize when space constraints require in-place pointer manipulation
+- Apply convergence patterns on sorted arrays for pair/triplet problems
+- Reduce problem dimensions (fix variables + pointer sweep on rest)
+- Maintain sliding window state for O(n) contiguous subarray solutions
+- Choose between opposite-end convergence vs same-direction sliding
+
+## When to Recall These Techniques
+
+Two-pointer problems involve optimizing array/string operations by tracking multiple positions simultaneously. The pattern you choose depends on whether you're modifying in-place, working with sorted data, or maintaining a validity constraint over a range.
+
+**Quick Pattern Recognition:**
+- **Must modify without extra space** → In-place modification
+- **Sorted array + finding pairs** → Opposite-end pointers
+- **Finding triplets/k-tuples** → 3Sum pattern (fix + two pointers)
+- **Contiguous subarray constraint** → Sliding window
+
+## The Learning Ladder
+
+| Level | Name | Key Concept | When to Use This Pattern | Core Problem |
+|-------|------|-------------|--------------------------|--------------|
+| **1** | In-Place Modification | Read/write pointers | Removing/moving elements without O(n) extra space, array modification where `pop()` causes O(n²), need to compact array while preserving order | Remove Duplicates |
+| **2** | Opposite-End Pointers | Converge from both ends | Sorted array + finding pairs with target sum, container/area problems where both boundaries affect result, palindrome checks (compare ends moving inward) | Container With Most Water |
+| **3** | Three Pointers (3Sum) | Fix one, sweep with two | Finding triplets/quadruplets summing to target, reducing O(n³) to O(n²) by fixing one dimension, sorted array enabling pointer logic | 3Sum |
+| **4** | Sliding Window | Expand right, shrink left | Longest/shortest contiguous subarray/substring satisfying constraint, window validity tracked with hash map/counters, dynamic window size based on condition | Longest Substring Without Repeating |
+
+## Deep Dive: Pattern Recognition
+
+### In-Place Modification
+Problem requires removing/moving elements without extra space (`pop()` is too slow). Classic signals: "remove duplicates in sorted array," "move zeros to end," space complexity must be O(1). Use read/write pointers: read scans all elements, write tracks valid output position.
+
+**When to use:** Space is constrained to O(1), you're filtering/compacting an array, or `pop()`/`remove()` would cause O(n²) due to element shifting. Read pointer finds valid elements, write pointer marks where they go.
+
+### Opposite-End Pointers
+Sorted array + need to find pairs/triplets, or checking symmetric properties (palindromes), or container problems where both boundaries matter. Pointers converge from ends, intelligently eliminating candidates based on sorted order. Reduces O(n²) pair checking to O(n) single pass.
+
+**When to use:** Array is sorted (or can be sorted), looking for pairs with specific sum, or checking symmetry from both ends. The sorted property lets you move pointers intelligently: too large? Move right pointer left. Too small? Move left pointer right.
+
+### 3Sum Pattern
+Finding triplets/k-tuples with specific sum or relationship. Fix one element, apply two-pointer technique on remaining elements. Transforms O(n³) three-nested-loops into O(n²) by reducing dimensions. Requires sorting to enable pointer movement logic.
+
+**When to use:** Problem asks for triplets, quadruplets, or k-tuples. Classic signal: "find three numbers that sum to target." Reduce dimensions by fixing one variable, then solve the simpler two-variable problem with opposite-end pointers.
+
+### Sliding Window
+Contiguous subarray/substring problems with constraints (longest/shortest satisfying condition, character frequency limits, sum bounds). Window expands right to explore, shrinks left to maintain validity. Maintains running state (sum, counts) instead of recalculating. Achieves O(n) instead of O(n²) substring enumeration.
+
+**When to use:** Problem asks for contiguous subarray/substring with constraint: "longest substring with at most k distinct characters," "minimum window containing all characters." Window expands to explore, contracts to maintain validity. State (character counts, sum) updates incrementally.
+
+---
 
 <div id="learning-ladder"></div>
 
 ## The Learning Ladder
 
-Each level builds on previous concepts while adding ONE new dimension of complexity. **Click any level to jump directly to that section.**
-
-| Level | Name | Key Concept | When to Use | Core Problem |
-|-------|------|-------------|-------------|--------------|
-| **1** | In-Place Modification | Read/write pointers | Remove/move elements without extra space | Remove Duplicates |
-| **2** | Opposite-End Pointers | Converge from both ends | Sorted array, find pairs, container problems | Container With Most Water |
-| **3** | Three Pointers (3Sum) | Fix one, sweep with two | Find triplets/quadruplets, reduce N³ to N² | 3Sum |
-| **4** | Sliding Window | Expand right, shrink left | Contiguous subarray/substring with constraint | Longest Substring Without Repeating |
+| Level | Name | Key Concept | When to Use This Pattern | Core Problem |
+|-------|------|-------------|--------------------------|--------------|
+| **1** | In-Place Modification | Read/write pointers | Removing/moving elements without O(n) extra space, array modification where `pop()` causes O(n²), need to compact array while preserving order | Remove Duplicates |
+| **2** | Opposite-End Pointers | Converge from both ends | Sorted array + finding pairs with target sum, container/area problems where both boundaries affect result, palindrome checks (compare ends moving inward) | Container With Most Water |
+| **3** | Three Pointers (3Sum) | Fix one, sweep with two | Finding triplets/quadruplets summing to target, reducing O(n³) to O(n²) by fixing one dimension, sorted array enabling pointer logic | 3Sum |
+| **4** | Sliding Window | Expand right, shrink left | Longest/shortest contiguous subarray/substring satisfying constraint, window validity tracked with hash map/counters, dynamic window size based on condition | Longest Substring Without Repeating |
 
 ### Quick Decision Guide
 - **"Remove/modify in-place"** → Level 1 (Read/Write Pointers)
@@ -173,53 +137,85 @@ Instead of deleting (which shifts), **overwrite in-place**:
 
 <div class="code-block-wrapper">
 
+### Approach 1: Pop Elements (Inefficient)
+
 ```python
-# ❌ Brute Force: O(n²) time
 def remove_duplicates_brute(nums):
+    """
+    Remove duplicates by popping repeated elements.
+
+    Time Complexity: O(n²) - each pop shifts O(n) elements
+    Space Complexity: O(1) - modifies array in-place
+    Problem: Each deletion triggers array shift, causing quadratic time
+    """
     i = 0
     while i < len(nums) - 1:
         if nums[i] == nums[i+1]:
-            nums.pop(i+1)  # O(n) shift operation!
+            nums.pop(i+1)  # Expensive: shifts all elements right of i
         else:
             i += 1
     return len(nums)
-
-# Time: O(n²) - each pop is O(n)
-# Space: O(1)
-# Problem: Repeated shifting kills performance
 ```
 
+**Why This Fails:** Deleting `nums[1]` from `[1,1,2,2,3]` shifts `[2,2,3]` left by one position. With many duplicates, this creates O(n²) shifts.
+
+---
+
+### Approach 2: Two-Pointer Overwrite (Optimal) ✓
+
 ```python
-# ✅ Optimized: O(n) time
 def remove_duplicates(nums):
+    """
+    Use read and write pointers to compact array in-place.
+
+    Time Complexity: O(n) - single pass through array
+    Space Complexity: O(1) - only two pointer variables
+    Key Insight: Overwrite in-place instead of deleting
+    """
     if not nums:
         return 0
 
-    write = 1  # Next position to write unique element
+    write = 1  # Next position to write a unique element
 
     for read in range(1, len(nums)):
-        if nums[read] != nums[read-1]:  # Found unique
+        # Found a new unique element
+        if nums[read] != nums[read-1]:
             nums[write] = nums[read]
             write += 1
 
-    return write
-
-# Time: O(n) - single pass
-# Space: O(1) - in-place
-# Key: Two pointers at different speeds
+    return write  # New length of unique elements
 ```
 
-**Example Walkthrough**:
+**Why This Works:** We never delete—just copy unique elements forward. The `write` pointer creates a "compressed" region at the array's start, leaving garbage values at the end (which we ignore).
+
+---
+
+### Execution Trace
+
 ```python
-nums = [1, 1, 2, 2, 3]
-         r  w           read=1: 1==1, skip
-            r  w        read=2: 2≠1, nums[1]=2, write=2
-               r  w     read=3: 2==2, skip
-                  r  w  read=4: 3≠2, nums[2]=3, write=3
-Result: [1, 2, 3, 2, 3]
-         -------  (garbage, ignored)
+Input: nums = [1, 1, 2, 2, 3]
+
+Initial: [1, 1, 2, 2, 3], write=1
+
+read=1: nums[1]=1 == nums[0]=1 → skip (duplicate)
+  [1, 1, 2, 2, 3], write=1
+
+read=2: nums[2]=2 ≠ nums[1]=1 → unique!
+  nums[write] = nums[2] → [1, 2, 2, 2, 3]
+  write=2
+
+read=3: nums[3]=2 == nums[2]=2 → skip
+  [1, 2, 2, 2, 3], write=2
+
+read=4: nums[4]=3 ≠ nums[3]=2 → unique!
+  nums[write] = nums[4] → [1, 2, 3, 2, 3]
+  write=3
+
+Final: [1, 2, 3, _, _] ← first 3 elements are unique
 Return: 3
 ```
+
+**Pointer Invariant:** `nums[0...write-1]` always contains unique elements in sorted order.
 
 </div>
 

@@ -1,104 +1,85 @@
----
-id: 01-search-lookup
-title: Search / Lookup
-order: 1
-icon: Search
-difficulty: Beginner
-estimatedTime: 3-4 hours
-description: Find element(s) matching a condition
-summary: Master efficient search techniques from O(1) hash table lookups to O(log n) binary search. Learn to recognize when sorted data enables optimization and how to trade space for time. Progress through 6 levels from basic hash lookups to advanced 2D search and answer-space binary search.
-keySignals:
-  - Sorted data
-  - Repeated lookups
-  - Range queries
-  - Monotonic function
-  - Search space reduction
-algorithms:
-  - Binary Search
-  - Hash Table
-  - Binary Search on Answer
-levels:
-  - name: Hash Table Complement
-    subtitle: Foundation - O(1) Lookup
-  - name: Binary Search Basics
-    subtitle: Sorted Array Search
-  - name: Boundary Binary Search
-    subtitle: Find First/Last Position
-  - name: Search in Rotated Array
-    subtitle: Modified Binary Search
-  - name: Binary Search on 2D Matrix
-    subtitle: Multi-Dimensional Search
-  - name: Binary Search on Answer
-    subtitle: Search the Solution Space
-gradingDimensions:
-  - name: Pattern Recognition
-    weight: "30%"
-    keyPoints:
-      - point: Identify O(1) lookup opportunities
-        explanation: Recognize when you need to check if an element exists or find a complement. If you're doing repeated searches, consider hash tables.
-      - point: Recognize sorted data → binary search
-        explanation: Sorted arrays enable O(log n) search. Look for keywords like "sorted", "ordered", or when you can sort without breaking the problem.
-      - point: Spot complement/pair patterns
-        explanation: Problems asking for pairs summing to target, or finding elements with specific relationships, often benefit from hash-based lookups.
-  - name: Space-Time Tradeoff
-    weight: "25%"
-    keyPoints:
-      - point: "Hash table: O(n) space for O(1) lookup"
-        explanation: Trading linear space to reduce time complexity from O(n²) to O(n). Essential when you need instant lookup across iterations.
-      - point: "Binary search: O(1) space for O(log n) time"
-        explanation: When data is sorted, no extra space needed. Logarithmic time is acceptable for single searches on large datasets.
-      - point: Explain when to use each
-        explanation: Hash table for multiple lookups, binary search for one-time searches on sorted data, or when space is constrained.
-  - name: Implementation Quality
-    weight: "25%"
-    keyPoints:
-      - point: Correct binary search bounds
-        explanation: Use mid = left + (right - left) // 2 to avoid overflow. Handle inclusive/exclusive ranges consistently. Watch for off-by-one errors.
-      - point: Handle edge cases (empty, not found)
-        explanation: Check for empty arrays, single elements, targets outside range. Return appropriate values (-1, None, default) when not found.
-      - point: Clean hash table logic
-        explanation: Check existence before access, handle duplicates correctly, use appropriate data structures (dict vs set).
-  - name: Communication
-    weight: "20%"
-    keyPoints:
-      - point: Explain algorithm choice
-        explanation: Start with "I notice the data is sorted, so binary search..." or "We need O(1) lookup, so I'll use a hash table..."
-      - point: Walk through examples
-        explanation: Use small concrete examples (e.g., [1,2,3,4], target=5) to demonstrate your logic before coding.
-      - point: Analyze complexity clearly
-        explanation: "Break down time and space: One pass O(n), hash operations O(1), total O(n) time, O(n) space for hash table."
-questionTitles:
-  - Two Sum
-  - Search in Rotated Sorted Array
-  - Find First and Last Position of Element in Sorted Array
-  - Find Peak Element
-  - Search Insert Position
-  - Search a 2D Matrix
-  - Search a 2D Matrix II
-  - Median of Two Sorted Arrays
-  - Koko Eating Bananas
-  - Capacity To Ship Packages Within D Days
-  - Split Array Largest Sum
-  - Find Minimum in Rotated Sorted Array
-  - Single Element in a Sorted Array
----
+# Search / Lookup
 
-# Search / Lookup: Progressive Mastery Path
+## Chapter Overview
+
+Search and lookup algorithms form the foundation of efficient data retrieval. This chapter guides you through a carefully designed progression from basic hash table lookups to advanced binary search techniques. You'll master when to trade space for time with hash tables, how to exploit sorted data for logarithmic search, and the counterintuitive art of searching solution spaces rather than arrays.
+
+**What You'll Master:**
+- Recognize when to trade space (O(n) hash table) for time (O(1) lookup)
+- Identify monotonic properties that enable binary search
+- Handle duplicates with boundary search variants
+- Adapt binary search for rotated or 2D structures
+- Apply binary search to optimization problems (search the answer space)
+
+## When to Recall These Techniques
+
+Search problems appear when you need to find elements, positions, or optimal values. The key is recognizing which search pattern fits your constraint: Do you have sorted data? Need repeated lookups? Working with a solution range? Each pattern exploits different problem structures.
+
+**Quick Pattern Recognition:**
+- **Checking existence repeatedly** → Hash tables
+- **Sorted data** → Binary search variants
+- **Duplicates need boundaries** → Boundary search
+- **Rotated sorted array** → Modified binary search
+- **2D sorted structure** → Matrix search
+- **Optimizing a value** → Binary search on answer
+
+## The Learning Ladder
+
+| Level | Name | Key Concept | When to Use This Pattern | Core Problem |
+|-------|------|-------------|--------------------------|--------------|
+| **1** | Hash Table Complement | O(1) lookup with hash map | Finding pairs/complements (e.g., two numbers sum to target), checking existence across loop iterations, avoiding nested loops for pair checks | Two Sum |
+| **2** | Binary Search Basics | O(log n) on sorted data | Input explicitly sorted, need to find element position or insert location, can sort data without breaking problem semantics | Search Insert Position |
+| **3** | Boundary Binary Search | Find first/last occurrence | Array has duplicates, need leftmost/rightmost position of target value, range queries requiring boundary indices | Find First and Last Position |
+| **4** | Search in Rotated Array | One half always sorted | Sorted array was rotated at unknown pivot point, need to maintain O(log n) despite rotation, can identify which half is sorted | Search in Rotated Sorted Array |
+| **5** | Binary Search on 2D Matrix | Treat as 1D or staircase | Matrix with row/column ordering, 2D search space reducible to 1D, need better than O(m×n) linear scan | Search a 2D Matrix |
+| **6** | Binary Search on Answer | Search solution space | Problem asks "minimum X satisfying condition," answer has monotonic property (if X works, X+1 works), need to find optimal value in range | Koko Eating Bananas |
+
+## Deep Dive: Pattern Recognition
+
+### Hash Tables
+You're checking "does this element exist?" repeatedly across iterations. Classic signal: "find two numbers that sum to target" or "find complement." Trading O(n) space for O(1) lookup time transforms O(n²) nested loops into O(n) single pass.
+
+**When to use:** Any time you're iterating and need to check "have I seen this before?" or "does the complement exist?" Hash tables give instant lookup instead of rescanning the array.
+
+### Binary Search
+You see the word "sorted" or can afford O(n log n) preprocessing. Essential when the problem asks "find position," "search in range," or when data has monotonic properties. Binary search beats linear O(n) scan with O(log n) divide-and-conquer.
+
+**When to use:** Sorted data is your green light. If you can sort without breaking problem semantics, binary search becomes available. Look for "find element," "insert position," or "search in range."
+
+### Boundary Search
+The array contains duplicates and you need "first occurrence" or "last occurrence." Standard binary search finds *any* match; boundary search finds *specific* positions. Critical for range queries and counting duplicates.
+
+**When to use:** You see duplicates and need leftmost/rightmost position. Problems asking for "range of target" or "first position greater than X" signal boundary search.
+
+### Rotated Array Search
+Array was sorted but got rotated (like `[4,5,6,7,0,1,2]`). One half is always sorted—identify which half, check if target is in range, then recurse. Maintains O(log n) despite rotation.
+
+**When to use:** Problem mentions "rotated sorted array" or you see a sorted array with a discontinuity. The key insight: one half remains sorted, giving you enough structure for binary search.
+
+### 2D Matrix Search
+Sorted matrix problem (rows/columns have ordering). Treat as flattened 1D array or use "staircase" approach from top-right corner. Reduces 2D search from O(m×n) to O(log(m×n)) or O(m+n).
+
+**When to use:** Matrix where rows are sorted and/or columns are sorted. If first element of each row > last element of previous row, flatten to 1D. Otherwise use staircase search.
+
+### Binary Search on Answer
+Problem asks "minimum X such that condition holds" or "maximum X satisfying constraint." You're not searching an array—you're searching the *solution space*. Example: "minimum speed to eat all bananas in H hours." If speed K works, all speeds > K work (monotonic).
+
+**When to use:** Problems phrased as "minimum X such that..." or "maximum X where...". The answer lies in a range, and you can verify if a candidate works. Monotonicity is key: if X works, does X+1 work (or vice versa)?
+
+---
 
 <div id="learning-ladder"></div>
 
 ## The Learning Ladder
 
-Each level builds on previous concepts while adding ONE new dimension of complexity. **Click any level to jump directly to that section.**
-
-| Level | Name | Key Concept | When to Use | Core Problem |
-|-------|------|-------------|-------------|--------------|
-| **1** | Hash Table Complement | O(1) lookup with hash map | Need to find pairs/complements, repeated lookups | Two Sum |
-| **2** | Binary Search Basics | O(log n) on sorted data | Array is sorted, find exact position | Search Insert Position |
-| **3** | Boundary Binary Search | Find first/last occurrence | Multiple duplicates, need boundaries | Find First and Last Position |
-| **4** | Search in Rotated Array | One half always sorted | Rotated sorted array, pivot unknown | Search in Rotated Sorted Array |
-| **5** | Binary Search on 2D Matrix | Treat as 1D or staircase | Sorted matrix, row/column ordered | Search a 2D Matrix |
-| **6** | Binary Search on Answer | Search solution space | "Minimum X such that condition" | Koko Eating Bananas |
+| Level | Name | Key Concept | When to Use This Pattern | Core Problem |
+|-------|------|-------------|--------------------------|--------------|
+| **1** | Hash Table Complement | O(1) lookup with hash map | Finding pairs/complements (e.g., two numbers sum to target), checking existence across loop iterations, avoiding nested loops for pair checks | Two Sum |
+| **2** | Binary Search Basics | O(log n) on sorted data | Input explicitly sorted, need to find element position or insert location, can sort data without breaking problem semantics | Search Insert Position |
+| **3** | Boundary Binary Search | Find first/last occurrence | Array has duplicates, need leftmost/rightmost position of target value, range queries requiring boundary indices | Find First and Last Position |
+| **4** | Search in Rotated Array | One half always sorted | Sorted array was rotated at unknown pivot point, need to maintain O(log n) despite rotation, can identify which half is sorted | Search in Rotated Sorted Array |
+| **5** | Binary Search on 2D Matrix | Treat as 1D or staircase | Matrix with row/column ordering, 2D search space reducible to 1D, need better than O(m×n) linear scan | Search a 2D Matrix |
+| **6** | Binary Search on Answer | Search solution space | Problem asks "minimum X satisfying condition," answer has monotonic property (if X works, X+1 works), need to find optimal value in range | Koko Eating Bananas |
 
 ### Quick Decision Guide
 - **"Find if element exists"** → Level 1 (Hash) or Level 2 (Binary Search)
@@ -177,46 +158,74 @@ Instead of searching (O(n)), **remember what you've seen**:
 
 <div class="code-block-wrapper">
 
+### Approach 1: Brute Force (Nested Loops)
+
 ```python
-# ❌ Brute Force: O(n²) time
 def two_sum_brute(nums, target):
+    """
+    Check all possible pairs to find target sum.
+
+    Time Complexity: O(n²) - nested loops check n×(n-1)/2 pairs
+    Space Complexity: O(1) - no extra data structures
+    Problem: Quadratic time doesn't scale for large inputs
+    """
     for i in range(len(nums)):
         for j in range(i+1, len(nums)):
             if nums[i] + nums[j] == target:
                 return [i, j]
     return []
-
-# Time: O(n²) - nested loops
-# Space: O(1)
-# Problem: Checks every pair
 ```
 
+**Why This Fails:** For each element, we scan the entire remaining array. With n=10,000 elements, that's ~50 million comparisons!
+
+---
+
+### Approach 2: Hash Table (Optimal Solution) ✓
+
 ```python
-# ✅ Hash Table: O(n) time
 def two_sum(nums, target):
-    seen = {}  # num -> index
+    """
+    Use hash table to achieve O(1) complement lookups.
+
+    Time Complexity: O(n) - single pass through array
+    Space Complexity: O(n) - hash table stores up to n elements
+    Key Insight: Trading space for time gives linear performance
+    """
+    seen = {}  # Maps number to its index
 
     for i, num in enumerate(nums):
         complement = target - num
 
+        # O(1) hash table lookup
         if complement in seen:
             return [seen[complement], i]
 
+        # Store current number for future lookups
         seen[num] = i
 
     return []
-
-# Time: O(n) - single pass
-# Space: O(n) - hash table
-# Key: O(1) lookup vs O(n) search
 ```
 
-**Example Walkthrough**:
-```python
-nums = [2, 7, 11, 15], target = 9
+**Why This Works:** Hash table gives instant (O(1)) lookups instead of O(n) array scans. We trade O(n) space to achieve O(n) time.
 
-i=0, num=2: complement=7, seen={}, add seen[2]=0
-i=1, num=7: complement=2, seen={2:0} ← FOUND! Return [0,1]
+---
+
+### Execution Trace
+
+```python
+Input: nums = [2, 7, 11, 15], target = 9
+
+Step 1: i=0, num=2
+  complement = 9 - 2 = 7
+  seen = {} → 7 not found
+  seen[2] = 0 → seen = {2: 0}
+
+Step 2: i=1, num=7
+  complement = 9 - 7 = 2
+  seen = {2: 0} → 2 FOUND at index 0!
+  Return [0, 1] ✓
+
+Total operations: 2 lookups (vs 10 for brute force on n=5 array)
 ```
 
 </div>

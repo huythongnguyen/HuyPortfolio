@@ -16,7 +16,8 @@ export function setupScrollSpy() {
         scrollSpyObserver.disconnect();
     }
 
-    const sections = document.querySelectorAll('[id]');
+    // Target specific content containers for tracking, not everything with an ID
+    const sections = document.querySelectorAll('.content-section, .bilingual-chapter, .bilingual-main-section, .bilingual-preamble');
     const tocLinks = document.querySelectorAll('#toc .toc-link');
 
     const sectionMap = new Map();
@@ -25,6 +26,10 @@ export function setupScrollSpy() {
         if (href && href.startsWith('#')) {
             const id = href.substring(1);
             sectionMap.set(id, link);
+            // Support both standard ID and 'section-' prefixed ID
+            if (!id.startsWith('section-')) {
+                sectionMap.set(`section-${id}`, link);
+            }
         }
     });
 
@@ -43,7 +48,8 @@ export function setupScrollSpy() {
 
         updateActiveTOCLink(visibleSections, sectionMap);
     }, {
-        rootMargin: '-10% 0px -70% 0px',
+        // Broad zone: any section on screen is considered
+        rootMargin: '0px',
         threshold: 0
     });
 
@@ -60,14 +66,17 @@ export function setupScrollSpy() {
 function updateActiveTOCLink(visibleSections, sectionMap) {
     sectionMap.forEach(link => link.classList.remove('active'));
 
-    if (visibleSections.size === 0) return;
+    // Also remove active from sections
+    const allSections = Array.from(document.querySelectorAll('.content-section, .bilingual-chapter, .bilingual-main-section, .bilingual-preamble'));
+    allSections.forEach(s => s.classList.remove('active'));
 
-    const allSections = Array.from(document.querySelectorAll('[id]'));
+    if (visibleSections.size === 0) return;
 
     for (const section of allSections) {
         if (visibleSections.has(section.id) && sectionMap.has(section.id)) {
             const link = sectionMap.get(section.id);
             link.classList.add('active');
+            section.classList.add('active'); // Synchronize content
             scrollTOCIntoView(link);
             break;
         }

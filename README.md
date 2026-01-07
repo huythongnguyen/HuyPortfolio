@@ -35,11 +35,9 @@ Interaction should feel like a natural phenomenon.
 
 ### 4. Seijaku (静寂) — Deep Stillness
 The engine is designed to lower the reader's heart rate.
-*   **Contextual TOC**: A quiet Table of Contents tracks your progress without distraction.
-*   **Bilingual Harmony**: Translated texts are handled with *Kanso*—secondary languages are available but tucked away unless summoned.
-*   **Smart Reading Modes**: The engine adapts to your intent:
-    *   **Meditative Mode**: Extra-slow reveal for sacred texts (Kinh Kim Cang), fostering deep contemplation.
-    *   **Overview Mode**: Rapid content "roll-out" for professional docs, auto-populating the TOC before returning you to the top of the page.
+*   **Living Index (Scroll-Sync)**: The Table of Contents is a living mirror of your position. As you scroll, the engine meticulously tracks your location and highlights the relevant section in the sidebar, providing a constant, quiet anchor.
+     *   **Meditative Mode**: Extra-slow reveal for sacred texts (Kinh Kim Cang), fostering deep contemplation.
+     *   **Overview Mode**: Rapid content "roll-out" for professional docs, auto-populating the TOC before returning you to the top of the page.
 
 ### 5. Mobile-First Zen
 Design that flows across any screen without losing its soul.
@@ -47,6 +45,13 @@ Design that flows across any screen without losing its soul.
 *   **The Index Drawer**: On mobile, the TOC transforms into a minimalist navigation drawer, easily summoned and dismissed via a floating "Index" button.
 *   **Touch-Optimized Tabs**: Document switchers are horizontally scrollable and touch-ready, ensuring the "Too Wide" problem of desktop layouts is naturally resolved.
 *   **Responsive Scaling**: Typography and bilingual layouts automatically adjust their breathing room (*Ma*) to feel as native on an iPhone as they do on an iMac.
+
+### 6. Principle of Dynamic Presence (Ma & Seijaku)
+Our navigation is designed to be an echo, not a noise.
+*   **Non-Overlapping Flow**: The Top-Bar and main content share a respectful boundary. To preserve stillness, the content only shifts its position once the navigation is **Permanently Rendered** (reveal complete). Temporary hovers do not shift the text canvas, ensuring zero visual "jumps" during exploration.
+*   **Scroll-Driven Recessional**: As you descend into the document, the Top-Bar recedes (slides up) to grant the mind full-screen stillness.
+*   **Strict Emergence**: The navigation reveals **only** when the reader hovers (touch) at the absolute top of the screen or once the document's text reveal is fully complete. It remains hidden during the sacred unfolding process.
+*   **Unified Gestures**: Whether through a mouse-flick on desktop or a swipe on mobile, the UI responds with a consistent "Zen Slide" that feels natural and effortless.
 
 ---
 

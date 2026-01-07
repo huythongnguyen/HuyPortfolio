@@ -96,6 +96,23 @@ questionTitles:
 
 # Tree Operations: Progressive Mastery Path
 
+## Chapter Overview
+
+Trees embody recursive structure—every subtree is itself a tree. This elegant property makes tree algorithms the perfect training ground for recursive thinking, where complex problems decompose into identical smaller subproblems. This chapter teaches you to trust recursion, combine subtree results, and leverage tree-specific properties like BST ordering.
+
+**What You'll Master:**
+- Apply recursive thinking patterns (preorder, inorder, postorder)
+- Validate global properties through local checks
+- Track paths with backtracking for root-to-leaf problems
+- Leverage BST properties for O(h) search and validation
+- Construct trees from traversal arrays
+- Handle advanced patterns like LCA and serialization
+
+**The Recursive Mindset:**
+- **Trust the recursion:** Assume recursive calls return correct answers
+- **Define base cases:** null nodes, leaf nodes, single-node trees
+- **Combine results:** How do left and right subtrees inform the answer?
+
 Trees are recursive data structures - every subtree is itself a tree. This natural recursion makes tree problems perfect for learning how to think recursively, validate properties globally, track paths with backtracking, and combine information bottom-up.
 
 <div id="learning-ladder"></div>

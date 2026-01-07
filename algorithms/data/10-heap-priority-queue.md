@@ -89,6 +89,28 @@ questionTitles:
 
 # Heap / Priority Queue: Progressive Mastery Path
 
+## Chapter Overview
+
+Heaps represent the optimal data structure for maintaining partial order—when you need min/max access but not full sorting. With O(log n) insertion/deletion and O(1) peek, heaps dominate problems requiring repeated priority access: top-k selection, streaming median, k-way merging, and scheduling algorithms.
+
+**What You'll Master:**
+- Choose min-heap vs max-heap strategically
+- Solve top-k problems with O(n log k) heap approach
+- Implement k-way merge for multiple sorted sources
+- Balance two heaps for streaming median (O(1) query)
+- Combine heap with greedy for scheduling optimization
+- Handle dynamic/streaming data efficiently
+
+**When Heaps Win:**
+- **Top K:** O(n log k) with heap vs O(n log n) sorting
+- **Kth element streaming:** Heap maintains state, quick select doesn't
+- **Merge k lists:** O(n log k) vs O(n k) pairwise merging
+- **Priority scheduling:** Dynamic priority changes in O(log n)
+
+**Counterintuitive Pattern:**
+- **Kth largest → min-heap** (evict smallest of k largest)
+- **Kth smallest → max-heap** (evict largest of k smallest)
+
 Heaps give O(log n) insertion/deletion while maintaining min/max order - perfect for "top k", "k-way merge", and "running median" problems. Unlike sorting (O(n log n)), heaps optimize for partial ordering, saving time when you don't need everything sorted.
 
 <div id="learning-ladder"></div>

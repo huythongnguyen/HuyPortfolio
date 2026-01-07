@@ -12,9 +12,17 @@
  */
 
 #content.bilingual-mode {
-    padding: 120px 24px 80px;
+    padding: 48px 24px 80px;
+    /* Start immersive */
     max-width: 720px;
     margin: 0 auto;
+    transition: padding-top 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Shift below tabs ONLY when they are PERMANENTLY RENDERED */
+#top-tabs.perma-visible~#content-wrapper #content.bilingual-mode,
+#top-tabs.perma-visible~#content.bilingual-mode {
+    padding-top: 120px !important;
 }
 
 /* === PREAMBLE === */
@@ -185,13 +193,21 @@
     transform: translateY(0);
 }
 
-/* 
- * Word-by-word reveal handles paragraph visibility.
- * Section container handles fade-in of the whole section.
- */
-
-/* Preamble always visible */
+/* Peripheral Focus: Fade non-active sections to center the mind */
+.bilingual-chapter,
+.bilingual-main-section,
 .bilingual-preamble {
-    opacity: 1;
-    transform: none;
+    transition: opacity 0.8s ease;
+}
+
+#content:hover .bilingual-chapter:not(:hover):not(.active),
+#content:hover .bilingual-main-section:not(:hover):not(.active),
+#content:hover .bilingual-preamble:not(:hover):not(.active) {
+    opacity: 0.65;
+}
+
+.bilingual-chapter.active,
+.bilingual-main-section.active,
+.bilingual-preamble.active {
+    opacity: 1 !important;
 }

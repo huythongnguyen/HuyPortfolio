@@ -83,6 +83,26 @@ questionTitles:
 
 # Divide and Conquer: Progressive Mastery Path
 
+## Chapter Overview
+
+Divide and Conquer achieves algorithmic elegance through problem decomposition: split into independent subproblems, solve recursively, then combine. This paradigm powers some of computing's most fundamental algorithms—merge sort, quick select, FFT—achieving logarithmic depth and polynomial efficiency where brute force requires exponential time.
+
+**What You'll Master:**
+- Split problems into independent recursive subproblems
+- Design efficient merge/combine strategies
+- Handle boundary-crossing cases (max subarray pattern)
+- Apply partitioning for average O(n) selection
+- Analyze complexity using Master Theorem and recurrence trees
+
+**The Divide and Conquer Recipe:**
+1. **Divide:** Split problem into smaller independent subproblems
+2. **Conquer:** Solve subproblems recursively (base case: size ≤ 1)
+3. **Combine:** Merge subproblem solutions into overall solution
+
+**Key Distinction from DP:**
+- D&C: Subproblems are **independent** (no shared state)
+- DP: Subproblems **overlap** (same calculation repeated)
+
 Divide and Conquer splits problems into independent subproblems, solves them recursively, and combines results. It powers efficient algorithms like merge sort (O(n log n)) and quick select (O(n) average), transforming brute force O(n²) into logarithmic or linear solutions.
 
 <div id="learning-ladder"></div>

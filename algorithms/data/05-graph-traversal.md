@@ -94,6 +94,34 @@ questionTitles:
 
 # Graph Traversal: Progressive Mastery Path
 
+## Chapter Overview
+
+Graph algorithms form the backbone of system design, social networks, routing, and dependency management. This chapter progresses from basic tree traversal to advanced shortest-path algorithms, teaching you when BFS guarantees optimal paths, when DFS reveals connectivity, and when specialized algorithms (Dijkstra, Union-Find, topological sort) become essential.
+
+**What You'll Master:**
+- Apply BFS for level-order traversal and shortest unweighted paths
+- Use DFS for connectivity, cycle detection, and path finding
+- Handle implicit graphs (2D grids as graphs)
+- Implement topological sorting for dependency ordering
+- Optimize with Union-Find for dynamic connectivity
+- Apply Dijkstra's algorithm for weighted shortest paths
+
+**Core Decision Framework:**
+- **BFS:** Layer-by-layer, shortest path in unweighted graphs, queue-based
+- **DFS:** Depth-first exploration, connectivity/cycles, stack/recursion-based
+- **Topological Sort:** DAG ordering where edges point forward
+- **Dijkstra:** Shortest path with non-negative weights, priority queue
+
+**Common Pitfalls:**
+- Forgetting to mark nodes as visited *before* adding to queue (causes duplicates)
+- Using BFS for weighted graphs (use Dijkstra instead)
+- Missing disconnected components (need outer loop)
+- Incorrect cycle detection in directed vs undirected graphs
+
+This chapter transforms abstract graph theory into concrete interview patterns.
+
+---
+
 <div id="learning-ladder"></div>
 
 ## The Learning Ladder

@@ -86,6 +86,28 @@ questionTitles:
 
 # Greedy Algorithms: Progressive Mastery Path
 
+## Chapter Overview
+
+Greedy algorithms commit to locally optimal choices at each step, wagering that local optimization yields global optimization. Unlike dynamic programming (which hedges bets by exploring all options), greedy algorithms make irrevocable decisions. The intellectual challenge: proving your greedy choice is actually optimal—not all problems admit greedy solutions.
+
+**What You'll Master:**
+- Identify when greedy choice property holds
+- Apply exchange arguments to prove greedy correctness
+- Recognize when greedy fails (requiring DP instead)
+- Sort input to enable greedy selection
+- Handle interval scheduling and activity selection
+- Implement two-pass greedy strategies
+
+**Greedy vs DP Decision Framework:**
+- **Greedy works when:** Local optimal choice never blocks global optimal
+- **DP needed when:** Local choice affects future options in complex ways
+- **Proof technique:** Exchange argument (swapping greedy choice doesn't improve solution)
+
+**Classic Greedy Patterns:**
+- Interval scheduling: sort by end time, select earliest-ending non-overlapping
+- Activity selection: maximize selections by picking shortest/earliest
+- Reachability: track maximum reach, commit when achievable
+
 Greedy algorithms make locally optimal choices at each step, hoping to find a global optimum. Unlike DP (which explores all options), greedy commits to each choice immediately. The challenge is proving the greedy choice is actually optimal - not all problems have greedy solutions.
 
 <div id="learning-ladder"></div>

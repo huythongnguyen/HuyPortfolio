@@ -1,109 +1,40 @@
----
-id: 04-dynamic-programming
-title: Dynamic Programming
-order: 4
-icon: Layers
-difficulty: Advanced
-estimatedTime: 8-10 hours
-description: Optimal value with overlapping subproblems
-summary: Conquer the most challenging interview category with 8 progressive levels. Master 1D arrays, decision DP, knapsack variants, 2D grids, string DP, interval DP, state machine DP, and bitmask DP. Learn to identify patterns, derive recurrence relations, and optimize space.
-keySignals:
-  - Optimal substructure
-  - Overlapping subproblems
-  - Count ways
-  - Minimize/Maximize
-  - Subsequence/Substring
-algorithms:
-  - Dynamic Programming
-  - Memoization
-  - Tabulation
-levels:
-  - name: 1D Linear DP
-    subtitle: Foundation - Fibonacci Pattern
-  - name: Decision DP
-    subtitle: Take or Skip Choices
-  - name: Unbounded Knapsack
-    subtitle: Unlimited Item Usage
-  - name: 2D Grid DP
-    subtitle: Path & String Problems
-gradingDimensions:
-  - name: Recurrence Relation
-    weight: "35%"
-    keyPoints:
-      - point: Define correct DP state
-        explanation: What does dp[i] or dp[i][j] represent? State must capture all information needed to make optimal decisions. Common states include position, remaining capacity, and previous choice.
-      - point: Derive recurrence formula
-        explanation: Express dp[i] in terms of smaller subproblems. For each state, consider all possible last actions (take/skip, which item, which direction). Formula encodes problem structure.
-      - point: Identify base cases
-        explanation: Smallest subproblems with known answers such as dp[0], dp[1], empty string, single element. Base cases anchor the recursion and must be set before filling the table.
-  - name: Subproblem Recognition
-    weight: "25%"
-    keyPoints:
-      - point: Spot overlapping subproblems
-        explanation: Draw recursion tree - if same parameters appear multiple times, DP applies. Fibonacci fib(3) called twice. Without memoization exponential; with memoization polynomial.
-      - point: Recognize optimal substructure
-        explanation: Optimal solution contains optimal solutions to subproblems. Shortest path from A to C through B uses shortest A to B and shortest B to C. Greedy choice must be proven safe.
-      - point: Choose top-down vs bottom-up
-        explanation: Top-down (memoization) uses natural recursion, only computes needed states. Bottom-up (tabulation) is iterative with better cache performance and easier space optimization. Start top-down, optimize bottom-up.
-  - name: Space Optimization
-    weight: "20%"
-    keyPoints:
-      - point: Reduce 2D to 1D when possible
-        explanation: If dp[i] only depends on dp[i-1], keep only previous row. Process in correct order (sometimes right-to-left to avoid overwriting needed values).
-      - point: Understand rolling array technique
-        explanation: Use dp[i % 2] for alternating rows, or just prev/curr variables. Reduces O(n×m) space to O(m) or even O(1) for simple recurrences like Fibonacci.
-      - point: Balance clarity vs optimization
-        explanation: Start with full table for correctness, then optimize. In interviews, mention optimization possibility but implement simpler version first unless space is critical.
-  - name: Problem Solving
-    weight: "20%"
-    keyPoints:
-      - point: Start with brute force recursion
-        explanation: Write naive recursive solution first. This reveals the recurrence relation naturally. Then identify repeated computations to add memoization.
-      - point: Add memoization systematically
-        explanation: Add cache (dict or array) to store computed results. Check cache before computing, store result before returning. Transforms exponential to polynomial.
-      - point: Explain DP progression
-        explanation: "\"I'll start with recursion, identify overlapping subproblems, add memoization, then consider bottom-up for optimization.\" Show structured problem-solving approach."
-questionTitles:
-  - Climbing Stairs
-  - House Robber
-  - House Robber II
-  - Coin Change
-  - Coin Change 2
-  - Longest Increasing Subsequence
-  - Word Break
-  - Unique Paths
-  - Unique Paths II
-  - Minimum Path Sum
-  - Edit Distance
-  - Longest Common Subsequence
-  - Longest Palindromic Subsequence
-  - Longest Palindromic Substring
-  - Best Time to Buy and Sell Stock
-  - Best Time to Buy and Sell Stock II
-  - Best Time to Buy and Sell Stock III
-  - Best Time to Buy and Sell Stock IV
-  - Best Time to Buy and Sell Stock with Cooldown
-  - Maximum Subarray
-  - Maximum Product Subarray
-  - Decode Ways
-  - Jump Game
-  - Jump Game II
-  - Partition Equal Subset Sum
-  - Target Sum
-  - Interleaving String
-  - Regular Expression Matching
-  - Wildcard Matching
-  - Burst Balloons
-  - Palindrome Partitioning II
----
+# Dynamic Programming
 
-# Dynamic Programming: Progressive Mastery Path
+## Chapter Overview
 
-<div id="learning-ladder"></div>
+Dynamic Programming represents the most intellectually demanding pattern in algorithm interviews—transforming exponential brute force into polynomial efficiency through systematic caching. This chapter demystifies DP by revealing its two foundational properties: optimal substructure (optimal solutions contain optimal sub-solutions) and overlapping subproblems (same calculations repeated).
+
+**What You'll Master:**
+- Recognize when recursion with memoization applies
+- Derive recurrence relations from problem structure
+- Convert top-down memoization to bottom-up tabulation
+- Optimize space from O(n²) tables to O(n) or O(1)
+- Handle classic patterns: decision DP, knapsack variants, string alignment
+
+**The DP Mindset:**
+Dynamic Programming isn't a specific algorithm—it's a problem-solving paradigm. You'll learn to see problems as recursive definitions, identify redundant computation, and cache strategically.
+
+**Progression Strategy:**
+- **Level 1-2:** Foundation (Fibonacci, simple decisions)
+- **Level 3-4:** Intermediate (Knapsack variants, 2D grids)
+- **Level 5-6:** Advanced (String DP, interval DP)
+- **Level 7-8:** Mastery (State machines, bitmask DP)
+
+Each level adds one dimension of complexity. Master the fundamentals before tackling multi-dimensional state spaces.
+
+## When to Recall These Techniques
+
+Dynamic Programming problems ask for optimal values (min/max) or count total ways, often with constraints on choices. The key signal: you're making decisions at each step, and the same subproblems appear multiple times in naive recursion. If drawing a recursion tree shows repeated parameters, DP applies.
+
+**Quick Pattern Recognition:**
+- **Counting ways to reach goal** → 1D Linear DP (Fibonacci pattern)
+- **Max/min with can't-take-adjacent constraint** → Decision DP (take or skip)
+- **Unlimited item usage, min cost/count** → Unbounded Knapsack
+- **Two sequences/strings to compare** → 2D Grid DP
+- **Interval/substring problems** → Interval DP
+- **State depends on history** → State Machine DP
 
 ## The Learning Ladder
-
-Each level builds on previous concepts. **Click any level to jump directly to that section.**
 
 | Level | Name | Key Concept | When to Use | Core Problem |
 |-------|------|-------------|-------------|--------------|
@@ -112,11 +43,27 @@ Each level builds on previous concepts. **Click any level to jump directly to th
 | **3** | Unbounded Knapsack | Items can be reused | Coin change, unlimited supply | Coin Change |
 | **4** | 2D Grid DP | dp[i][j] for two dimensions | Paths in grid, string matching | Edit Distance |
 
-### Quick Decision Guide
-- **"Count ways to reach end"** → Level 1 (Fibonacci-like)
-- **"Max value with constraints"** → Level 2 (Decision at each step)
-- **"Minimum coins/items (unlimited)"** → Level 3 (Unbounded Knapsack)
-- **"Two strings/sequences"** → Level 4 (2D DP Table)
+## Deep Dive: Pattern Recognition
+
+### 1D Linear DP
+Problem asks "count ways to reach step n" or "nth Fibonacci number." Each state depends on previous 1-2 states. Classic signal: "how many ways," "count distinct methods," with simple linear progression. Base cases: dp[0], dp[1]. Recurrence: dp[i] = dp[i-1] + dp[i-2] or similar.
+
+**When to use:** Linear sequences, counting problems, simple state transitions. Climbing Stairs, Fibonacci, Decode Ways. Look for "count ways" or "reach position i."
+
+### Decision DP
+At each position, you decide: take current element or skip it. Constraint: can't take adjacent elements (House Robber) or must satisfy capacity (0/1 Knapsack). Recurrence compares taking vs skipping: `dp[i] = max(take, skip)`.
+
+**When to use:** Problems with constraints on choices. "Can't rob adjacent houses," "0/1 knapsack," "max sum non-adjacent." State represents "best result up to position i."
+
+### Unbounded Knapsack
+Similar to 0/1 Knapsack, but items can be reused unlimited times. Coin Change (unlimited coins), Rod Cutting. Inner loop processes items multiple times. Recurrence: `dp[i] = min(dp[i], dp[i-coin] + 1)` for all coins.
+
+**When to use:** "Minimum coins to make amount," "unlimited items," "count ways with repetition." Items have no quantity limit.
+
+### 2D Grid DP
+State depends on two dimensions: position in two sequences (string matching), grid coordinates (unique paths), or two variables (capacity and items). Table dp[i][j] represents optimal solution for first i elements of sequence 1 and first j of sequence 2.
+
+**When to use:** Comparing two strings (Edit Distance, LCS), grid paths, problems with two varying parameters. State requires two indices to describe.
 
 ---
 

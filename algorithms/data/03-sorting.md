@@ -1,95 +1,35 @@
----
-id: 03-sorting
-title: Sorting / Ordering
-order: 3
-icon: ArrowUpDown
-difficulty: Beginner
-estimatedTime: 3-4 hours
-description: Arrange elements by criteria
-summary: Understand when sorting unlocks optimization opportunities. Master 6 levels from basic merging to interval scheduling, custom comparators, and O(n) selection algorithms. Learn when O(n log n) preprocessing enables O(n) solutions.
-keySignals:
-  - Order matters
-  - K-th element
-  - Intervals
-  - Relative ordering
-  - Scheduling
-algorithms:
-  - Sorting
-  - Merge Sort
-  - Quick Select
-  - Counting Sort
-  - Bucket Sort
-levels:
-  - name: In-Place Merging
-    subtitle: Foundation - Merge Sorted Arrays
-  - name: Three-Way Partitioning
-    subtitle: Dutch National Flag
-  - name: Interval Problems
-    subtitle: Merge & Schedule Intervals
-  - name: Custom Comparator
-    subtitle: Non-Standard Ordering
-gradingDimensions:
-  - name: Sorting Strategy
-    weight: "30%"
-    keyPoints:
-      - point: Know when sorting enables optimization
-        explanation: Sorting preprocesses data to enable binary search, two pointers, or greedy approaches. If O(n log n) sort + O(n) pass beats O(n²) brute force, sort first.
-      - point: Understand sort stability requirements
-        explanation: Stable sort preserves relative order of equal elements. Use stable sort when secondary ordering matters (e.g., sort by score, maintain original order for ties).
-      - point: Choose appropriate sort algorithm
-        explanation: Built-in sort for general use (O(n log n)), counting sort for small integer range (O(n+k)), bucket sort for uniform distribution. Know trade-offs.
-  - name: Comparator Logic
-    weight: "25%"
-    keyPoints:
-      - point: Define custom comparison rules
-        explanation: "Use lambda or comparator function: key=lambda x: (x[0], -x[1]) sorts by first ascending, second descending. Think about what \"less than\" means for your problem."
-      - point: Handle complex comparison cases
-        explanation: For multi-key sorting, consider precedence order. For string concatenation (largest number), compare a+b vs b+a. Edge cases include empty strings and equal values.
-      - point: Ensure transitivity of comparisons
-        explanation: If a < b and b < c, then a < c must hold. Incorrect comparators cause undefined sort behavior. Test with a few examples to verify consistency.
-  - name: In-Place Techniques
-    weight: "25%"
-    keyPoints:
-      - point: Merge without extra space
-        explanation: For merging sorted arrays in-place, work backwards from end to avoid overwriting. Use three pointers for each input and one for output position.
-      - point: Partition efficiently
-        explanation: Dutch National Flag (three-way partition) uses three pointers for elements < pivot, = pivot, > pivot. Single pass, O(1) space. Essential for problems like Sort Colors.
-      - point: Maintain sorted order while modifying
-        explanation: When removing duplicates or merging, use read/write pointers. Write pointer tracks valid output position; read pointer scans input.
-  - name: Complexity Analysis
-    weight: "20%"
-    keyPoints:
-      - point: Explain O(n log n) vs O(n)
-        explanation: Comparison-based sorts have O(n log n) lower bound. O(n) possible with counting/radix sort when value range is limited. Explain which applies to your solution.
-      - point: Identify when O(n) sorting is possible
-        explanation: Counting sort when range is O(n), bucket sort with uniform distribution, radix sort for fixed-length keys. These avoid comparison overhead.
-      - point: Analyze space complexity
-        explanation: In-place sorts use O(1) extra space; merge sort uses O(n). Consider whether O(n) space for stability is acceptable or if O(1) in-place is required.
-questionTitles:
-  - Merge Intervals
-  - Next Permutation
-  - Sort Colors
-  - Kth Largest Element in an Array
-  - Top K Frequent Elements
-  - Largest Number
-  - Meeting Rooms
-  - Meeting Rooms II
-  - Insert Interval
-  - Non-overlapping Intervals
-  - Wiggle Sort II
-  - H-Index
-  - Maximum Gap
-  - Sort List
-  - Insertion Sort List
----
+# Sorting
 
-# Sorting / Ordering: Progressive Mastery Path
+## Chapter Overview
 
-<div id="learning-ladder"></div>
+Sorting transcends simple element arrangement—it's a preprocessing strategy that unlocks algorithm optimizations. This chapter reveals when paying the O(n log n) sorting cost enables subsequent O(n) or O(log n) operations, transforming otherwise intractable O(n²) problems into efficient solutions.
+
+**What You'll Master:**
+- Merge sorted arrays in-place with zero extra space
+- Apply three-way partitioning for constant-space sorting
+- Recognize when sorting enables greedy interval merging
+- Design custom comparators for non-standard orderings
+- Choose between comparison-based and linear-time sorts
+
+The key insight: sorting isn't the goal—it's a tool. Master when to sort (enabling binary search, two pointers, or greedy approaches) and when alternative approaches avoid sorting's overhead entirely.
+
+**Strategic Patterns:**
+- **O(n log n) preprocessing** → O(log n) binary search per query
+- **Sorted intervals** → O(n) greedy merge instead of O(n²) pairwise checks
+- **Custom ordering** → Transform comparison to unlock sorting power
+
+## When to Recall These Techniques
+
+Sorting problems appear when element order enables optimization or when the problem explicitly requires ordering. The key is recognizing whether sorting unlocks a simpler algorithm (binary search, two pointers, greedy merging) or if the problem requires custom comparison logic.
+
+**Quick Pattern Recognition:**
+- **Merging sorted arrays in-place** → In-place merging (fill from end)
+- **Three distinct values to sort** → Three-way partitioning (Dutch Flag)
+- **Overlapping intervals** → Sort + greedy merge
+- **Custom ordering rules** → Custom comparator
+- **Finding k-th element** → Quick Select or heap
 
 ## The Learning Ladder
-
-Each level builds on previous concepts. **Click any level to jump directly to that section.**
 
 | Level | Name | Key Concept | When to Use | Core Problem |
 |-------|------|-------------|-------------|--------------|
@@ -98,11 +38,27 @@ Each level builds on previous concepts. **Click any level to jump directly to th
 | **3** | Interval Problems | Sort by start/end time | Overlapping ranges, scheduling | Merge Intervals |
 | **4** | Custom Comparator | Define ordering logic | Non-standard sort criteria | Largest Number |
 
-### Quick Decision Guide
-- **"Merge two sorted arrays in-place"** → Level 1 (Three Pointers from End)
-- **"Partition into 3 groups"** → Level 2 (Dutch National Flag)
-- **"Overlapping intervals"** → Level 3 (Sort + Merge)
-- **"Custom ordering rules"** → Level 4 (Comparator Function)
+## Deep Dive: Pattern Recognition
+
+### In-Place Merging
+You have two sorted arrays and must merge them without extra space. Classic signal: "merge sorted array," "combine in-place," space complexity O(1). Work backwards from the end to avoid overwriting unprocessed elements. Use three pointers: two for reading from ends, one for writing position.
+
+**When to use:** Merging pre-sorted data with limited memory. The empty space at the end of the target array allows safe backward filling without overwrites.
+
+### Three-Way Partitioning
+Array contains limited distinct values (like 0, 1, 2) needing sorting in one pass. Dutch National Flag algorithm maintains three regions: elements less than pivot, equal to pivot, greater than pivot. Single pass with O(1) space beats O(n log n) general sorting.
+
+**When to use:** Problem has 3 categories or values. Classic example: Sort Colors. Maintain invariants [0s][1s][unsorted][2s] with three pointers.
+
+### Interval Problems
+Overlapping intervals, scheduling conflicts, or range merging problems. Unsorted intervals require O(n²) pairwise checks. Sorting by start time makes overlaps adjacent, enabling O(n) greedy merge. If current.start ≤ last.end, intervals overlap.
+
+**When to use:** Problems with time ranges, scheduling, merging overlapping periods. Sort first (O(n log n)), then linear scan (O(n)) for merging or conflict detection.
+
+### Custom Comparator
+Problem requires non-standard ordering that numeric/lexicographic sort doesn't provide. Example: "Largest Number" needs concatenation-based comparison ("9" > "534" because "9534" > "5349"). Define custom comparison function or lambda key.
+
+**When to use:** Default sorting doesn't match problem requirements. Multi-key sorting, concatenation logic, or domain-specific orderings. Use `key=lambda` or `cmp_to_key` for custom comparison.
 
 ---
 
@@ -177,13 +133,21 @@ Instead of forward merging (risky), **fill backward into empty space**:
 
 <div class="code-block-wrapper">
 
+### Approach 1: Copy and Merge (Extra Space)
+
 ```python
-# ❌ Brute Force: O(n) extra space
 def merge_brute(nums1, m, nums2, n):
-    # Create copy of nums1's valid data
+    """
+    Create a copy of nums1's valid data, then merge.
+
+    Time Complexity: O(m + n) - single pass through both arrays
+    Space Complexity: O(m) - requires copy of nums1's data
+    Problem: Unnecessary memory allocation when nums1 has space
+    """
+    # Backup nums1's valid data
     nums1_copy = nums1[:m]
 
-    # Merge into nums1
+    # Standard two-pointer merge
     i = j = 0
     for k in range(m + n):
         if i >= m:
@@ -198,21 +162,29 @@ def merge_brute(nums1, m, nums2, n):
         else:
             nums1[k] = nums2[j]
             j += 1
-
-# Time: O(m + n)
-# Space: O(m) - needs copy
-# Problem: Uses extra space
 ```
 
+**The Problem:** Creating `nums1_copy` uses O(m) extra space. For large arrays, this memory overhead is avoidable.
+
+---
+
+### Approach 2: Reverse Three-Pointer Merge (Optimal) ✓
+
 ```python
-# ✅ Optimized: O(1) space, reverse iteration
 def merge(nums1, m, nums2, n):
-    p1 = m - 1      # Last element of nums1's data
+    """
+    Merge by filling from the end, avoiding overwrites.
+
+    Time Complexity: O(m + n) - single pass backward
+    Space Complexity: O(1) - only three pointer variables
+    Key Insight: Fill rightward where empty space exists
+    """
+    p1 = m - 1      # Last element of nums1's valid data
     p2 = n - 1      # Last element of nums2
-    p = m + n - 1   # Last position in nums1
+    p = m + n - 1   # Current fill position (rightmost)
 
     # Merge from end to beginning
-    while p2 >= 0:
+    while p2 >= 0:  # Continue until nums2 exhausted
         if p1 >= 0 and nums1[p1] > nums2[p2]:
             nums1[p] = nums1[p1]
             p1 -= 1
@@ -220,24 +192,48 @@ def merge(nums1, m, nums2, n):
             nums1[p] = nums2[p2]
             p2 -= 1
         p -= 1
-
-# Time: O(m + n) - single pass
-# Space: O(1) - true in-place
-# Key: Fill from end to avoid overwrites
 ```
 
-**Example Walkthrough**:
+**Why This Works:** The empty space is at the *end* of nums1. By filling backward, we never overwrite unprocessed elements. Once p2 < 0, all nums2 elements are placed, and remaining nums1 elements are already in correct positions.
+
+---
+
+### Execution Trace
+
 ```python
-nums1 = [1,2,3,0,0,0], m=3, nums2 = [2,5,6], n=3
+Input: nums1 = [1,2,3,0,0,0], m=3, nums2 = [2,5,6], n=3
 
-p1=2 (3), p2=2 (6), p=5: 6>3 → nums1[5]=6, p2=1, p=4
-p1=2 (3), p2=1 (5), p=4: 5>3 → nums1[4]=5, p2=0, p=3
-p1=2 (3), p2=0 (2), p=3: 3>2 → nums1[3]=3, p1=1, p=2
-p1=1 (2), p2=0 (2), p=2: 2==2 → nums1[2]=2, p2=-1, p=1
-Exit (p2 < 0)
+Initial state:
+nums1 = [1, 2, 3, _, _, _]
+         ↑         ↑
+        p1=2      p=5
+nums2 = [2, 5, 6]
+               ↑
+              p2=2
 
-Result: [1,2,2,3,5,6]
+Step 1: Compare nums1[2]=3 vs nums2[2]=6
+  6 > 3 → place 6 at nums1[5]
+  [1, 2, 3, _, _, 6], p2=1, p=4
+
+Step 2: Compare nums1[2]=3 vs nums2[1]=5
+  5 > 3 → place 5 at nums1[4]
+  [1, 2, 3, _, 5, 6], p2=0, p=3
+
+Step 3: Compare nums1[2]=3 vs nums2[0]=2
+  3 > 2 → place 3 at nums1[3]
+  [1, 2, 3, 3, 5, 6], p1=1, p=2
+
+Step 4: Compare nums1[1]=2 vs nums2[0]=2
+  2 == 2 → place nums2[0] at nums1[2]
+  [1, 2, 2, 3, 5, 6], p2=-1, p=1
+
+Exit condition: p2 < 0 (nums2 exhausted)
+Remaining nums1 elements [1,2] already in place ✓
+
+Final: [1, 2, 2, 3, 5, 6]
 ```
+
+**Invariant:** `nums1[p+1...m+n-1]` contains the largest (m+n-p-1) elements in sorted order.
 
 </div>
 

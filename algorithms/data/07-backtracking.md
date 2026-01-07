@@ -88,6 +88,29 @@ questionTitles:
 
 # Backtracking / Combinatorics: Progressive Mastery Path
 
+## Chapter Overview
+
+Backtracking represents systematic brute force—exhaustively exploring possibility spaces through recursive decision-making. Unlike greedy algorithms that commit to choices, backtracking explores all paths by making choices, recursing deeper, then undoing choices (backtracking) to explore alternatives. This chapter masters the universal backtracking template and its adaptations.
+
+**What You'll Master:**
+- Master the backtracking template (choice → recurse → undo)
+- Generate all subsets, permutations, and combinations
+- Apply pruning to dramatically reduce search space
+- Handle duplicate avoidance in combination problems
+- Solve constraint satisfaction problems (N-Queens, Sudoku)
+- Analyze exponential time complexity correctly
+
+**The Backtracking Template:**
+```python
+def backtrack(path, choices):
+    if is_complete(path):
+        result.append(path[:])  # Clone!
+    for choice in choices:
+        make_choice(choice)
+        backtrack(path, remaining_choices)
+        undo_choice(choice)  # Backtrack
+```
+
 Backtracking is systematic brute force - explore all possibilities by making choices, recursing, and undoing choices (backtracking) to try alternatives. It's essential for combinatorial problems: subsets, permutations, combinations, and constraint satisfaction puzzles.
 
 <div id="learning-ladder"></div>

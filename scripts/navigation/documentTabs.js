@@ -128,18 +128,54 @@ export function initTabAutoHide() {
     if (!tabs) return;
 
     const TRIGGER_ZONE = 60;
+    let lastScrollY = window.scrollY;
+    let scrollUpAmount = 0;
 
+    // Desktop: Mouse hover near top
     document.addEventListener('mousemove', (e) => {
-        // If tabs are permanently visible (render complete), do nothing
-        if (tabs.classList.contains('perma-visible')) {
-            if (!tabs.classList.contains('visible')) tabs.classList.add('visible');
-            return;
-        }
-
+        // If tabs are permanently visible (render complete), we still allow hiding/showing via scroll
+        // but mouse hover always brings them back
         if (e.clientY <= TRIGGER_ZONE) {
             tabs.classList.add('visible');
-        } else {
+        } else if (window.scrollY > 100 && !tabs.classList.contains('perma-visible')) {
+            // Only hide if we aren't at the very top and not in perma-visible mode
             tabs.classList.remove('visible');
         }
     });
+
+    // Unified Scroll Logic: Hide on scroll down, only show at very top
+    window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+        const delta = currentScrollY - lastScrollY;
+
+        if (delta > 2 && currentScrollY > 100) {
+            // Scrolling down: recede to grant focus
+            tabs.classList.remove('visible');
+            tabs.classList.remove('perma-visible');
+        }
+
+        // Only auto-show if we reach the absolute top of the page
+        if (currentScrollY < 10) {
+            tabs.classList.add('visible');
+        }
+
+        lastScrollY = currentScrollY;
+    }, { passive: true });
+
+    // Mobile: Swipe handling
+    let touchStartY = 0;
+    tabs.addEventListener('touchstart', (e) => {
+        touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    tabs.addEventListener('touchmove', (e) => {
+        const touchY = e.touches[0].clientY;
+        const deltaY = touchStartY - touchY;
+
+        // Swipe up on the tab bar itself to hide it
+        if (deltaY > 20) {
+            tabs.classList.remove('visible');
+            tabs.classList.remove('perma-visible');
+        }
+    }, { passive: true });
 }

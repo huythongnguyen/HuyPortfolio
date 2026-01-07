@@ -9,10 +9,10 @@ let stopReveal = false;
 let revealSpeed = 30; // ms per word (Default: Medium)
 
 const SPEEDS = {
-    fast: 15,    // For rapid overview
-    medium: 40,
-    slow: 80,
-    slower: 100, // Balanced contemplative speed
+    fast: 20,    // For rapid overview
+    medium: 60,
+    slow: 100,
+    slower: 140, // Balanced contemplative speed
     meditative: 250,
     instant: 0
 };
@@ -21,7 +21,10 @@ export function initTextReveal() {
     // Reset state
     stopReveal = false;
     isRevealing = false;
-    revealSpeed = SPEEDS.medium;
+
+    // Zen Logic: Mobile readers often appreciate a slightly slower pace to avoid dizziness
+    const isMobile = window.innerWidth <= 900;
+    revealSpeed = isMobile ? SPEEDS.medium * 1.2 : SPEEDS.medium;
 }
 
 export function setRevealSpeed(speed) {

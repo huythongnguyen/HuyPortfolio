@@ -27,7 +27,15 @@
 
 #content {
     flex: 1;
-    padding: 120px 64px 80px 64px;
+    padding: 48px 64px 80px 64px;
+    /* Default: Minimal top space for full-screen feel */
+    transition: padding-top 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Zen Logic: Content shifts down ONLY when navigation is PERMANENTLY RENDERED */
+#top-tabs.perma-visible~#content-wrapper #content,
+#top-tabs.perma-visible~#content {
+    padding-top: 120px;
 }
 
 /* Content sections for text reveal animation */
@@ -58,4 +66,15 @@
     transform: translateY(0);
 }
 
-/* Word-by-word reveal handles paragraph visibility. */
+/* Peripheral Focus: Fade non-active sections to center the mind */
+.content-section {
+    transition: opacity 0.8s ease;
+}
+
+#content:hover .content-section:not(:hover):not(.active) {
+    opacity: 0.65;
+}
+
+.content-section.active {
+    opacity: 1 !important;
+}
