@@ -67,6 +67,14 @@ body {
     background-image: url('../assets/portfolio_bg.png');
 }
 
+.portal-side#algorithms::before {
+    background-image: url('../assets/algorithms_bg.png');
+}
+
+.portal-side#ml-design::before {
+    background-image: url('../assets/ml_system_design_bg.png');
+}
+
 .portal-side#compassion::before {
     background-image: url('../assets/compassion_bg.png');
 }
@@ -128,16 +136,7 @@ p {
 }
 
 .divider {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 1px;
-    height: 60vh;
-    background-color: var(--portal-text);
-    opacity: 0.2;
-    z-index: 10;
-    pointer-events: none;
+    display: none;
 }
 
 /* Theme Toggle Support */
